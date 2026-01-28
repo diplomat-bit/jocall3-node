@@ -23,10 +23,26 @@ describe('resource overdraft', () => {
   });
 
   // Prism tests are disabled
+  test.skip('update: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.accounts.overdraft.update('acc_chase_checking_4567', { path: '/_stainless_unknown_path' }),
+    ).rejects.toThrow(Jocall3.NotFoundError);
+  });
+
+  // Prism tests are disabled
   test.skip('update: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.accounts.overdraft.update('acc_chase_checking_4567', {}, { path: '/_stainless_unknown_path' }),
+      client.accounts.overdraft.update(
+        'acc_chase_checking_4567',
+        {
+          enabled: false,
+          feePreference: 'decline_if_over_limit',
+          linkToSavings: false,
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
     ).rejects.toThrow(Jocall3.NotFoundError);
   });
 

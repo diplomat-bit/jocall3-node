@@ -11,11 +11,7 @@ export {
 } from './accounts/accounts';
 export { Corporate } from './corporate/corporate';
 export { Lending } from './lending/lending';
-export {
-  Marketplace,
-  type MarketplaceListProductsResponse,
-  type MarketplaceListProductsParams,
-} from './marketplace/marketplace';
+export { Marketplace } from './marketplace/marketplace';
 export { Payments } from './payments/payments';
 export { Sustainability, type SustainabilityGetFootprintResponse } from './sustainability/sustainability';
 export {

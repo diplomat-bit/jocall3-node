@@ -41,12 +41,12 @@ export class Accounts extends APIResource {
    * const accounts = await client.accounts.list();
    * ```
    */
-  list(query?: AccountListParams, options?: Core.RequestOptions): Core.APIPromise<unknown>;
-  list(options?: Core.RequestOptions): Core.APIPromise<unknown>;
+  list(query?: AccountListParams, options?: Core.RequestOptions): Core.APIPromise<AccountListResponse>;
+  list(options?: Core.RequestOptions): Core.APIPromise<AccountListResponse>;
   list(
     query: AccountListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<unknown> {
+  ): Core.APIPromise<AccountListResponse> {
     if (isRequestOptions(query)) {
       return this.list({}, query);
     }
@@ -60,21 +60,116 @@ export class Accounts extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.accounts.link();
+   * const response = await client.accounts.link({
+   *   countryCode: 'US',
+   *   institutionName: 'Bank of America',
+   * });
    * ```
    */
-  link(body: AccountLinkParams, options?: Core.RequestOptions): Core.APIPromise<unknown> {
+  link(body: AccountLinkParams, options?: Core.RequestOptions): Core.APIPromise<AccountLinkResponse> {
     return this._client.post('/accounts/link', { body, ...options });
   }
 }
 
 export interface AccountRetrieveResponse {
-  projectedCashFlow?: unknown;
+  id: string;
+
+  currency: string;
+
+  currentBalance: number;
+
+  institutionName: string;
+
+  lastUpdated: string;
+
+  name: string;
+
+  type: string;
+
+  accountHolder?: string;
+
+  availableBalance?: number;
+
+  balanceHistory?: Array<AccountRetrieveResponse.BalanceHistory>;
+
+  externalId?: string;
+
+  interestRate?: number;
+
+  mask?: string;
+
+  openedDate?: string;
+
+  projectedCashFlow?: AccountRetrieveResponse.ProjectedCashFlow;
+
+  subtype?: string;
+
+  transactionsCount?: number;
 }
 
-export type AccountListResponse = unknown;
+export namespace AccountRetrieveResponse {
+  export interface BalanceHistory {
+    balance?: number;
 
-export type AccountLinkResponse = unknown;
+    date?: string;
+  }
+
+  export interface ProjectedCashFlow {
+    confidenceScore?: number;
+
+    days30?: number;
+
+    days90?: number;
+  }
+}
+
+export interface AccountListResponse {
+  data: Array<AccountListResponse.Data>;
+
+  limit: number;
+
+  offset: number;
+
+  total: number;
+
+  nextOffset?: number;
+}
+
+export namespace AccountListResponse {
+  export interface Data {
+    id?: string;
+
+    availableBalance?: number;
+
+    currency?: string;
+
+    currentBalance?: number;
+
+    externalId?: string;
+
+    institutionName?: string;
+
+    lastUpdated?: string;
+
+    mask?: string;
+
+    name?: string;
+
+    subtype?: string;
+
+    type?: string;
+  }
+}
+
+export interface AccountLinkResponse {
+  authUri: string;
+
+  linkSessionId: string;
+
+  status: string;
+
+  message?: string;
+}
 
 export interface AccountListParams {
   /**
@@ -88,7 +183,11 @@ export interface AccountListParams {
   offset?: number;
 }
 
-export interface AccountLinkParams {}
+export interface AccountLinkParams {
+  countryCode: string;
+
+  institutionName: string;
+}
 
 Accounts.Transactions = Transactions;
 Accounts.Statements = Statements;

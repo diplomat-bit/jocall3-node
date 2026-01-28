@@ -56,8 +56,28 @@ describe('resource me', () => {
     await expect(
       client.users.me.update(
         {
-          address: {},
-          preferences: { notificationChannels: {} },
+          address: {
+            city: 'city',
+            country: 'country',
+            state: 'state',
+            street: 'street',
+            zip: 'zip',
+          },
+          name: 'Quantum Visionary Pro',
+          phone: '+1-555-999-0000',
+          preferences: {
+            aiInteractionMode: 'aiInteractionMode',
+            dataSharingConsent: true,
+            notificationChannels: {
+              email: true,
+              inApp: true,
+              push: true,
+              sms: true,
+            },
+            preferredLanguage: 'preferredLanguage',
+            theme: 'theme',
+            transactionGrouping: 'transactionGrouping',
+          },
         },
         { path: '/_stainless_unknown_path' },
       ),

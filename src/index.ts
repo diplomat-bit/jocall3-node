@@ -16,11 +16,7 @@ import {
 import { AI } from './resources/ai/ai';
 import { Corporate } from './resources/corporate/corporate';
 import { Lending } from './resources/lending/lending';
-import {
-  Marketplace,
-  MarketplaceListProductsParams,
-  MarketplaceListProductsResponse,
-} from './resources/marketplace/marketplace';
+import { Marketplace } from './resources/marketplace/marketplace';
 import { Payments } from './resources/payments/payments';
 import {
   Sustainability,
@@ -317,11 +313,7 @@ export declare namespace Jocall3 {
     type SustainabilityGetFootprintResponse as SustainabilityGetFootprintResponse,
   };
 
-  export {
-    Marketplace as Marketplace,
-    type MarketplaceListProductsResponse as MarketplaceListProductsResponse,
-    type MarketplaceListProductsParams as MarketplaceListProductsParams,
-  };
+  export { Marketplace as Marketplace };
 
   export { Lending as Lending };
 }

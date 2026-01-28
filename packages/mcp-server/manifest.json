@@ -20,11 +20,18 @@
       "command": "node",
       "args": ["${__dirname}/index.js"],
       "env": {
+        "JOCALL3_API_KEY": "${user_config.JOCALL3_API_KEY}",
         "GEMINI_API_KEY": "${user_config.GEMINI_API_KEY}"
       }
     }
   },
   "user_config": {
+    "JOCALL3_API_KEY": {
+      "title": "api_key",
+      "description": "",
+      "required": false,
+      "type": "string"
+    },
     "GEMINI_API_KEY": {
       "title": "gemini_api_key",
       "description": "",

@@ -23,7 +23,6 @@ describe('instantiate client', () => {
     const client = new Jocall3({
       baseURL: 'http://localhost:5000/',
       defaultHeaders: { 'X-My-Default-Header': '2' },
-      geminiAPIKey: 'My Gemini API Key',
     });
 
     test('they are used in the request', async () => {
@@ -55,7 +54,6 @@ describe('instantiate client', () => {
       const client = new Jocall3({
         baseURL: 'http://localhost:5000/',
         defaultQuery: { apiVersion: 'foo' },
-        geminiAPIKey: 'My Gemini API Key',
       });
       expect(client.buildURL('/foo', null)).toEqual('http://localhost:5000/foo?apiVersion=foo');
     });
@@ -64,7 +62,6 @@ describe('instantiate client', () => {
       const client = new Jocall3({
         baseURL: 'http://localhost:5000/',
         defaultQuery: { apiVersion: 'foo', hello: 'world' },
-        geminiAPIKey: 'My Gemini API Key',
       });
       expect(client.buildURL('/foo', null)).toEqual('http://localhost:5000/foo?apiVersion=foo&hello=world');
     });
@@ -73,7 +70,6 @@ describe('instantiate client', () => {
       const client = new Jocall3({
         baseURL: 'http://localhost:5000/',
         defaultQuery: { hello: 'world' },
-        geminiAPIKey: 'My Gemini API Key',
       });
       expect(client.buildURL('/foo', { hello: undefined })).toEqual('http://localhost:5000/foo');
     });
@@ -82,7 +78,6 @@ describe('instantiate client', () => {
   test('custom fetch', async () => {
     const client = new Jocall3({
       baseURL: 'http://localhost:5000/',
-      geminiAPIKey: 'My Gemini API Key',
       fetch: (url) => {
         return Promise.resolve(
           new Response(JSON.stringify({ url, custom: true }), {
@@ -98,17 +93,12 @@ describe('instantiate client', () => {
 
   test('explicit global fetch', async () => {
     // make sure the global fetch type is assignable to our Fetch type
-    const client = new Jocall3({
-      baseURL: 'http://localhost:5000/',
-      geminiAPIKey: 'My Gemini API Key',
-      fetch: defaultFetch,
-    });
+    const client = new Jocall3({ baseURL: 'http://localhost:5000/', fetch: defaultFetch });
   });
 
   test('custom signal', async () => {
     const client = new Jocall3({
       baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-      geminiAPIKey: 'My Gemini API Key',
       fetch: (...args) => {
         return new Promise((resolve, reject) =>
           setTimeout(
@@ -138,11 +128,7 @@ describe('instantiate client', () => {
       return new Response(JSON.stringify({}), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new Jocall3({
-      baseURL: 'http://localhost:5000/',
-      geminiAPIKey: 'My Gemini API Key',
-      fetch: testFetch,
-    });
+    const client = new Jocall3({ baseURL: 'http://localhost:5000/', fetch: testFetch });
 
     await client.patch('/foo');
     expect(capturedRequest?.method).toEqual('PATCH');
@@ -150,18 +136,12 @@ describe('instantiate client', () => {
 
   describe('baseUrl', () => {
     test('trailing slash', () => {
-      const client = new Jocall3({
-        baseURL: 'http://localhost:5000/custom/path/',
-        geminiAPIKey: 'My Gemini API Key',
-      });
+      const client = new Jocall3({ baseURL: 'http://localhost:5000/custom/path/' });
       expect(client.buildURL('/foo', null)).toEqual('http://localhost:5000/custom/path/foo');
     });
 
     test('no trailing slash', () => {
-      const client = new Jocall3({
-        baseURL: 'http://localhost:5000/custom/path',
-        geminiAPIKey: 'My Gemini API Key',
-      });
+      const client = new Jocall3({ baseURL: 'http://localhost:5000/custom/path' });
       expect(client.buildURL('/foo', null)).toEqual('http://localhost:5000/custom/path/foo');
     });
 
@@ -170,57 +150,48 @@ describe('instantiate client', () => {
     });
 
     test('explicit option', () => {
-      const client = new Jocall3({ baseURL: 'https://example.com', geminiAPIKey: 'My Gemini API Key' });
+      const client = new Jocall3({ baseURL: 'https://example.com' });
       expect(client.baseURL).toEqual('https://example.com');
     });
 
     test('env variable', () => {
       process.env['JOCALL3_BASE_URL'] = 'https://example.com/from_env';
-      const client = new Jocall3({ geminiAPIKey: 'My Gemini API Key' });
+      const client = new Jocall3({});
       expect(client.baseURL).toEqual('https://example.com/from_env');
     });
 
     test('empty env variable', () => {
       process.env['JOCALL3_BASE_URL'] = ''; // empty
-      const client = new Jocall3({ geminiAPIKey: 'My Gemini API Key' });
+      const client = new Jocall3({});
       expect(client.baseURL).toEqual('https://api.quantum-core.finance/v1');
     });
 
     test('blank env variable', () => {
       process.env['JOCALL3_BASE_URL'] = '  '; // blank
-      const client = new Jocall3({ geminiAPIKey: 'My Gemini API Key' });
+      const client = new Jocall3({});
       expect(client.baseURL).toEqual('https://api.quantum-core.finance/v1');
     });
 
     test('env variable with environment', () => {
       process.env['JOCALL3_BASE_URL'] = 'https://example.com/from_env';
 
-      expect(
-        () => new Jocall3({ geminiAPIKey: 'My Gemini API Key', environment: 'production' }),
-      ).toThrowErrorMatchingInlineSnapshot(
+      expect(() => new Jocall3({ environment: 'production' })).toThrowErrorMatchingInlineSnapshot(
         `"Ambiguous URL; The \`baseURL\` option (or JOCALL3_BASE_URL env var) and the \`environment\` option are given. If you want to use the environment you must pass baseURL: null"`,
       );
 
-      const client = new Jocall3({
-        geminiAPIKey: 'My Gemini API Key',
-        baseURL: null,
-        environment: 'production',
-      });
+      const client = new Jocall3({ baseURL: null, environment: 'production' });
       expect(client.baseURL).toEqual('https://api.quantum-core.finance/v1');
     });
 
     test('in request options', () => {
-      const client = new Jocall3({ geminiAPIKey: 'My Gemini API Key' });
+      const client = new Jocall3({});
       expect(client.buildURL('/foo', null, 'http://localhost:5000/option')).toEqual(
         'http://localhost:5000/option/foo',
       );
     });
 
     test('in request options overridden by client options', () => {
-      const client = new Jocall3({
-        geminiAPIKey: 'My Gemini API Key',
-        baseURL: 'http://localhost:5000/client',
-      });
+      const client = new Jocall3({ baseURL: 'http://localhost:5000/client' });
       expect(client.buildURL('/foo', null, 'http://localhost:5000/option')).toEqual(
         'http://localhost:5000/client/foo',
       );
@@ -228,7 +199,7 @@ describe('instantiate client', () => {
 
     test('in request options overridden by env variable', () => {
       process.env['JOCALL3_BASE_URL'] = 'http://localhost:5000/env';
-      const client = new Jocall3({ geminiAPIKey: 'My Gemini API Key' });
+      const client = new Jocall3({});
       expect(client.buildURL('/foo', null, 'http://localhost:5000/option')).toEqual(
         'http://localhost:5000/env/foo',
       );
@@ -236,31 +207,17 @@ describe('instantiate client', () => {
   });
 
   test('maxRetries option is correctly set', () => {
-    const client = new Jocall3({ maxRetries: 4, geminiAPIKey: 'My Gemini API Key' });
+    const client = new Jocall3({ maxRetries: 4 });
     expect(client.maxRetries).toEqual(4);
 
     // default
-    const client2 = new Jocall3({ geminiAPIKey: 'My Gemini API Key' });
+    const client2 = new Jocall3({});
     expect(client2.maxRetries).toEqual(2);
-  });
-
-  test('with environment variable arguments', () => {
-    // set options via env var
-    process.env['GEMINI_API_KEY'] = 'My Gemini API Key';
-    const client = new Jocall3();
-    expect(client.geminiAPIKey).toBe('My Gemini API Key');
-  });
-
-  test('with overridden environment variable arguments', () => {
-    // set options via env var
-    process.env['GEMINI_API_KEY'] = 'another My Gemini API Key';
-    const client = new Jocall3({ geminiAPIKey: 'My Gemini API Key' });
-    expect(client.geminiAPIKey).toBe('My Gemini API Key');
   });
 });
 
 describe('request building', () => {
-  const client = new Jocall3({ geminiAPIKey: 'My Gemini API Key' });
+  const client = new Jocall3({});
 
   describe('Content-Length', () => {
     test('handles multi-byte characters', async () => {
@@ -302,11 +259,7 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new Jocall3({
-      geminiAPIKey: 'My Gemini API Key',
-      timeout: 10,
-      fetch: testFetch,
-    });
+    const client = new Jocall3({ timeout: 10, fetch: testFetch });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
     expect(count).toEqual(2);
@@ -336,11 +289,7 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new Jocall3({
-      geminiAPIKey: 'My Gemini API Key',
-      fetch: testFetch,
-      maxRetries: 4,
-    });
+    const client = new Jocall3({ fetch: testFetch, maxRetries: 4 });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
 
@@ -364,11 +313,7 @@ describe('retries', () => {
       capturedRequest = init;
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
-    const client = new Jocall3({
-      geminiAPIKey: 'My Gemini API Key',
-      fetch: testFetch,
-      maxRetries: 4,
-    });
+    const client = new Jocall3({ fetch: testFetch, maxRetries: 4 });
 
     expect(
       await client.request({
@@ -398,7 +343,6 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
     const client = new Jocall3({
-      geminiAPIKey: 'My Gemini API Key',
       fetch: testFetch,
       maxRetries: 4,
       defaultHeaders: { 'X-Stainless-Retry-Count': null },
@@ -430,11 +374,7 @@ describe('retries', () => {
       capturedRequest = init;
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
-    const client = new Jocall3({
-      geminiAPIKey: 'My Gemini API Key',
-      fetch: testFetch,
-      maxRetries: 4,
-    });
+    const client = new Jocall3({ fetch: testFetch, maxRetries: 4 });
 
     expect(
       await client.request({
@@ -461,7 +401,7 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new Jocall3({ geminiAPIKey: 'My Gemini API Key', fetch: testFetch });
+    const client = new Jocall3({ fetch: testFetch });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
     expect(count).toEqual(2);
@@ -488,7 +428,7 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new Jocall3({ geminiAPIKey: 'My Gemini API Key', fetch: testFetch });
+    const client = new Jocall3({ fetch: testFetch });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
     expect(count).toEqual(2);

@@ -2,7 +2,7 @@
 
 import { APIResource } from '../../../resource';
 import * as AuditsAPI from './audits';
-import { AuditRequestParams, AuditRequestResponse, AuditRetrieveReportResponse, Audits } from './audits';
+import { Audits } from './audits';
 
 export class Compliance extends APIResource {
   audits: AuditsAPI.Audits = new AuditsAPI.Audits(this._client);
@@ -11,10 +11,5 @@ export class Compliance extends APIResource {
 Compliance.Audits = Audits;
 
 export declare namespace Compliance {
-  export {
-    Audits as Audits,
-    type AuditRequestResponse as AuditRequestResponse,
-    type AuditRetrieveReportResponse as AuditRetrieveReportResponse,
-    type AuditRequestParams as AuditRequestParams,
-  };
+  export { Audits as Audits };
 }

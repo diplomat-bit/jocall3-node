@@ -16,7 +16,7 @@ export class Budgets extends APIResource {
    * );
    * ```
    */
-  retrieve(budgetId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
+  retrieve(budgetId: string, options?: Core.RequestOptions): Core.APIPromise<BudgetRetrieveResponse> {
     return this._client.get(`/budgets/${budgetId}`, options);
   }
 
@@ -28,14 +28,24 @@ export class Budgets extends APIResource {
    * ```ts
    * const budget = await client.budgets.update(
    *   'budget_monthly_aug',
+   *   { alertThreshold: 85, totalAmount: 3200 },
    * );
    * ```
    */
   update(
     budgetId: string,
-    body?: BudgetUpdateParams | null | undefined,
+    body?: BudgetUpdateParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<unknown> {
+  ): Core.APIPromise<BudgetUpdateResponse>;
+  update(budgetId: string, options?: Core.RequestOptions): Core.APIPromise<BudgetUpdateResponse>;
+  update(
+    budgetId: string,
+    body: BudgetUpdateParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<BudgetUpdateResponse> {
+    if (isRequestOptions(body)) {
+      return this.update(budgetId, {}, body);
+    }
     return this._client.put(`/budgets/${budgetId}`, { body, ...options });
   }
 
@@ -48,12 +58,12 @@ export class Budgets extends APIResource {
    * const budgets = await client.budgets.list();
    * ```
    */
-  list(query?: BudgetListParams, options?: Core.RequestOptions): Core.APIPromise<unknown>;
-  list(options?: Core.RequestOptions): Core.APIPromise<unknown>;
+  list(query?: BudgetListParams, options?: Core.RequestOptions): Core.APIPromise<BudgetListResponse>;
+  list(options?: Core.RequestOptions): Core.APIPromise<BudgetListResponse>;
   list(
     query: BudgetListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<unknown> {
+  ): Core.APIPromise<BudgetListResponse> {
     if (isRequestOptions(query)) {
       return this.list({}, query);
     }
@@ -61,13 +71,151 @@ export class Budgets extends APIResource {
   }
 }
 
-export type BudgetRetrieveResponse = unknown;
+export interface BudgetRetrieveResponse {
+  id: string;
 
-export type BudgetUpdateResponse = unknown;
+  alertThreshold: number;
 
-export type BudgetListResponse = unknown;
+  categories: Array<BudgetRetrieveResponse.Category>;
 
-export interface BudgetUpdateParams {}
+  endDate: string;
+
+  name: string;
+
+  period: string;
+
+  remainingAmount: number;
+
+  spentAmount: number;
+
+  startDate: string;
+
+  status: string;
+
+  totalAmount: number;
+
+  aiRecommendations?: Array<BudgetRetrieveResponse.AIRecommendation>;
+}
+
+export namespace BudgetRetrieveResponse {
+  export interface Category {
+    allocated?: number;
+
+    name?: string;
+
+    remaining?: number;
+
+    spent?: number;
+  }
+
+  export interface AIRecommendation {
+    id?: string;
+
+    actionableRecommendation?: string;
+
+    category?: string;
+
+    description?: string;
+
+    severity?: string;
+
+    timestamp?: string;
+
+    title?: string;
+  }
+}
+
+export interface BudgetUpdateResponse {
+  id: string;
+
+  alertThreshold: number;
+
+  categories: Array<BudgetUpdateResponse.Category>;
+
+  endDate: string;
+
+  name: string;
+
+  period: string;
+
+  remainingAmount: number;
+
+  spentAmount: number;
+
+  startDate: string;
+
+  status: string;
+
+  totalAmount: number;
+}
+
+export namespace BudgetUpdateResponse {
+  export interface Category {
+    allocated?: number;
+
+    name?: string;
+
+    remaining?: number;
+
+    spent?: number;
+  }
+}
+
+export interface BudgetListResponse {
+  data: Array<BudgetListResponse.Data>;
+
+  limit: number;
+
+  offset: number;
+
+  total: number;
+
+  nextOffset?: number;
+}
+
+export namespace BudgetListResponse {
+  export interface Data {
+    id?: string;
+
+    alertThreshold?: number;
+
+    categories?: Array<Data.Category>;
+
+    endDate?: string;
+
+    name?: string;
+
+    period?: string;
+
+    remainingAmount?: number;
+
+    spentAmount?: number;
+
+    startDate?: string;
+
+    status?: string;
+
+    totalAmount?: number;
+  }
+
+  export namespace Data {
+    export interface Category {
+      allocated?: number;
+
+      name?: string;
+
+      remaining?: number;
+
+      spent?: number;
+    }
+  }
+}
+
+export interface BudgetUpdateParams {
+  alertThreshold?: number;
+
+  totalAmount?: number;
+}
 
 export interface BudgetListParams {
   /**

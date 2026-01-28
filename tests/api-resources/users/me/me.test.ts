@@ -3,10 +3,7 @@
 import Jocall3 from 'jocall3-node';
 import { Response } from 'node-fetch';
 
-const client = new Jocall3({
-  geminiAPIKey: 'My Gemini API Key',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-});
+const client = new Jocall3({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
 
 describe('resource me', () => {
   // Prism tests are disabled
@@ -55,8 +52,28 @@ describe('resource me', () => {
     await expect(
       client.users.me.update(
         {
-          address: {},
-          preferences: { notificationChannels: {} },
+          address: {
+            city: 'city',
+            country: 'country',
+            state: 'state',
+            street: 'street',
+            zip: 'zip',
+          },
+          name: 'Quantum Visionary Pro',
+          phone: '+1-555-999-0000',
+          preferences: {
+            aiInteractionMode: 'aiInteractionMode',
+            dataSharingConsent: true,
+            notificationChannels: {
+              email: true,
+              inApp: true,
+              push: true,
+              sms: true,
+            },
+            preferredLanguage: 'preferredLanguage',
+            theme: 'theme',
+            transactionGrouping: 'transactionGrouping',
+          },
         },
         { path: '/_stainless_unknown_path' },
       ),

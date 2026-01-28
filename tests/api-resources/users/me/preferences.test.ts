@@ -3,10 +3,7 @@
 import Jocall3 from 'jocall3-node';
 import { Response } from 'node-fetch';
 
-const client = new Jocall3({
-  geminiAPIKey: 'My Gemini API Key',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-});
+const client = new Jocall3({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
 
 describe('resource preferences', () => {
   // Prism tests are disabled
@@ -53,7 +50,22 @@ describe('resource preferences', () => {
   test.skip('update: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.users.me.preferences.update({ notificationChannels: {} }, { path: '/_stainless_unknown_path' }),
+      client.users.me.preferences.update(
+        {
+          aiInteractionMode: 'proactive',
+          dataSharingConsent: true,
+          notificationChannels: {
+            email: true,
+            inApp: true,
+            push: true,
+            sms: true,
+          },
+          preferredLanguage: 'preferredLanguage',
+          theme: 'Dark-Quantum',
+          transactionGrouping: 'transactionGrouping',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
     ).rejects.toThrow(Jocall3.NotFoundError);
   });
 });

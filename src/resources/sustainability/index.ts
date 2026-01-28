@@ -1,4 +1,4 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { Investments, type InvestmentAnalyzeImpactResponse } from './investments';
-export { Sustainability, type SustainabilityGetFootprintResponse } from './sustainability';
+export { Investments } from './investments';
+export { Sustainability } from './sustainability';

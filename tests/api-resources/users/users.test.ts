@@ -3,15 +3,15 @@
 import Jocall3 from 'jocall3-node';
 import { Response } from 'node-fetch';
 
-const client = new Jocall3({
-  geminiAPIKey: 'My Gemini API Key',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-});
+const client = new Jocall3({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
 
 describe('resource users', () => {
   // Prism tests are disabled
-  test.skip('login', async () => {
-    const responsePromise = client.users.login({});
+  test.skip('login: only required params', async () => {
+    const responsePromise = client.users.login({
+      email: 'quantum.visionary@demobank.com',
+      password: 'YourSecurePassword123',
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -22,8 +22,20 @@ describe('resource users', () => {
   });
 
   // Prism tests are disabled
-  test.skip('register', async () => {
-    const responsePromise = client.users.register({});
+  test.skip('login: required and optional params', async () => {
+    const response = await client.users.login({
+      email: 'quantum.visionary@demobank.com',
+      password: 'YourSecurePassword123',
+    });
+  });
+
+  // Prism tests are disabled
+  test.skip('register: only required params', async () => {
+    const responsePromise = client.users.register({
+      email: 'alice.w@example.com',
+      name: 'Alice Wonderland',
+      password: 'SecureP@ssw0rd2024!',
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -31,5 +43,22 @@ describe('resource users', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Prism tests are disabled
+  test.skip('register: required and optional params', async () => {
+    const response = await client.users.register({
+      email: 'alice.w@example.com',
+      name: 'Alice Wonderland',
+      password: 'SecureP@ssw0rd2024!',
+      address: {
+        city: 'city',
+        country: 'country',
+        state: 'state',
+        street: 'street',
+        zip: 'zip',
+      },
+      phone: '+1-555-987-6543',
+    });
   });
 });

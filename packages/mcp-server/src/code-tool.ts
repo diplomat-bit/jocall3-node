@@ -14,7 +14,14 @@ For example:
 
 \`\`\`
 async function run(client) {
-  const response = await client.ai.oracle.simulate.runAdvanced();
+  const response = await client.users.register({
+    email: 'executive@corp.com',
+    name: 'Alice Wonderland',
+    password: 'ComplexPassword99!',
+    phone: '+1-555-0199',
+  });
+
+  console.log(response.id);
 }
 \`\`\`
 
@@ -69,6 +76,7 @@ export function codeTool(): McpTool {
         ...(stainlessAPIKey && { Authorization: stainlessAPIKey }),
         'Content-Type': 'application/json',
         client_envs: JSON.stringify({
+          JOCALL3_API_KEY: readEnv('JOCALL3_API_KEY') ?? client.apiKey ?? undefined,
           GEMINI_API_KEY: readEnv('GEMINI_API_KEY') ?? client.geminiAPIKey ?? undefined,
           JOCALL3_BASE_URL: readEnv('JOCALL3_BASE_URL') ?? client.baseURL ?? undefined,
         }),

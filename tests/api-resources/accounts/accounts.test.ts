@@ -3,10 +3,7 @@
 import Jocall3 from 'jocall3-node';
 import { Response } from 'node-fetch';
 
-const client = new Jocall3({
-  geminiAPIKey: 'My Gemini API Key',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-});
+const client = new Jocall3({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
 
 describe('resource accounts', () => {
   // Prism tests are disabled
@@ -58,8 +55,8 @@ describe('resource accounts', () => {
   });
 
   // Prism tests are disabled
-  test.skip('link', async () => {
-    const responsePromise = client.accounts.link({});
+  test.skip('link: only required params', async () => {
+    const responsePromise = client.accounts.link({ countryCode: 'US', institutionName: 'Bank of America' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -67,5 +64,10 @@ describe('resource accounts', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Prism tests are disabled
+  test.skip('link: required and optional params', async () => {
+    const response = await client.accounts.link({ countryCode: 'US', institutionName: 'Bank of America' });
   });
 });

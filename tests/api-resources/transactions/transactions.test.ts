@@ -3,10 +3,7 @@
 import Jocall3 from 'jocall3-node';
 import { Response } from 'node-fetch';
 
-const client = new Jocall3({
-  geminiAPIKey: 'My Gemini API Key',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-});
+const client = new Jocall3({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
 
 describe('resource transactions', () => {
   // Prism tests are disabled
@@ -71,8 +68,10 @@ describe('resource transactions', () => {
   });
 
   // Prism tests are disabled
-  test.skip('addNotes', async () => {
-    const responsePromise = client.transactions.addNotes('txn_quantum-2024-07-21-A7B8C9', {});
+  test.skip('addNotes: only required params', async () => {
+    const responsePromise = client.transactions.addNotes('txn_quantum-2024-07-21-A7B8C9', {
+      notes: 'This was a special coffee for a client meeting.',
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -83,8 +82,17 @@ describe('resource transactions', () => {
   });
 
   // Prism tests are disabled
-  test.skip('categorize', async () => {
-    const responsePromise = client.transactions.categorize('txn_quantum-2024-07-21-A7B8C9', {});
+  test.skip('addNotes: required and optional params', async () => {
+    const response = await client.transactions.addNotes('txn_quantum-2024-07-21-A7B8C9', {
+      notes: 'This was a special coffee for a client meeting.',
+    });
+  });
+
+  // Prism tests are disabled
+  test.skip('categorize: only required params', async () => {
+    const responsePromise = client.transactions.categorize('txn_quantum-2024-07-21-A7B8C9', {
+      category: 'Home > Groceries',
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -92,5 +100,14 @@ describe('resource transactions', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Prism tests are disabled
+  test.skip('categorize: required and optional params', async () => {
+    const response = await client.transactions.categorize('txn_quantum-2024-07-21-A7B8C9', {
+      category: 'Home > Groceries',
+      applyToFuture: true,
+      notes: 'Bulk purchase for party',
+    });
   });
 });

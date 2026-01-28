@@ -35,10 +35,21 @@ export class Statements extends APIResource {
 }
 
 export interface StatementListResponse {
-  /**
-   * Map of available download URLs for different formats.
-   */
-  downloadUrls: unknown;
+  accountId: string;
+
+  downloadUrls: StatementListResponse.DownloadURLs;
+
+  period: string;
+
+  statementId: string;
+}
+
+export namespace StatementListResponse {
+  export interface DownloadURLs {
+    csv?: string;
+
+    pdf?: string;
+  }
 }
 
 export interface StatementListParams {

@@ -2,38 +2,13 @@
 
 import { APIResource } from '../../resource';
 import * as AnomaliesAPI from './anomalies';
-import {
-  Anomalies,
-  AnomalyListParams,
-  AnomalyListResponse,
-  AnomalyUpdateStatusParams,
-  AnomalyUpdateStatusResponse,
-} from './anomalies';
+import { Anomalies } from './anomalies';
 import * as SanctionScreeningAPI from './sanction-screening';
-import {
-  SanctionScreening,
-  SanctionScreeningScreenParams,
-  SanctionScreeningScreenResponse,
-} from './sanction-screening';
+import { SanctionScreening } from './sanction-screening';
 import * as TreasuryAPI from './treasury';
-import {
-  Treasury,
-  TreasuryForecastCashFlowParams,
-  TreasuryForecastCashFlowResponse,
-  TreasuryGetLiquidityPositionsResponse,
-} from './treasury';
+import { Treasury } from './treasury';
 import * as CardsAPI from './cards/cards';
-import {
-  CardFreezeParams,
-  CardFreezeResponse,
-  CardIssueVirtualParams,
-  CardIssueVirtualResponse,
-  CardListParams,
-  CardListResponse,
-  CardListTransactionsParams,
-  CardListTransactionsResponse,
-  Cards,
-} from './cards/cards';
+import { Cards } from './cards/cards';
 import * as ComplianceAPI from './compliance/compliance';
 import { Compliance } from './compliance/compliance';
 import * as RiskAPI from './risk/risk';
@@ -58,40 +33,15 @@ Corporate.Risk = Risk;
 Corporate.Anomalies = Anomalies;
 
 export declare namespace Corporate {
-  export {
-    SanctionScreening as SanctionScreening,
-    type SanctionScreeningScreenResponse as SanctionScreeningScreenResponse,
-    type SanctionScreeningScreenParams as SanctionScreeningScreenParams,
-  };
+  export { SanctionScreening as SanctionScreening };
 
   export { Compliance as Compliance };
 
-  export {
-    Treasury as Treasury,
-    type TreasuryForecastCashFlowResponse as TreasuryForecastCashFlowResponse,
-    type TreasuryGetLiquidityPositionsResponse as TreasuryGetLiquidityPositionsResponse,
-    type TreasuryForecastCashFlowParams as TreasuryForecastCashFlowParams,
-  };
+  export { Treasury as Treasury };
 
-  export {
-    Cards as Cards,
-    type CardListResponse as CardListResponse,
-    type CardFreezeResponse as CardFreezeResponse,
-    type CardIssueVirtualResponse as CardIssueVirtualResponse,
-    type CardListTransactionsResponse as CardListTransactionsResponse,
-    type CardListParams as CardListParams,
-    type CardFreezeParams as CardFreezeParams,
-    type CardIssueVirtualParams as CardIssueVirtualParams,
-    type CardListTransactionsParams as CardListTransactionsParams,
-  };
+  export { Cards as Cards };
 
   export { Risk as Risk };
 
-  export {
-    Anomalies as Anomalies,
-    type AnomalyListResponse as AnomalyListResponse,
-    type AnomalyUpdateStatusResponse as AnomalyUpdateStatusResponse,
-    type AnomalyListParams as AnomalyListParams,
-    type AnomalyUpdateStatusParams as AnomalyUpdateStatusParams,
-  };
+  export { Anomalies as Anomalies };
 }

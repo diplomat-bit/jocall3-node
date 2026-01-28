@@ -27,8 +27,9 @@ export class Preferences extends APIResource {
    *
    * @example
    * ```ts
-   * const preference =
-   *   await client.users.me.preferences.update();
+   * const preference = await client.users.me.preferences.update(
+   *   { aiInteractionMode: 'proactive', theme: 'Dark-Quantum' },
+   * );
    * ```
    */
   update(
@@ -51,27 +52,102 @@ export class Preferences extends APIResource {
  * User's personalized preferences for the platform.
  */
 export interface PreferenceRetrieveResponse {
+  aiInteractionMode?: string;
+
+  dataSharingConsent?: boolean;
+
   /**
    * Preferred channels for receiving notifications.
    */
-  notificationChannels?: unknown;
+  notificationChannels?: PreferenceRetrieveResponse.NotificationChannels;
+
+  preferredLanguage?: string;
+
+  theme?: string;
+
+  transactionGrouping?: string;
+}
+
+export namespace PreferenceRetrieveResponse {
+  /**
+   * Preferred channels for receiving notifications.
+   */
+  export interface NotificationChannels {
+    email?: boolean;
+
+    inApp?: boolean;
+
+    push?: boolean;
+
+    sms?: boolean;
+  }
 }
 
 /**
  * User's personalized preferences for the platform.
  */
 export interface PreferenceUpdateResponse {
+  aiInteractionMode?: string;
+
+  dataSharingConsent?: boolean;
+
   /**
    * Preferred channels for receiving notifications.
    */
-  notificationChannels?: unknown;
+  notificationChannels?: PreferenceUpdateResponse.NotificationChannels;
+
+  preferredLanguage?: string;
+
+  theme?: string;
+
+  transactionGrouping?: string;
+}
+
+export namespace PreferenceUpdateResponse {
+  /**
+   * Preferred channels for receiving notifications.
+   */
+  export interface NotificationChannels {
+    email?: boolean;
+
+    inApp?: boolean;
+
+    push?: boolean;
+
+    sms?: boolean;
+  }
 }
 
 export interface PreferenceUpdateParams {
+  aiInteractionMode?: string;
+
+  dataSharingConsent?: boolean;
+
   /**
    * Preferred channels for receiving notifications.
    */
-  notificationChannels?: unknown;
+  notificationChannels?: PreferenceUpdateParams.NotificationChannels;
+
+  preferredLanguage?: string;
+
+  theme?: string;
+
+  transactionGrouping?: string;
+}
+
+export namespace PreferenceUpdateParams {
+  /**
+   * Preferred channels for receiving notifications.
+   */
+  export interface NotificationChannels {
+    email?: boolean;
+
+    inApp?: boolean;
+
+    push?: boolean;
+
+    sms?: boolean;
+  }
 }
 
 export declare namespace Preferences {

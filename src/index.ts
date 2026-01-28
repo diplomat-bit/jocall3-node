@@ -40,8 +40,8 @@ import {
 import { Web3 } from './resources/web3/web3';
 
 const environments = {
-  production: 'https://api.quantum-core.finance/v1',
-  sandbox: 'https://sandbox.quantum-core.finance/v1',
+  production: 'https://75975599-8fdc-4274-8701-05fc0b8089cc.mock.pstmn.io',
+  sandbox: 'https://75975599-8fdc-4274-8701-05fc0b8089cc.mock.pstmn.io',
   gemini_direct: 'https://generativelanguage.googleapis.com/v1beta',
 };
 type Environment = keyof typeof environments;
@@ -61,8 +61,8 @@ export interface ClientOptions {
    * Specifies the environment to use for the API.
    *
    * Each environment maps to a different base URL:
-   * - `production` corresponds to `https://api.quantum-core.finance/v1`
-   * - `sandbox` corresponds to `https://sandbox.quantum-core.finance/v1`
+   * - `production` corresponds to `https://75975599-8fdc-4274-8701-05fc0b8089cc.mock.pstmn.io`
+   * - `sandbox` corresponds to `https://75975599-8fdc-4274-8701-05fc0b8089cc.mock.pstmn.io`
    * - `gemini_direct` corresponds to `https://generativelanguage.googleapis.com/v1beta`
    */
   environment?: Environment | undefined;
@@ -141,7 +141,7 @@ export class Jocall3 extends Core.APIClient {
    * @param {string | undefined} [opts.apiKey=process.env['JOCALL3_API_KEY'] ?? undefined]
    * @param {string | undefined} [opts.geminiAPIKey=process.env['GEMINI_API_KEY'] ?? undefined]
    * @param {Environment} [opts.environment=production] - Specifies the environment URL to use for the API.
-   * @param {string} [opts.baseURL=process.env['JOCALL3_BASE_URL'] ?? https://api.quantum-core.finance/v1] - Override the default base URL for the API.
+   * @param {string} [opts.baseURL=process.env['JOCALL3_BASE_URL'] ?? https://75975599-8fdc-4274-8701-05fc0b8089cc.mock.pstmn.io] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {number} [opts.httpAgent] - An HTTP agent used to manage HTTP(s) connections.
    * @param {Core.Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.

@@ -197,13 +197,13 @@ describe('instantiate client', () => {
     test('empty env variable', () => {
       process.env['JOCALL3_BASE_URL'] = ''; // empty
       const client = new Jocall3({ apiKey: 'My API Key', geminiAPIKey: 'My Gemini API Key' });
-      expect(client.baseURL).toEqual('https://api.quantum-core.finance/v1');
+      expect(client.baseURL).toEqual('https://75975599-8fdc-4274-8701-05fc0b8089cc.mock.pstmn.io');
     });
 
     test('blank env variable', () => {
       process.env['JOCALL3_BASE_URL'] = '  '; // blank
       const client = new Jocall3({ apiKey: 'My API Key', geminiAPIKey: 'My Gemini API Key' });
-      expect(client.baseURL).toEqual('https://api.quantum-core.finance/v1');
+      expect(client.baseURL).toEqual('https://75975599-8fdc-4274-8701-05fc0b8089cc.mock.pstmn.io');
     });
 
     test('env variable with environment', () => {
@@ -226,7 +226,7 @@ describe('instantiate client', () => {
         baseURL: null,
         environment: 'production',
       });
-      expect(client.baseURL).toEqual('https://api.quantum-core.finance/v1');
+      expect(client.baseURL).toEqual('https://75975599-8fdc-4274-8701-05fc0b8089cc.mock.pstmn.io');
     });
 
     test('in request options', () => {

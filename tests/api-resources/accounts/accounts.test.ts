@@ -59,8 +59,8 @@ describe('resource accounts', () => {
   });
 
   // Prism tests are disabled
-  test.skip('link: only required params', async () => {
-    const responsePromise = client.accounts.link({ countryCode: 'US', institutionName: 'Bank of America' });
+  test.skip('link', async () => {
+    const responsePromise = client.accounts.link({});
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -68,10 +68,5 @@ describe('resource accounts', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Prism tests are disabled
-  test.skip('link: required and optional params', async () => {
-    const response = await client.accounts.link({ countryCode: 'US', institutionName: 'Bank of America' });
   });
 });

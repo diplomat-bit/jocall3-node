@@ -31,9 +31,32 @@ export class Advisor extends APIResource {
     }
     return this._client.post('/ai/advisor/chat', { body, ...options });
   }
+
+  /**
+   * Fetches the full conversation history with the Quantum AI Advisor for a given
+   * session or user.
+   *
+   * @example
+   * ```ts
+   * const response = await client.ai.advisor.history();
+   * ```
+   */
+  history(query?: AdvisorHistoryParams, options?: Core.RequestOptions): Core.APIPromise<unknown>;
+  history(options?: Core.RequestOptions): Core.APIPromise<unknown>;
+  history(
+    query: AdvisorHistoryParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<unknown> {
+    if (isRequestOptions(query)) {
+      return this.history({}, query);
+    }
+    return this._client.get('/ai/advisor/chat/history', { query, ...options });
+  }
 }
 
 export type AdvisorChatResponse = unknown;
+
+export type AdvisorHistoryResponse = unknown;
 
 export interface AdvisorChatParams {
   /**
@@ -43,10 +66,33 @@ export interface AdvisorChatParams {
   functionResponse?: unknown;
 }
 
+export interface AdvisorHistoryParams {
+  /**
+   * Maximum number of items to return in a single page.
+   */
+  limit?: number;
+
+  /**
+   * Number of items to skip before starting to collect the result set.
+   */
+  offset?: number;
+
+  /**
+   * Optional: Filter history by a specific session ID. If omitted, recent
+   * conversations will be returned.
+   */
+  sessionId?: string;
+}
+
 Advisor.Tools = Tools;
 
 export declare namespace Advisor {
-  export { type AdvisorChatResponse as AdvisorChatResponse, type AdvisorChatParams as AdvisorChatParams };
+  export {
+    type AdvisorChatResponse as AdvisorChatResponse,
+    type AdvisorHistoryResponse as AdvisorHistoryResponse,
+    type AdvisorChatParams as AdvisorChatParams,
+    type AdvisorHistoryParams as AdvisorHistoryParams,
+  };
 
   export { Tools as Tools, type ToolListResponse as ToolListResponse, type ToolListParams as ToolListParams };
 }

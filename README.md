@@ -23,7 +23,7 @@ The full API of this library can be found in [api.md](api.md).
 import Jocall3 from 'jocall3-node';
 
 const client = new Jocall3({
-  apiKey: process.env['JOCALL3_API_KEY'], // This is the default and can be omitted
+  geminiAPIKey: process.env['GEMINI_API_KEY'], // This is the default and can be omitted
   environment: 'sandbox', // or 'production' | 'gemini_direct'; defaults to 'production'
 });
 
@@ -39,7 +39,7 @@ This library includes TypeScript definitions for all request params and response
 import Jocall3 from 'jocall3-node';
 
 const client = new Jocall3({
-  apiKey: process.env['JOCALL3_API_KEY'], // This is the default and can be omitted
+  geminiAPIKey: process.env['GEMINI_API_KEY'], // This is the default and can be omitted
   environment: 'sandbox', // or 'production' | 'gemini_direct'; defaults to 'production'
 });
 

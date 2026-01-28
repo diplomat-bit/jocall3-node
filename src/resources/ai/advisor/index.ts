@@ -1,4 +1,10 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { Advisor, type AdvisorChatResponse, type AdvisorChatParams } from './advisor';
+export {
+  Advisor,
+  type AdvisorChatResponse,
+  type AdvisorHistoryResponse,
+  type AdvisorChatParams,
+  type AdvisorHistoryParams,
+} from './advisor';
 export { Tools, type ToolListResponse, type ToolListParams } from './tools';

@@ -9,21 +9,26 @@ export {
   type AccountListParams,
   type AccountLinkParams,
 } from './accounts/accounts';
-export { Corporate } from './corporate/corporate';
-export { Lending } from './lending/lending';
 export {
-  Marketplace,
-  type MarketplaceListProductsResponse,
-  type MarketplaceListProductsParams,
-} from './marketplace/marketplace';
+  Budgets,
+  type BudgetRetrieveResponse,
+  type BudgetUpdateResponse,
+  type BudgetListResponse,
+  type BudgetUpdateParams,
+  type BudgetListParams,
+} from './budgets';
+export { Corporate } from './corporate/corporate';
+export { Investments } from './investments/investments';
 export { Payments } from './payments/payments';
 export { Sustainability, type SustainabilityGetFootprintResponse } from './sustainability/sustainability';
 export {
   Transactions,
   type TransactionRetrieveResponse,
   type TransactionListResponse,
+  type TransactionAddNotesResponse,
   type TransactionCategorizeResponse,
   type TransactionListParams,
+  type TransactionAddNotesParams,
   type TransactionCategorizeParams,
 } from './transactions/transactions';
 export {

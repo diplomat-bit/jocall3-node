@@ -2,7 +2,7 @@
 
 import { McpTool, Metadata, ToolCallResult, asErrorResult, asTextContentResult } from './types';
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
-import { readEnv, requireValue } from './server';
+import { readEnv } from './server';
 import { WorkerInput, WorkerOutput } from './code-tool-types';
 import { Jocall3 } from 'jocall3-node';
 
@@ -69,14 +69,7 @@ export function codeTool(): McpTool {
         ...(stainlessAPIKey && { Authorization: stainlessAPIKey }),
         'Content-Type': 'application/json',
         client_envs: JSON.stringify({
-          JOCALL3_API_KEY: requireValue(
-            readEnv('JOCALL3_API_KEY') ?? client.apiKey,
-            'set JOCALL3_API_KEY environment variable or provide apiKey client option',
-          ),
-          GEMINI_API_KEY: requireValue(
-            readEnv('GEMINI_API_KEY') ?? client.geminiAPIKey,
-            'set GEMINI_API_KEY environment variable or provide geminiAPIKey client option',
-          ),
+          GEMINI_API_KEY: readEnv('GEMINI_API_KEY') ?? client.geminiAPIKey ?? undefined,
           JOCALL3_BASE_URL: readEnv('JOCALL3_BASE_URL') ?? client.baseURL ?? undefined,
         }),
       },

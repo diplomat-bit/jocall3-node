@@ -6,7 +6,9 @@ export {
   Transactions,
   type TransactionRetrieveResponse,
   type TransactionListResponse,
+  type TransactionAddNotesResponse,
   type TransactionCategorizeResponse,
   type TransactionListParams,
+  type TransactionAddNotesParams,
   type TransactionCategorizeParams,
 } from './transactions';

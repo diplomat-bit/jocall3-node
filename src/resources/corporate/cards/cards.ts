@@ -79,6 +79,35 @@ export class Cards extends APIResource {
   ): Core.APIPromise<CardIssueVirtualResponse> {
     return this._client.post('/corporate/cards/virtual', { body, ...options });
   }
+
+  /**
+   * Retrieves a paginated list of transactions made with a specific corporate card,
+   * including AI categorization and compliance flags.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.corporate.cards.listTransactions(
+   *     'corp_card_xyz987654',
+   *   );
+   * ```
+   */
+  listTransactions(
+    cardId: string,
+    query?: CardListTransactionsParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<unknown>;
+  listTransactions(cardId: string, options?: Core.RequestOptions): Core.APIPromise<unknown>;
+  listTransactions(
+    cardId: string,
+    query: CardListTransactionsParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<unknown> {
+    if (isRequestOptions(query)) {
+      return this.listTransactions(cardId, {}, query);
+    }
+    return this._client.get(`/corporate/cards/${cardId}/transactions`, { query, ...options });
+  }
 }
 
 export type CardListResponse = unknown;
@@ -96,6 +125,8 @@ export interface CardIssueVirtualResponse {
    */
   controls: unknown;
 }
+
+export type CardListTransactionsResponse = unknown;
 
 export interface CardListParams {
   /**
@@ -118,6 +149,28 @@ export interface CardIssueVirtualParams {
   controls: unknown;
 }
 
+export interface CardListTransactionsParams {
+  /**
+   * End date for filtering results (inclusive, YYYY-MM-DD).
+   */
+  endDate?: string;
+
+  /**
+   * Maximum number of items to return in a single page.
+   */
+  limit?: number;
+
+  /**
+   * Number of items to skip before starting to collect the result set.
+   */
+  offset?: number;
+
+  /**
+   * Start date for filtering results (inclusive, YYYY-MM-DD).
+   */
+  startDate?: string;
+}
+
 Cards.Controls = Controls;
 
 export declare namespace Cards {
@@ -125,9 +178,11 @@ export declare namespace Cards {
     type CardListResponse as CardListResponse,
     type CardFreezeResponse as CardFreezeResponse,
     type CardIssueVirtualResponse as CardIssueVirtualResponse,
+    type CardListTransactionsResponse as CardListTransactionsResponse,
     type CardListParams as CardListParams,
     type CardFreezeParams as CardFreezeParams,
     type CardIssueVirtualParams as CardIssueVirtualParams,
+    type CardListTransactionsParams as CardListTransactionsParams,
   };
 
   export {

@@ -2,14 +2,11 @@
 
 import { APIResource } from '../../resource';
 import * as Core from '../../core';
-import * as ImpactAPI from './impact';
-import { Impact } from './impact';
-import * as OffsetsAPI from './offsets';
-import { Offsets } from './offsets';
+import * as InvestmentsAPI from './investments';
+import { InvestmentAnalyzeImpactResponse, Investments } from './investments';
 
 export class Sustainability extends APIResource {
-  offsets: OffsetsAPI.Offsets = new OffsetsAPI.Offsets(this._client);
-  impact: ImpactAPI.Impact = new ImpactAPI.Impact(this._client);
+  investments: InvestmentsAPI.Investments = new InvestmentsAPI.Investments(this._client);
 
   /**
    * Generates a detailed report of the user's estimated carbon footprint based on
@@ -23,13 +20,13 @@ export class Sustainability extends APIResource {
 
 export type SustainabilityGetFootprintResponse = unknown;
 
-Sustainability.Offsets = Offsets;
-Sustainability.Impact = Impact;
+Sustainability.Investments = Investments;
 
 export declare namespace Sustainability {
   export { type SustainabilityGetFootprintResponse as SustainabilityGetFootprintResponse };
 
-  export { Offsets as Offsets };
-
-  export { Impact as Impact };
+  export {
+    Investments as Investments,
+    type InvestmentAnalyzeImpactResponse as InvestmentAnalyzeImpactResponse,
+  };
 }

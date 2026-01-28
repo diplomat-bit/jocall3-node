@@ -54,6 +54,24 @@ export class Transactions extends APIResource {
   }
 
   /**
+   * Allows the user to add or update personal notes for a specific transaction.
+   *
+   * @example
+   * ```ts
+   * const response = await client.transactions.addNotes(
+   *   'txn_quantum-2024-07-21-A7B8C9',
+   * );
+   * ```
+   */
+  addNotes(
+    transactionId: string,
+    body: TransactionAddNotesParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<TransactionAddNotesResponse> {
+    return this._client.put(`/transactions/${transactionId}/notes`, { body, ...options });
+  }
+
+  /**
    * Allows the user to override or refine the AI's categorization for a transaction,
    * improving future AI accuracy and personal financial reporting.
    *
@@ -95,6 +113,27 @@ export namespace TransactionRetrieveResponse {
 }
 
 export type TransactionListResponse = unknown;
+
+export interface TransactionAddNotesResponse {
+  /**
+   * Geographic location details for a transaction.
+   */
+  location?: unknown;
+
+  /**
+   * Detailed information about a merchant associated with a transaction.
+   */
+  merchantDetails?: TransactionAddNotesResponse.MerchantDetails;
+}
+
+export namespace TransactionAddNotesResponse {
+  /**
+   * Detailed information about a merchant associated with a transaction.
+   */
+  export interface MerchantDetails {
+    address?: unknown;
+  }
+}
 
 export interface TransactionCategorizeResponse {
   /**
@@ -164,6 +203,8 @@ export interface TransactionListParams {
   type?: string;
 }
 
+export interface TransactionAddNotesParams {}
+
 export interface TransactionCategorizeParams {}
 
 Transactions.Recurring = Recurring;
@@ -173,8 +214,10 @@ export declare namespace Transactions {
   export {
     type TransactionRetrieveResponse as TransactionRetrieveResponse,
     type TransactionListResponse as TransactionListResponse,
+    type TransactionAddNotesResponse as TransactionAddNotesResponse,
     type TransactionCategorizeResponse as TransactionCategorizeResponse,
     type TransactionListParams as TransactionListParams,
+    type TransactionAddNotesParams as TransactionAddNotesParams,
     type TransactionCategorizeParams as TransactionCategorizeParams,
   };
 

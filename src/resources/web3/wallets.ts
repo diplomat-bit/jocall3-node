@@ -6,20 +6,6 @@ import * as Core from '../../core';
 
 export class Wallets extends APIResource {
   /**
-   * Initiates the process to securely connect a new cryptocurrency wallet to the
-   * user's profile, typically involving a signed message or OAuth flow from the
-   * wallet provider.
-   *
-   * @example
-   * ```ts
-   * const wallet = await client.web3.wallets.create();
-   * ```
-   */
-  create(body: WalletCreateParams, options?: Core.RequestOptions): Core.APIPromise<unknown> {
-    return this._client.post('/web3/wallets', { body, ...options });
-  }
-
-  /**
    * Retrieves a list of all securely linked cryptocurrency wallets (e.g., MetaMask,
    * Ledger integration), showing their addresses, associated networks, and
    * verification status.
@@ -39,6 +25,20 @@ export class Wallets extends APIResource {
       return this.list({}, query);
     }
     return this._client.get('/web3/wallets', { query, ...options });
+  }
+
+  /**
+   * Initiates the process to securely connect a new cryptocurrency wallet to the
+   * user's profile, typically involving a signed message or OAuth flow from the
+   * wallet provider.
+   *
+   * @example
+   * ```ts
+   * const response = await client.web3.wallets.connect();
+   * ```
+   */
+  connect(body: WalletConnectParams, options?: Core.RequestOptions): Core.APIPromise<unknown> {
+    return this._client.post('/web3/wallets', { body, ...options });
   }
 
   /**
@@ -70,13 +70,11 @@ export class Wallets extends APIResource {
   }
 }
 
-export type WalletCreateResponse = unknown;
-
 export type WalletListResponse = unknown;
 
-export type WalletGetBalanceResponse = unknown;
+export type WalletConnectResponse = unknown;
 
-export interface WalletCreateParams {}
+export type WalletGetBalanceResponse = unknown;
 
 export interface WalletListParams {
   /**
@@ -89,6 +87,8 @@ export interface WalletListParams {
    */
   offset?: number;
 }
+
+export interface WalletConnectParams {}
 
 export interface WalletGetBalanceParams {
   /**
@@ -104,11 +104,11 @@ export interface WalletGetBalanceParams {
 
 export declare namespace Wallets {
   export {
-    type WalletCreateResponse as WalletCreateResponse,
     type WalletListResponse as WalletListResponse,
+    type WalletConnectResponse as WalletConnectResponse,
     type WalletGetBalanceResponse as WalletGetBalanceResponse,
-    type WalletCreateParams as WalletCreateParams,
     type WalletListParams as WalletListParams,
+    type WalletConnectParams as WalletConnectParams,
     type WalletGetBalanceParams as WalletGetBalanceParams,
   };
 }

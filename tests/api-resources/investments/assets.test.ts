@@ -4,15 +4,14 @@ import Jocall3 from 'jocall3-node';
 import { Response } from 'node-fetch';
 
 const client = new Jocall3({
-  apiKey: 'My API Key',
   geminiAPIKey: 'My Gemini API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource fraud', () => {
+describe('resource assets', () => {
   // Prism tests are disabled
-  test.skip('listRules', async () => {
-    const responsePromise = client.corporate.risk.fraud.listRules();
+  test.skip('search', async () => {
+    const responsePromise = client.investments.assets.search();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -23,18 +22,26 @@ describe('resource fraud', () => {
   });
 
   // Prism tests are disabled
-  test.skip('listRules: request options instead of params are passed correctly', async () => {
+  test.skip('search: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.corporate.risk.fraud.listRules({ path: '/_stainless_unknown_path' })).rejects.toThrow(
+    await expect(client.investments.assets.search({ path: '/_stainless_unknown_path' })).rejects.toThrow(
       Jocall3.NotFoundError,
     );
   });
 
   // Prism tests are disabled
-  test.skip('listRules: request options and params are passed correctly', async () => {
+  test.skip('search: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.corporate.risk.fraud.listRules({ limit: 0, offset: 0 }, { path: '/_stainless_unknown_path' }),
+      client.investments.assets.search(
+        {
+          limit: 0,
+          minESGScore: 0,
+          offset: 0,
+          query: 'query',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
     ).rejects.toThrow(Jocall3.NotFoundError);
   });
 });

@@ -9,7 +9,6 @@ It is generated with [Stainless](https://www.stainless.com/).
 You can run the MCP Server directly via `npx`:
 
 ```sh
-export JOCALL3_API_KEY="My API Key"
 export GEMINI_API_KEY="My Gemini API Key"
 export JOCALL3_ENVIRONMENT="production"
 npx -y jocall3-node-mcp@latest
@@ -29,7 +28,6 @@ For clients with a configuration JSON, it might look something like this:
       "command": "npx",
       "args": ["-y", "jocall3-node-mcp"],
       "env": {
-        "JOCALL3_API_KEY": "My API Key",
         "GEMINI_API_KEY": "My Gemini API Key",
         "JOCALL3_ENVIRONMENT": "production"
       }
@@ -82,12 +80,9 @@ and repeatably.
 
 Launching the client with `--transport=http` launches the server as a remote server using Streamable HTTP transport. The `--port` setting can choose the port it will run on, and the `--socket` setting allows it to run on a Unix socket.
 
-Authorization can be provided via the `Authorization` header using the Bearer scheme.
-
-Additionally, authorization can be provided via the following headers:
+Authorization can be provided via the following headers:
 | Header | Equivalent client option | Security scheme |
-| ------------------- | ------------------------ | --------------- |
-| `x-jocall3-api-key` | `apiKey` | bearerAuth |
+| ---------------- | ------------------------ | --------------- |
 | `x-goog-api-key` | `geminiAPIKey` | geminiHeader |
 
 A configuration JSON for this server might look like this, assuming the server is hosted at `http://localhost:3000`:
@@ -98,7 +93,7 @@ A configuration JSON for this server might look like this, assuming the server i
     "jocall3_node_api": {
       "url": "http://localhost:3000",
       "headers": {
-        "Authorization": "Bearer <auth value>"
+        "x-goog-api-key": "My Gemini API Key"
       }
     }
   }

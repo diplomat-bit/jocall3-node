@@ -4,15 +4,14 @@ import Jocall3 from 'jocall3-node';
 import { Response } from 'node-fetch';
 
 const client = new Jocall3({
-  apiKey: 'My API Key',
   geminiAPIKey: 'My Gemini API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource offers', () => {
+describe('resource international', () => {
   // Prism tests are disabled
-  test.skip('redeem', async () => {
-    const responsePromise = client.marketplace.offers.redeem('offer_home_ins_promo_1');
+  test.skip('getStatus', async () => {
+    const responsePromise = client.payments.international.getStatus('int_pmt_xyz7890');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -23,10 +22,10 @@ describe('resource offers', () => {
   });
 
   // Prism tests are disabled
-  test.skip('redeem: request options and params are passed correctly', async () => {
+  test.skip('getStatus: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.marketplace.offers.redeem('offer_home_ins_promo_1', {}, { path: '/_stainless_unknown_path' }),
+      client.payments.international.getStatus('int_pmt_xyz7890', { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Jocall3.NotFoundError);
   });
 });

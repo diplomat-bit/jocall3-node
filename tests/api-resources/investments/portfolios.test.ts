@@ -3,10 +3,7 @@
 import Jocall3 from 'jocall3-node';
 import { Response } from 'node-fetch';
 
-const client = new Jocall3({
-  geminiAPIKey: 'My Gemini API Key',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-});
+const client = new Jocall3({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
 
 describe('resource portfolios', () => {
   // Prism tests are disabled

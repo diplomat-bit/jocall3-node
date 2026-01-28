@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../resource';
+import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 
 export class Overdraft extends APIResource {
@@ -12,14 +13,24 @@ export class Overdraft extends APIResource {
    * ```ts
    * const overdraft = await client.accounts.overdraft.update(
    *   'acc_chase_checking_4567',
+   *   { feePreference: 'decline_if_over_limit' },
    * );
    * ```
    */
   update(
     accountId: string,
-    body?: OverdraftUpdateParams | null | undefined,
+    body?: OverdraftUpdateParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<unknown> {
+  ): Core.APIPromise<OverdraftUpdateResponse>;
+  update(accountId: string, options?: Core.RequestOptions): Core.APIPromise<OverdraftUpdateResponse>;
+  update(
+    accountId: string,
+    body: OverdraftUpdateParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<OverdraftUpdateResponse> {
+    if (isRequestOptions(body)) {
+      return this.update(accountId, {}, body);
+    }
     return this._client.put(`/accounts/${accountId}/overdraft-settings`, { body, ...options });
   }
 
@@ -33,16 +44,46 @@ export class Overdraft extends APIResource {
    * );
    * ```
    */
-  get(accountId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
+  get(accountId: string, options?: Core.RequestOptions): Core.APIPromise<OverdraftGetResponse> {
     return this._client.get(`/accounts/${accountId}/overdraft-settings`, options);
   }
 }
 
-export type OverdraftUpdateResponse = unknown;
+export interface OverdraftUpdateResponse {
+  accountId: string;
 
-export type OverdraftGetResponse = unknown;
+  enabled: boolean;
 
-export interface OverdraftUpdateParams {}
+  feePreference: string;
+
+  linkedSavingsAccountId?: string;
+
+  linkToSavings?: boolean;
+
+  protectionLimit?: number;
+}
+
+export interface OverdraftGetResponse {
+  accountId: string;
+
+  enabled: boolean;
+
+  feePreference: string;
+
+  linkedSavingsAccountId?: string;
+
+  linkToSavings?: boolean;
+
+  protectionLimit?: number;
+}
+
+export interface OverdraftUpdateParams {
+  enabled?: boolean;
+
+  feePreference?: string;
+
+  linkToSavings?: boolean;
+}
 
 export declare namespace Overdraft {
   export {

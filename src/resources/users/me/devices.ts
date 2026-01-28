@@ -15,12 +15,12 @@ export class Devices extends APIResource {
    * const devices = await client.users.me.devices.list();
    * ```
    */
-  list(query?: DeviceListParams, options?: Core.RequestOptions): Core.APIPromise<DeviceListResponse>;
-  list(options?: Core.RequestOptions): Core.APIPromise<DeviceListResponse>;
+  list(query?: DeviceListParams, options?: Core.RequestOptions): Core.APIPromise<unknown>;
+  list(options?: Core.RequestOptions): Core.APIPromise<unknown>;
   list(
     query: DeviceListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<DeviceListResponse> {
+  ): Core.APIPromise<unknown> {
     if (isRequestOptions(query)) {
       return this.list({}, query);
     }
@@ -28,37 +28,7 @@ export class Devices extends APIResource {
   }
 }
 
-export interface DeviceListResponse {
-  data: Array<DeviceListResponse.Data>;
-
-  limit: number;
-
-  offset: number;
-
-  total: number;
-
-  nextOffset?: number;
-}
-
-export namespace DeviceListResponse {
-  export interface Data {
-    id?: string;
-
-    ipAddress?: string;
-
-    lastActive?: string;
-
-    model?: string;
-
-    os?: string;
-
-    pushToken?: string;
-
-    trustLevel?: string;
-
-    type?: string;
-  }
-}
+export type DeviceListResponse = unknown;
 
 export interface DeviceListParams {
   /**

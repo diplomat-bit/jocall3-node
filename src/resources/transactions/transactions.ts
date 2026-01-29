@@ -4,25 +4,16 @@ import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 import * as InsightsAPI from './insights';
-import { InsightGetTrendsResponse, Insights } from './insights';
+import { InsightGetForecastResponse, InsightGetTrendsResponse, Insights } from './insights';
 import * as RecurringAPI from './recurring';
-import { Recurring, RecurringListParams, RecurringListResponse } from './recurring';
+import { Recurring, RecurringCreateParams, RecurringListResponse } from './recurring';
 
 export class Transactions extends APIResource {
   recurring: RecurringAPI.Recurring = new RecurringAPI.Recurring(this._client);
   insights: InsightsAPI.Insights = new InsightsAPI.Insights(this._client);
 
   /**
-   * Retrieves granular information for a single transaction by its unique ID,
-   * including AI categorization confidence, merchant details, and associated carbon
-   * footprint.
-   *
-   * @example
-   * ```ts
-   * const transaction = await client.transactions.retrieve(
-   *   'txn_quantum-2024-07-21-A7B8C9',
-   * );
-   * ```
+   * Get Transaction Deep Metadata
    */
   retrieve(
     transactionId: string,
@@ -32,21 +23,17 @@ export class Transactions extends APIResource {
   }
 
   /**
-   * Retrieves a paginated list of the user's transactions, with extensive options
-   * for filtering by type, category, date range, amount, and intelligent AI-driven
-   * sorting and search capabilities.
-   *
-   * @example
-   * ```ts
-   * const transactions = await client.transactions.list();
-   * ```
+   * Global Transaction Search & Filter
    */
-  list(query?: TransactionListParams, options?: Core.RequestOptions): Core.APIPromise<unknown>;
-  list(options?: Core.RequestOptions): Core.APIPromise<unknown>;
+  list(
+    query?: TransactionListParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<TransactionListResponse>;
+  list(options?: Core.RequestOptions): Core.APIPromise<TransactionListResponse>;
   list(
     query: TransactionListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<unknown> {
+  ): Core.APIPromise<TransactionListResponse> {
     if (isRequestOptions(query)) {
       return this.list({}, query);
     }
@@ -54,33 +41,22 @@ export class Transactions extends APIResource {
   }
 
   /**
-   * Allows the user to add or update personal notes for a specific transaction.
-   *
-   * @example
-   * ```ts
-   * const response = await client.transactions.addNotes(
-   *   'txn_quantum-2024-07-21-A7B8C9',
-   * );
-   * ```
+   * Attach Manual Notes to Transaction
    */
   addNotes(
     transactionId: string,
     body: TransactionAddNotesParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<TransactionAddNotesResponse> {
-    return this._client.put(`/transactions/${transactionId}/notes`, { body, ...options });
+  ): Core.APIPromise<void> {
+    return this._client.put(`/transactions/${transactionId}/notes`, {
+      body,
+      ...options,
+      headers: { Accept: '*/*', ...options?.headers },
+    });
   }
 
   /**
-   * Allows the user to override or refine the AI's categorization for a transaction,
-   * improving future AI accuracy and personal financial reporting.
-   *
-   * @example
-   * ```ts
-   * const response = await client.transactions.categorize(
-   *   'txn_quantum-2024-07-21-A7B8C9',
-   * );
-   * ```
+   * Override AI Categorization
    */
   categorize(
     transactionId: string,
@@ -89,123 +65,174 @@ export class Transactions extends APIResource {
   ): Core.APIPromise<TransactionCategorizeResponse> {
     return this._client.put(`/transactions/${transactionId}/categorize`, { body, ...options });
   }
+
+  /**
+   * Initiate Transaction Dispute
+   */
+  dispute(
+    transactionId: string,
+    body: TransactionDisputeParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<void> {
+    return this._client.post(`/transactions/${transactionId}/dispute`, {
+      body,
+      ...options,
+      headers: { Accept: '*/*', ...options?.headers },
+    });
+  }
+
+  /**
+   * Split Transaction Across Multiple Categories
+   */
+  split(
+    transactionId: string,
+    body: TransactionSplitParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<void> {
+    return this._client.post(`/transactions/${transactionId}/split`, {
+      body,
+      ...options,
+      headers: { Accept: '*/*', ...options?.headers },
+    });
+  }
 }
 
 export interface TransactionRetrieveResponse {
-  /**
-   * Geographic location details for a transaction.
-   */
-  location?: unknown;
+  id: string;
 
-  /**
-   * Detailed information about a merchant associated with a transaction.
-   */
+  amount: number;
+
+  currency: string;
+
+  date: string;
+
+  description: string;
+
+  accountId?: string;
+
+  carbonFootprint?: number;
+
+  category?: string;
+
   merchantDetails?: TransactionRetrieveResponse.MerchantDetails;
 }
 
 export namespace TransactionRetrieveResponse {
-  /**
-   * Detailed information about a merchant associated with a transaction.
-   */
   export interface MerchantDetails {
-    address?: unknown;
+    logoUrl?: string;
+
+    name?: string;
   }
 }
 
-export type TransactionListResponse = unknown;
+export interface TransactionListResponse {
+  data?: Array<TransactionListResponse.Data>;
 
-export interface TransactionAddNotesResponse {
-  /**
-   * Geographic location details for a transaction.
-   */
-  location?: unknown;
+  nextOffset?: number;
 
-  /**
-   * Detailed information about a merchant associated with a transaction.
-   */
-  merchantDetails?: TransactionAddNotesResponse.MerchantDetails;
+  total?: number;
 }
 
-export namespace TransactionAddNotesResponse {
-  /**
-   * Detailed information about a merchant associated with a transaction.
-   */
-  export interface MerchantDetails {
-    address?: unknown;
+export namespace TransactionListResponse {
+  export interface Data {
+    id: string;
+
+    amount: number;
+
+    currency: string;
+
+    date: string;
+
+    description: string;
+
+    accountId?: string;
+
+    carbonFootprint?: number;
+
+    category?: string;
+
+    merchantDetails?: Data.MerchantDetails;
+  }
+
+  export namespace Data {
+    export interface MerchantDetails {
+      logoUrl?: string;
+
+      name?: string;
+    }
   }
 }
 
 export interface TransactionCategorizeResponse {
-  /**
-   * Geographic location details for a transaction.
-   */
-  location?: unknown;
+  id: string;
 
-  /**
-   * Detailed information about a merchant associated with a transaction.
-   */
+  amount: number;
+
+  currency: string;
+
+  date: string;
+
+  description: string;
+
+  accountId?: string;
+
+  carbonFootprint?: number;
+
+  category?: string;
+
   merchantDetails?: TransactionCategorizeResponse.MerchantDetails;
 }
 
 export namespace TransactionCategorizeResponse {
-  /**
-   * Detailed information about a merchant associated with a transaction.
-   */
   export interface MerchantDetails {
-    address?: unknown;
+    logoUrl?: string;
+
+    name?: string;
   }
 }
 
 export interface TransactionListParams {
-  /**
-   * Filter transactions by their AI-assigned or user-defined category.
-   */
-  category?: string;
-
-  /**
-   * Retrieve transactions up to this date (inclusive).
-   */
-  endDate?: string;
-
-  /**
-   * Maximum number of items to return in a single page.
-   */
   limit?: number;
 
-  /**
-   * Filter for transactions with an amount less than or equal to this value.
-   */
   maxAmount?: number;
 
-  /**
-   * Filter for transactions with an amount greater than or equal to this value.
-   */
   minAmount?: number;
 
-  /**
-   * Number of items to skip before starting to collect the result set.
-   */
   offset?: number;
 
-  /**
-   * Free-text search across transaction descriptions, merchants, and notes.
-   */
-  searchQuery?: string;
-
-  /**
-   * Retrieve transactions from this date (inclusive).
-   */
-  startDate?: string;
-
-  /**
-   * Filter transactions by type (e.g., income, expense, transfer).
-   */
   type?: string;
 }
 
-export interface TransactionAddNotesParams {}
+export interface TransactionAddNotesParams {
+  notes: string;
+}
 
-export interface TransactionCategorizeParams {}
+export interface TransactionCategorizeParams {
+  category: string;
+
+  applyToFuture?: boolean;
+}
+
+export interface TransactionDisputeParams {
+  reason: 'fraudulent' | 'duplicate' | 'incorrect_amount' | 'service_not_rendered';
+
+  /**
+   * URIs to evidence
+   */
+  evidenceFiles?: Array<string>;
+}
+
+export interface TransactionSplitParams {
+  splits: Array<TransactionSplitParams.Split>;
+}
+
+export namespace TransactionSplitParams {
+  export interface Split {
+    amount?: number;
+
+    category?: string;
+  }
+}
 
 Transactions.Recurring = Recurring;
 Transactions.Insights = Insights;
@@ -214,18 +241,23 @@ export declare namespace Transactions {
   export {
     type TransactionRetrieveResponse as TransactionRetrieveResponse,
     type TransactionListResponse as TransactionListResponse,
-    type TransactionAddNotesResponse as TransactionAddNotesResponse,
     type TransactionCategorizeResponse as TransactionCategorizeResponse,
     type TransactionListParams as TransactionListParams,
     type TransactionAddNotesParams as TransactionAddNotesParams,
     type TransactionCategorizeParams as TransactionCategorizeParams,
+    type TransactionDisputeParams as TransactionDisputeParams,
+    type TransactionSplitParams as TransactionSplitParams,
   };
 
   export {
     Recurring as Recurring,
     type RecurringListResponse as RecurringListResponse,
-    type RecurringListParams as RecurringListParams,
+    type RecurringCreateParams as RecurringCreateParams,
   };
 
-  export { Insights as Insights, type InsightGetTrendsResponse as InsightGetTrendsResponse };
+  export {
+    Insights as Insights,
+    type InsightGetForecastResponse as InsightGetForecastResponse,
+    type InsightGetTrendsResponse as InsightGetTrendsResponse,
+  };
 }

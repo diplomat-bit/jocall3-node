@@ -23,10 +23,34 @@ The full API of this library can be found in [api.md](api.md).
 import Jocall3 from 'jocall3-node';
 
 const client = new Jocall3({
+  geminiAPIKey: process.env['GEMINI_API_KEY'], // This is the default and can be omitted
   environment: 'sandbox', // or 'production' | 'gemini_direct'; defaults to 'production'
 });
 
-const response = await client.ai.oracle.simulate.runAdvanced();
+const response = await client.ai.oracle.simulate.runAdvanced({
+  prompt:
+    'Analyze the systemic risk of a 20% drop in BTC prices on my cross-chain collateralized debt positions, factoring in a simultaneous 50bps hike by the Fed and a liquidity squeeze on Aave.',
+  scenarios: [
+    {
+      name: 'Crypto Black Swan + Macro Contagion',
+      durationYears: 1,
+      events: [
+        {
+          type: 'liquidation_cascade',
+          details: { magnitude: 'extreme', threshold: '0.85' },
+        },
+        {
+          type: 'interest_rate_shock',
+          details: { basis_points: 50 },
+        },
+      ],
+    },
+  ],
+  globalEconomicFactors: { volatility_index: 'VIX_HIGHER_30', geopolitical_tension: 'high' },
+  personalAssumptions: { stop_loss_triggered: true },
+});
+
+console.log(response.overallSummary);
 ```
 
 ### Request & Response types
@@ -41,7 +65,12 @@ const client = new Jocall3({
   environment: 'sandbox', // or 'production' | 'gemini_direct'; defaults to 'production'
 });
 
-const response: Jocall3.UserRegisterResponse = await client.users.register();
+const params: Jocall3.UserRegisterParams = {
+  email: 'user@quantum-ledger.com',
+  name: 'Standard User',
+  password: 'DefaultPassword123!',
+};
+const response: Jocall3.UserRegisterResponse = await client.users.register(params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -54,15 +83,21 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const response = await client.users.register().catch(async (err) => {
-  if (err instanceof Jocall3.APIError) {
-    console.log(err.status); // 400
-    console.log(err.name); // BadRequestError
-    console.log(err.headers); // {server: 'nginx', ...}
-  } else {
-    throw err;
-  }
-});
+const response = await client.users
+  .register({
+    email: 'user@quantum-ledger.com',
+    name: 'Standard User',
+    password: 'DefaultPassword123!',
+  })
+  .catch(async (err) => {
+    if (err instanceof Jocall3.APIError) {
+      console.log(err.status); // 400
+      console.log(err.name); // BadRequestError
+      console.log(err.headers); // {server: 'nginx', ...}
+    } else {
+      throw err;
+    }
+  });
 ```
 
 Error codes are as follows:
@@ -95,6 +130,10 @@ const client = new Jocall3({
 
 // Or, configure per-request:
 await client.users.register({
+  email: 'user@quantum-ledger.com',
+  name: 'Standard User',
+  password: 'DefaultPassword123!',
+}, {
   maxRetries: 5,
 });
 ```
@@ -112,6 +151,10 @@ const client = new Jocall3({
 
 // Override per-request:
 await client.users.register({
+  email: 'user@quantum-ledger.com',
+  name: 'Standard User',
+  password: 'DefaultPassword123!',
+}, {
   timeout: 5 * 1000,
 });
 ```
@@ -132,13 +175,25 @@ You can also use the `.withResponse()` method to get the raw `Response` along wi
 ```ts
 const client = new Jocall3();
 
-const response = await client.users.register().asResponse();
+const response = await client.users
+  .register({
+    email: 'user@quantum-ledger.com',
+    name: 'Standard User',
+    password: 'DefaultPassword123!',
+  })
+  .asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: response, response: raw } = await client.users.register().withResponse();
+const { data: response, response: raw } = await client.users
+  .register({
+    email: 'user@quantum-ledger.com',
+    name: 'Standard User',
+    password: 'DefaultPassword123!',
+  })
+  .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(response.address);
+console.log(response.id);
 ```
 
 ### Making custom/undocumented requests
@@ -242,9 +297,16 @@ const client = new Jocall3({
 });
 
 // Override per-request:
-await client.users.register({
-  httpAgent: new http.Agent({ keepAlive: false }),
-});
+await client.users.register(
+  {
+    email: 'user@quantum-ledger.com',
+    name: 'Standard User',
+    password: 'DefaultPassword123!',
+  },
+  {
+    httpAgent: new http.Agent({ keepAlive: false }),
+  },
+);
 ```
 
 ## Semantic versioning

@@ -3,33 +3,35 @@
 import { APIResource } from '../../resource';
 import * as AssetsAPI from './assets';
 import { AssetSearchParams, AssetSearchResponse, Assets } from './assets';
+import * as PerformanceAPI from './performance';
+import { Performance, PerformanceGetHistoricalParams, PerformanceGetHistoricalResponse } from './performance';
 import * as PortfoliosAPI from './portfolios';
 import {
+  PortfolioCreateParams,
   PortfolioListParams,
   PortfolioListResponse,
   PortfolioRebalanceParams,
   PortfolioRebalanceResponse,
-  PortfolioRetrieveResponse,
   PortfolioUpdateParams,
-  PortfolioUpdateResponse,
   Portfolios,
 } from './portfolios';
 
 export class Investments extends APIResource {
   portfolios: PortfoliosAPI.Portfolios = new PortfoliosAPI.Portfolios(this._client);
   assets: AssetsAPI.Assets = new AssetsAPI.Assets(this._client);
+  performance: PerformanceAPI.Performance = new PerformanceAPI.Performance(this._client);
 }
 
 Investments.Portfolios = Portfolios;
 Investments.Assets = Assets;
+Investments.Performance = Performance;
 
 export declare namespace Investments {
   export {
     Portfolios as Portfolios,
-    type PortfolioRetrieveResponse as PortfolioRetrieveResponse,
-    type PortfolioUpdateResponse as PortfolioUpdateResponse,
     type PortfolioListResponse as PortfolioListResponse,
     type PortfolioRebalanceResponse as PortfolioRebalanceResponse,
+    type PortfolioCreateParams as PortfolioCreateParams,
     type PortfolioUpdateParams as PortfolioUpdateParams,
     type PortfolioListParams as PortfolioListParams,
     type PortfolioRebalanceParams as PortfolioRebalanceParams,
@@ -39,5 +41,11 @@ export declare namespace Investments {
     Assets as Assets,
     type AssetSearchResponse as AssetSearchResponse,
     type AssetSearchParams as AssetSearchParams,
+  };
+
+  export {
+    Performance as Performance,
+    type PerformanceGetHistoricalResponse as PerformanceGetHistoricalResponse,
+    type PerformanceGetHistoricalParams as PerformanceGetHistoricalParams,
   };
 }

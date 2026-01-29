@@ -3,11 +3,13 @@
 import Jocall3 from 'jocall3-node';
 import { Response } from 'node-fetch';
 
-const client = new Jocall3({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
+const client = new Jocall3({
+  apiKey: 'My API Key',
+  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
+});
 
 describe('resource treasury', () => {
-  // Prism tests are disabled
-  test.skip('forecastCashFlow', async () => {
+  test('forecastCashFlow', async () => {
     const responsePromise = client.corporate.treasury.forecastCashFlow();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -18,28 +20,22 @@ describe('resource treasury', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('forecastCashFlow: request options instead of params are passed correctly', async () => {
+  test('forecastCashFlow: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.corporate.treasury.forecastCashFlow({ path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Jocall3.NotFoundError);
   });
 
-  // Prism tests are disabled
-  test.skip('forecastCashFlow: request options and params are passed correctly', async () => {
+  test('forecastCashFlow: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.corporate.treasury.forecastCashFlow(
-        { forecastHorizonDays: 0, includeScenarioAnalysis: true },
-        { path: '/_stainless_unknown_path' },
-      ),
+      client.corporate.treasury.forecastCashFlow({ horizonDays: 0 }, { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Jocall3.NotFoundError);
   });
 
-  // Prism tests are disabled
-  test.skip('getLiquidityPositions', async () => {
-    const responsePromise = client.corporate.treasury.getLiquidityPositions();
+  test('manageLiquidity', async () => {
+    const responsePromise = client.corporate.treasury.manageLiquidity();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -49,11 +45,20 @@ describe('resource treasury', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('getLiquidityPositions: request options instead of params are passed correctly', async () => {
+  test('manageLiquidity: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.corporate.treasury.getLiquidityPositions({ path: '/_stainless_unknown_path' }),
+      client.corporate.treasury.manageLiquidity({ path: '/_stainless_unknown_path' }),
+    ).rejects.toThrow(Jocall3.NotFoundError);
+  });
+
+  test('manageLiquidity: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.corporate.treasury.manageLiquidity(
+        { sweepExcess: true, targetReserve: 0 },
+        { path: '/_stainless_unknown_path' },
+      ),
     ).rejects.toThrow(Jocall3.NotFoundError);
   });
 });

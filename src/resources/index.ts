@@ -6,30 +6,37 @@ export {
   type AccountRetrieveResponse,
   type AccountListResponse,
   type AccountLinkResponse,
+  type AccountOpenResponse,
   type AccountListParams,
   type AccountLinkParams,
+  type AccountOpenParams,
 } from './accounts/accounts';
 export {
-  Budgets,
-  type BudgetRetrieveResponse,
-  type BudgetUpdateResponse,
-  type BudgetListResponse,
-  type BudgetUpdateParams,
-  type BudgetListParams,
-} from './budgets';
-export { Corporate } from './corporate/corporate';
+  Corporate,
+  type CorporateOnboardEntityResponse,
+  type CorporateOnboardEntityParams,
+} from './corporate/corporate';
 export { Investments } from './investments/investments';
-export { Payments } from './payments/payments';
+export {
+  Lending,
+  type LendingGetStatusResponse,
+  type LendingSubmitApplicationResponse,
+  type LendingSubmitApplicationParams,
+} from './lending/lending';
+export { Marketplace, type MarketplaceListProductsResponse } from './marketplace/marketplace';
+export { Payments, type PaymentListResponse } from './payments/payments';
 export { Sustainability, type SustainabilityGetFootprintResponse } from './sustainability/sustainability';
+export { System } from './system/system';
 export {
   Transactions,
   type TransactionRetrieveResponse,
   type TransactionListResponse,
-  type TransactionAddNotesResponse,
   type TransactionCategorizeResponse,
   type TransactionListParams,
   type TransactionAddNotesParams,
   type TransactionCategorizeParams,
+  type TransactionDisputeParams,
+  type TransactionSplitParams,
 } from './transactions/transactions';
 export {
   Users,
@@ -38,4 +45,4 @@ export {
   type UserLoginParams,
   type UserRegisterParams,
 } from './users/users';
-export { Web3 } from './web3/web3';
+export { Web3, type Web3GetNetworkStatusResponse } from './web3/web3';

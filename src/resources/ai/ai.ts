@@ -3,28 +3,34 @@
 import { APIResource } from '../../resource';
 import * as AdsAPI from './ads';
 import {
-  AdGenerateParams,
-  AdGenerateResponse,
+  AdGenerateCopyParams,
+  AdGenerateCopyResponse,
+  AdGenerateVideoParams,
+  AdGenerateVideoResponse,
   AdGetOperationResponse,
-  AdListParams,
   AdListResponse,
+  AdOptimizeCampaignParams,
+  AdOptimizeCampaignResponse,
   Ads,
 } from './ads';
-import * as AdvisorAPI from './advisor/advisor';
+import * as AgentAPI from './agent';
 import {
-  Advisor,
-  AdvisorChatParams,
-  AdvisorChatResponse,
-  AdvisorHistoryParams,
-  AdvisorHistoryResponse,
-} from './advisor/advisor';
+  Agent,
+  AgentGetCapabilitiesResponse,
+  AgentGetPromptsResponse,
+  AgentUpdatePromptsParams,
+} from './agent';
+import * as ModelsAPI from './models';
+import { Models } from './models';
+import * as AdvisorAPI from './advisor/advisor';
+import { Advisor, AdvisorChatParams, AdvisorChatResponse, AdvisorHistoryResponse } from './advisor/advisor';
 import * as IncubatorAPI from './incubator/incubator';
 import {
   Incubator,
   IncubatorGeneratePitchParams,
   IncubatorGeneratePitchResponse,
-  IncubatorListPitchesParams,
-  IncubatorListPitchesResponse,
+  IncubatorValidateIdeaParams,
+  IncubatorValidateIdeaResponse,
 } from './incubator/incubator';
 import * as OracleAPI from './oracle/oracle';
 import { Oracle } from './oracle/oracle';
@@ -34,12 +40,16 @@ export class AI extends APIResource {
   oracle: OracleAPI.Oracle = new OracleAPI.Oracle(this._client);
   incubator: IncubatorAPI.Incubator = new IncubatorAPI.Incubator(this._client);
   ads: AdsAPI.Ads = new AdsAPI.Ads(this._client);
+  agent: AgentAPI.Agent = new AgentAPI.Agent(this._client);
+  models: ModelsAPI.Models = new ModelsAPI.Models(this._client);
 }
 
 AI.Advisor = Advisor;
 AI.Oracle = Oracle;
 AI.Incubator = Incubator;
 AI.Ads = Ads;
+AI.Agent = Agent;
+AI.Models = Models;
 
 export declare namespace AI {
   export {
@@ -47,7 +57,6 @@ export declare namespace AI {
     type AdvisorChatResponse as AdvisorChatResponse,
     type AdvisorHistoryResponse as AdvisorHistoryResponse,
     type AdvisorChatParams as AdvisorChatParams,
-    type AdvisorHistoryParams as AdvisorHistoryParams,
   };
 
   export { Oracle as Oracle };
@@ -55,17 +64,29 @@ export declare namespace AI {
   export {
     Incubator as Incubator,
     type IncubatorGeneratePitchResponse as IncubatorGeneratePitchResponse,
-    type IncubatorListPitchesResponse as IncubatorListPitchesResponse,
+    type IncubatorValidateIdeaResponse as IncubatorValidateIdeaResponse,
     type IncubatorGeneratePitchParams as IncubatorGeneratePitchParams,
-    type IncubatorListPitchesParams as IncubatorListPitchesParams,
+    type IncubatorValidateIdeaParams as IncubatorValidateIdeaParams,
   };
 
   export {
     Ads as Ads,
     type AdListResponse as AdListResponse,
-    type AdGenerateResponse as AdGenerateResponse,
+    type AdGenerateCopyResponse as AdGenerateCopyResponse,
+    type AdGenerateVideoResponse as AdGenerateVideoResponse,
     type AdGetOperationResponse as AdGetOperationResponse,
-    type AdListParams as AdListParams,
-    type AdGenerateParams as AdGenerateParams,
+    type AdOptimizeCampaignResponse as AdOptimizeCampaignResponse,
+    type AdGenerateCopyParams as AdGenerateCopyParams,
+    type AdGenerateVideoParams as AdGenerateVideoParams,
+    type AdOptimizeCampaignParams as AdOptimizeCampaignParams,
   };
+
+  export {
+    Agent as Agent,
+    type AgentGetCapabilitiesResponse as AgentGetCapabilitiesResponse,
+    type AgentGetPromptsResponse as AgentGetPromptsResponse,
+    type AgentUpdatePromptsParams as AgentUpdatePromptsParams,
+  };
+
+  export { Models as Models };
 }

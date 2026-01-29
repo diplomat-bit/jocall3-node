@@ -1,4 +1,13 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { Fraud } from './fraud/index';
-export { Risk } from './risk';
+export {
+  Fraud,
+  type FraudAnalyzeTransactionResponse,
+  type FraudAnalyzeTransactionParams,
+} from './fraud/index';
+export {
+  Risk,
+  type RiskGetExposureResponse,
+  type RiskStressTestResponse,
+  type RiskStressTestParams,
+} from './risk';

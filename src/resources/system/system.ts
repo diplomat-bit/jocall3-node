@@ -2,17 +2,17 @@
 
 import { APIResource } from '../../resource';
 import * as AuditLogsAPI from './audit-logs';
-import { AuditLogs } from './audit-logs';
+import { AuditLogListParams, AuditLogListResponse, AuditLogs } from './audit-logs';
 import * as NotificationsAPI from './notifications';
-import { Notifications } from './notifications';
+import { NotificationListTemplatesResponse, NotificationSendParams, Notifications } from './notifications';
 import * as SandboxAPI from './sandbox';
-import { Sandbox } from './sandbox';
+import { Sandbox, SandboxSimulateErrorParams, SandboxSimulateErrorResponse } from './sandbox';
 import * as StatusAPI from './status';
-import { Status } from './status';
+import { Status, StatusRetrieveResponse } from './status';
 import * as VerificationAPI from './verification';
-import { Verification } from './verification';
+import { Verification, VerificationBiometricMatchParams, VerificationDocumentParams } from './verification';
 import * as WebhooksAPI from './webhooks';
-import { Webhooks } from './webhooks';
+import { WebhookCreateParams, WebhookListResponse, Webhooks } from './webhooks';
 
 export class System extends APIResource {
   status: StatusAPI.Status = new StatusAPI.Status(this._client);
@@ -31,15 +31,35 @@ System.Verification = Verification;
 System.Notifications = Notifications;
 
 export declare namespace System {
-  export { Status as Status };
+  export { Status as Status, type StatusRetrieveResponse as StatusRetrieveResponse };
 
-  export { Webhooks as Webhooks };
+  export {
+    Webhooks as Webhooks,
+    type WebhookListResponse as WebhookListResponse,
+    type WebhookCreateParams as WebhookCreateParams,
+  };
 
-  export { AuditLogs as AuditLogs };
+  export {
+    AuditLogs as AuditLogs,
+    type AuditLogListResponse as AuditLogListResponse,
+    type AuditLogListParams as AuditLogListParams,
+  };
 
-  export { Sandbox as Sandbox };
+  export {
+    Sandbox as Sandbox,
+    type SandboxSimulateErrorResponse as SandboxSimulateErrorResponse,
+    type SandboxSimulateErrorParams as SandboxSimulateErrorParams,
+  };
 
-  export { Verification as Verification };
+  export {
+    Verification as Verification,
+    type VerificationBiometricMatchParams as VerificationBiometricMatchParams,
+    type VerificationDocumentParams as VerificationDocumentParams,
+  };
 
-  export { Notifications as Notifications };
+  export {
+    Notifications as Notifications,
+    type NotificationListTemplatesResponse as NotificationListTemplatesResponse,
+    type NotificationSendParams as NotificationSendParams,
+  };
 }

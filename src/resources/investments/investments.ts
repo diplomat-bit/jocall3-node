@@ -4,16 +4,15 @@ import { APIResource } from '../../resource';
 import * as AssetsAPI from './assets';
 import { AssetSearchParams, AssetSearchResponse, Assets } from './assets';
 import * as PerformanceAPI from './performance';
-import { Performance } from './performance';
+import { Performance, PerformanceGetHistoricalParams, PerformanceGetHistoricalResponse } from './performance';
 import * as PortfoliosAPI from './portfolios';
 import {
+  PortfolioCreateParams,
   PortfolioListParams,
   PortfolioListResponse,
   PortfolioRebalanceParams,
   PortfolioRebalanceResponse,
-  PortfolioRetrieveResponse,
   PortfolioUpdateParams,
-  PortfolioUpdateResponse,
   Portfolios,
 } from './portfolios';
 
@@ -30,10 +29,9 @@ Investments.Performance = Performance;
 export declare namespace Investments {
   export {
     Portfolios as Portfolios,
-    type PortfolioRetrieveResponse as PortfolioRetrieveResponse,
-    type PortfolioUpdateResponse as PortfolioUpdateResponse,
     type PortfolioListResponse as PortfolioListResponse,
     type PortfolioRebalanceResponse as PortfolioRebalanceResponse,
+    type PortfolioCreateParams as PortfolioCreateParams,
     type PortfolioUpdateParams as PortfolioUpdateParams,
     type PortfolioListParams as PortfolioListParams,
     type PortfolioRebalanceParams as PortfolioRebalanceParams,
@@ -45,5 +43,9 @@ export declare namespace Investments {
     type AssetSearchParams as AssetSearchParams,
   };
 
-  export { Performance as Performance };
+  export {
+    Performance as Performance,
+    type PerformanceGetHistoricalResponse as PerformanceGetHistoricalResponse,
+    type PerformanceGetHistoricalParams as PerformanceGetHistoricalParams,
+  };
 }

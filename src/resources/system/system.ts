@@ -4,13 +4,13 @@ import { APIResource } from '../../resource';
 import * as AuditLogsAPI from './audit-logs';
 import { AuditLogListParams, AuditLogListResponse, AuditLogs } from './audit-logs';
 import * as NotificationsAPI from './notifications';
-import { Notifications } from './notifications';
+import { NotificationListTemplatesResponse, NotificationSendParams, Notifications } from './notifications';
 import * as SandboxAPI from './sandbox';
 import { Sandbox, SandboxSimulateErrorParams, SandboxSimulateErrorResponse } from './sandbox';
 import * as StatusAPI from './status';
 import { Status, StatusRetrieveResponse } from './status';
 import * as VerificationAPI from './verification';
-import { Verification } from './verification';
+import { Verification, VerificationBiometricMatchParams, VerificationDocumentParams } from './verification';
 import * as WebhooksAPI from './webhooks';
 import { WebhookCreateParams, WebhookListResponse, Webhooks } from './webhooks';
 
@@ -51,7 +51,15 @@ export declare namespace System {
     type SandboxSimulateErrorParams as SandboxSimulateErrorParams,
   };
 
-  export { Verification as Verification };
+  export {
+    Verification as Verification,
+    type VerificationBiometricMatchParams as VerificationBiometricMatchParams,
+    type VerificationDocumentParams as VerificationDocumentParams,
+  };
 
-  export { Notifications as Notifications };
+  export {
+    Notifications as Notifications,
+    type NotificationListTemplatesResponse as NotificationListTemplatesResponse,
+    type NotificationSendParams as NotificationSendParams,
+  };
 }

@@ -26,6 +26,26 @@ export class Transactions extends APIResource {
   }
 
   /**
+   * Initiate a Web3 transaction
+   *
+   * @example
+   * ```ts
+   * await client.web3.transactions.initiate({
+   *   amount: 0,
+   *   asset: 'asset',
+   *   wallet_id: 'wallet_id',
+   * });
+   * ```
+   */
+  initiate(body: TransactionInitiateParams, options?: Core.RequestOptions): Core.APIPromise<void> {
+    return this._client.post('/web3/transactions/initiate', {
+      body,
+      ...options,
+      headers: { Accept: '*/*', ...options?.headers },
+    });
+  }
+
+  /**
    * Initiate On-chain Transfer
    *
    * @example
@@ -79,6 +99,14 @@ export interface TransactionBridgeChainParams {
   sourceChain: string;
 }
 
+export interface TransactionInitiateParams {
+  amount: number;
+
+  asset: string;
+
+  wallet_id: string;
+}
+
 export interface TransactionSendCryptoParams {
   token: string;
 
@@ -99,6 +127,7 @@ export declare namespace Transactions {
   export {
     type TransactionSendCryptoResponse as TransactionSendCryptoResponse,
     type TransactionBridgeChainParams as TransactionBridgeChainParams,
+    type TransactionInitiateParams as TransactionInitiateParams,
     type TransactionSendCryptoParams as TransactionSendCryptoParams,
     type TransactionSwapTokensParams as TransactionSwapTokensParams,
   };

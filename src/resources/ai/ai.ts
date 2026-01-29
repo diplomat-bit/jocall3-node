@@ -21,7 +21,7 @@ import {
   AgentUpdatePromptsParams,
 } from './agent';
 import * as ModelsAPI from './models';
-import { Models } from './models';
+import { ModelFineTuneParams, ModelFineTuneResponse, ModelListResponse, Models } from './models';
 import * as AdvisorAPI from './advisor/advisor';
 import { Advisor, AdvisorChatParams, AdvisorChatResponse, AdvisorHistoryResponse } from './advisor/advisor';
 import * as IncubatorAPI from './incubator/incubator';
@@ -88,5 +88,10 @@ export declare namespace AI {
     type AgentUpdatePromptsParams as AgentUpdatePromptsParams,
   };
 
-  export { Models as Models };
+  export {
+    Models as Models,
+    type ModelListResponse as ModelListResponse,
+    type ModelFineTuneResponse as ModelFineTuneResponse,
+    type ModelFineTuneParams as ModelFineTuneParams,
+  };
 }

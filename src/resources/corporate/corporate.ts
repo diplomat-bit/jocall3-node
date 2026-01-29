@@ -3,7 +3,7 @@
 import { APIResource } from '../../resource';
 import * as Core from '../../core';
 import * as AnomaliesAPI from './anomalies';
-import { Anomalies } from './anomalies';
+import { Anomalies, AnomalyListResponse, AnomalyUpdateStatusParams } from './anomalies';
 import * as CardsAPI from './cards/cards';
 import {
   CardFreezeParams,
@@ -11,6 +11,9 @@ import {
   CardIssuePhysicalResponse,
   CardIssueVirtualParams,
   CardIssueVirtualResponse,
+  CardListParams,
+  CardListResponse,
+  CardListTransactionsResponse,
   Cards,
 } from './cards/cards';
 import * as ComplianceAPI from './compliance/compliance';
@@ -30,8 +33,10 @@ import { Risk, RiskGetExposureResponse, RiskStressTestParams, RiskStressTestResp
 import * as TreasuryAPI from './treasury/treasury';
 import {
   Treasury,
+  TreasuryBulkPayoutParams,
   TreasuryForecastCashFlowParams,
   TreasuryForecastCashFlowResponse,
+  TreasuryGetLiquidityPositionsResponse,
   TreasuryManageLiquidityParams,
   TreasuryManageLiquidityResponse,
 } from './treasury/treasury';
@@ -101,30 +106,22 @@ export namespace CorporateOnboardEntityParams {
 
     address?: BeneficialOwner.Address;
 
-    phone?: string;
-
-    preferences?: BeneficialOwner.Preferences;
+    preferences?: { [key: string]: unknown };
 
     securityStatus?: BeneficialOwner.SecurityStatus;
   }
 
   export namespace BeneficialOwner {
     export interface Address {
-      city?: string;
+      city: string;
 
-      country?: string;
+      country: string;
+
+      street: string;
 
       state?: string;
 
-      street?: string;
-
       zip?: string;
-    }
-
-    export interface Preferences {
-      notificationChannels?: unknown;
-
-      theme?: string;
     }
 
     export interface SecurityStatus {
@@ -161,15 +158,20 @@ export declare namespace Corporate {
   export {
     Treasury as Treasury,
     type TreasuryForecastCashFlowResponse as TreasuryForecastCashFlowResponse,
+    type TreasuryGetLiquidityPositionsResponse as TreasuryGetLiquidityPositionsResponse,
     type TreasuryManageLiquidityResponse as TreasuryManageLiquidityResponse,
+    type TreasuryBulkPayoutParams as TreasuryBulkPayoutParams,
     type TreasuryForecastCashFlowParams as TreasuryForecastCashFlowParams,
     type TreasuryManageLiquidityParams as TreasuryManageLiquidityParams,
   };
 
   export {
     Cards as Cards,
+    type CardListResponse as CardListResponse,
     type CardIssuePhysicalResponse as CardIssuePhysicalResponse,
     type CardIssueVirtualResponse as CardIssueVirtualResponse,
+    type CardListTransactionsResponse as CardListTransactionsResponse,
+    type CardListParams as CardListParams,
     type CardFreezeParams as CardFreezeParams,
     type CardIssuePhysicalParams as CardIssuePhysicalParams,
     type CardIssueVirtualParams as CardIssueVirtualParams,
@@ -184,5 +186,9 @@ export declare namespace Corporate {
 
   export { Governance as Governance };
 
-  export { Anomalies as Anomalies };
+  export {
+    Anomalies as Anomalies,
+    type AnomalyListResponse as AnomalyListResponse,
+    type AnomalyUpdateStatusParams as AnomalyUpdateStatusParams,
+  };
 }

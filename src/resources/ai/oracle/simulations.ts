@@ -34,21 +34,17 @@ export class Simulations extends APIResource {
 }
 
 export interface SimulationRetrieveResponse {
-  overallSummary: string;
-
-  scenarioResults: Array<SimulationRetrieveResponse.ScenarioResult>;
-
   simulationId: string;
-}
 
-export namespace SimulationRetrieveResponse {
-  export interface ScenarioResult {
-    finalNetWorth?: number;
+  status: string;
 
-    narrative?: string;
+  confidenceScore?: number;
 
-    scenarioName?: string;
-  }
+  data?: Array<{ [key: string]: unknown }>;
+
+  outcomeNarrative?: string;
+
+  projectedValue?: number;
 }
 
 export interface SimulationListResponse {
@@ -57,21 +53,17 @@ export interface SimulationListResponse {
 
 export namespace SimulationListResponse {
   export interface Data {
-    overallSummary: string;
-
-    scenarioResults: Array<Data.ScenarioResult>;
-
     simulationId: string;
-  }
 
-  export namespace Data {
-    export interface ScenarioResult {
-      finalNetWorth?: number;
+    status: string;
 
-      narrative?: string;
+    confidenceScore?: number;
 
-      scenarioName?: string;
-    }
+    data?: Array<{ [key: string]: unknown }>;
+
+    outcomeNarrative?: string;
+
+    projectedValue?: number;
   }
 }
 

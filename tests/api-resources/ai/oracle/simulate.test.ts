@@ -12,7 +12,7 @@ describe('resource simulate', () => {
   test('runAdvanced: only required params', async () => {
     const responsePromise = client.ai.oracle.simulate.runAdvanced({
       prompt: 'prompt',
-      scenarios: [{ durationYears: 0, name: 'name' }],
+      scenarios: [{ name: 'name' }],
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -28,14 +28,9 @@ describe('resource simulate', () => {
       prompt: 'prompt',
       scenarios: [
         {
-          durationYears: 0,
           name: 'name',
-          events: [
-            {
-              details: {},
-              type: 'type',
-            },
-          ],
+          description: 'description',
+          variables: { foo: 'bar' },
         },
       ],
       globalEconomicFactors: {},

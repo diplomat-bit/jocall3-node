@@ -13,5 +13,10 @@ export {
   type FxConvertParams,
   type FxGetRatesParams,
 } from './fx';
-export { International, type InternationalSepaParams, type InternationalSwiftParams } from './international';
+export {
+  International,
+  type InternationalGetStatusResponse,
+  type InternationalSepaParams,
+  type InternationalSwiftParams,
+} from './international';
 export { Payments, type PaymentListResponse } from './payments';

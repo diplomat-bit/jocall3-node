@@ -4,13 +4,31 @@ import { APIResource } from '../../../resource';
 import { isRequestOptions } from '../../../core';
 import * as Core from '../../../core';
 import * as PoolingAPI from './pooling';
-import { Pooling } from './pooling';
+import { Pooling, PoolingConfigureParams } from './pooling';
 import * as SweepingAPI from './sweeping';
 import { Sweeping, SweepingConfigureParams, SweepingExecuteParams } from './sweeping';
 
 export class Treasury extends APIResource {
   sweeping: SweepingAPI.Sweeping = new SweepingAPI.Sweeping(this._client);
   pooling: PoolingAPI.Pooling = new PoolingAPI.Pooling(this._client);
+
+  /**
+   * Execute bulk payouts
+   *
+   * @example
+   * ```ts
+   * await client.corporate.treasury.bulkPayout({
+   *   payouts: [{}],
+   * });
+   * ```
+   */
+  bulkPayout(body: TreasuryBulkPayoutParams, options?: Core.RequestOptions): Core.APIPromise<void> {
+    return this._client.post('/corporate/treasury/bulk-payouts', {
+      body,
+      ...options,
+      headers: { Accept: '*/*', ...options?.headers },
+    });
+  }
 
   /**
    * Corporate Cash Flow Projection
@@ -34,6 +52,21 @@ export class Treasury extends APIResource {
       return this.forecastCashFlow({}, query);
     }
     return this._client.get('/corporate/treasury/cash-flow/forecast', { query, ...options });
+  }
+
+  /**
+   * Get current liquidity positions
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.corporate.treasury.getLiquidityPositions();
+   * ```
+   */
+  getLiquidityPositions(
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<TreasuryGetLiquidityPositionsResponse> {
+    return this._client.get('/corporate/treasury/liquidity-positions', options);
   }
 
   /**
@@ -69,10 +102,28 @@ export interface TreasuryForecastCashFlowResponse {
   projectedRunway?: number;
 }
 
+export interface TreasuryGetLiquidityPositionsResponse {
+  positions?: Array<unknown>;
+
+  total_liquidity?: number;
+}
+
 export interface TreasuryManageLiquidityResponse {
   projectedYield?: number;
 
   strategyId?: string;
+}
+
+export interface TreasuryBulkPayoutParams {
+  payouts: Array<TreasuryBulkPayoutParams.Payout>;
+}
+
+export namespace TreasuryBulkPayoutParams {
+  export interface Payout {
+    amount?: number;
+
+    recipient_id?: string;
+  }
 }
 
 export interface TreasuryForecastCashFlowParams {
@@ -91,7 +142,9 @@ Treasury.Pooling = Pooling;
 export declare namespace Treasury {
   export {
     type TreasuryForecastCashFlowResponse as TreasuryForecastCashFlowResponse,
+    type TreasuryGetLiquidityPositionsResponse as TreasuryGetLiquidityPositionsResponse,
     type TreasuryManageLiquidityResponse as TreasuryManageLiquidityResponse,
+    type TreasuryBulkPayoutParams as TreasuryBulkPayoutParams,
     type TreasuryForecastCashFlowParams as TreasuryForecastCashFlowParams,
     type TreasuryManageLiquidityParams as TreasuryManageLiquidityParams,
   };
@@ -102,5 +155,5 @@ export declare namespace Treasury {
     type SweepingExecuteParams as SweepingExecuteParams,
   };
 
-  export { Pooling as Pooling };
+  export { Pooling as Pooling, type PoolingConfigureParams as PoolingConfigureParams };
 }

@@ -69,30 +69,22 @@ export interface UserRegisterResponse {
 
   address?: UserRegisterResponse.Address;
 
-  phone?: string;
-
-  preferences?: UserRegisterResponse.Preferences;
+  preferences?: { [key: string]: unknown };
 
   securityStatus?: UserRegisterResponse.SecurityStatus;
 }
 
 export namespace UserRegisterResponse {
   export interface Address {
-    city?: string;
+    city: string;
 
-    country?: string;
+    country: string;
+
+    street: string;
 
     state?: string;
 
-    street?: string;
-
     zip?: string;
-  }
-
-  export interface Preferences {
-    notificationChannels?: unknown;
-
-    theme?: string;
   }
 
   export interface SecurityStatus {
@@ -134,13 +126,13 @@ export interface UserRegisterParams {
 
 export namespace UserRegisterParams {
   export interface Address {
-    city?: string;
+    city: string;
 
-    country?: string;
+    country: string;
+
+    street: string;
 
     state?: string;
-
-    street?: string;
 
     zip?: string;
   }

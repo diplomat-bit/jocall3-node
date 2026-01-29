@@ -65,8 +65,8 @@ describe('resource users', () => {
       address: {
         city: 'city',
         country: 'country',
-        state: 'state',
         street: 'street',
+        state: 'state',
         zip: 'zip',
       },
       phone: 'phone',

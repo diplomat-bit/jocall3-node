@@ -5,6 +5,16 @@ import * as Core from '../../core';
 
 export class International extends APIResource {
   /**
+   * Get international payment status
+   */
+  getStatus(
+    paymentId: string,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<InternationalGetStatusResponse> {
+    return this._client.get(`/payments/international/${paymentId}/status`, options);
+  }
+
+  /**
    * EU SEPA Credit Transfer
    */
   sepa(body: InternationalSepaParams, options?: Core.RequestOptions): Core.APIPromise<void> {
@@ -27,6 +37,12 @@ export class International extends APIResource {
   }
 }
 
+export interface InternationalGetStatusResponse {
+  fx_rate?: number;
+
+  status?: string;
+}
+
 export interface InternationalSepaParams {
   amount: number;
 
@@ -45,6 +61,7 @@ export interface InternationalSwiftParams {
 
 export declare namespace International {
   export {
+    type InternationalGetStatusResponse as InternationalGetStatusResponse,
     type InternationalSepaParams as InternationalSepaParams,
     type InternationalSwiftParams as InternationalSwiftParams,
   };

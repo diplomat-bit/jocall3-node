@@ -45,15 +45,15 @@ export interface AuditRequestResponse {
 }
 
 export interface AuditRetrieveReportResponse {
-  auditId: string;
+  generatedAt: string;
 
-  overallComplianceScore: number;
+  reportId: string;
 
-  status: string;
+  findings?: Array<string>;
 
-  auditDate?: string;
+  score?: number;
 
-  findings?: Array<unknown>;
+  summary?: string;
 }
 
 export interface AuditRequestParams {

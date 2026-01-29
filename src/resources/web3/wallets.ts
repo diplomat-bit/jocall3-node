@@ -68,15 +68,11 @@ export class Wallets extends APIResource {
 export interface WalletCreateResponse {
   id: string;
 
-  blockchainNetwork: string;
+  address: string;
 
-  status: string;
+  network: string;
 
-  walletAddress: string;
-
-  lastSynced?: string;
-
-  walletProvider?: string;
+  label?: string;
 }
 
 export interface WalletListResponse {
@@ -87,15 +83,11 @@ export namespace WalletListResponse {
   export interface Data {
     id: string;
 
-    blockchainNetwork: string;
+    address: string;
 
-    status: string;
+    network: string;
 
-    walletAddress: string;
-
-    lastSynced?: string;
-
-    walletProvider?: string;
+    label?: string;
   }
 }
 

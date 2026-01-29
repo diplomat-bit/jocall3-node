@@ -2,8 +2,11 @@
 
 export {
   Cards,
+  type CardListResponse,
   type CardIssuePhysicalResponse,
   type CardIssueVirtualResponse,
+  type CardListTransactionsResponse,
+  type CardListParams,
   type CardFreezeParams,
   type CardIssuePhysicalParams,
   type CardIssueVirtualParams,

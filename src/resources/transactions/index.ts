@@ -1,14 +1,17 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { Insights, type InsightGetTrendsResponse } from './insights';
-export { Recurring, type RecurringListResponse, type RecurringListParams } from './recurring';
+export {
+  Insights,
+  type InsightRetrieveFutureFlowResponse,
+  type InsightRetrieveSpendingTrendsResponse,
+} from './insights';
+export { Recurring, type RecurringListResponse, type RecurringCreateParams } from './recurring';
 export {
   Transactions,
-  type TransactionRetrieveResponse,
   type TransactionListResponse,
-  type TransactionAddNotesResponse,
-  type TransactionCategorizeResponse,
   type TransactionListParams,
   type TransactionAddNotesParams,
   type TransactionCategorizeParams,
+  type TransactionDisputeParams,
+  type TransactionSplitParams,
 } from './transactions';

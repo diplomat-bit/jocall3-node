@@ -5,24 +5,64 @@ import * as Core from '../../core';
 
 export class International extends APIResource {
   /**
-   * Retrieves the current processing status and details of an initiated
-   * international payment.
-   *
-   * @example
-   * ```ts
-   * const response =
-   *   await client.payments.international.getStatus(
-   *     'int_pmt_xyz7890',
-   *   );
-   * ```
+   * Get international payment status
    */
-  getStatus(paymentId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
+  retrieveStatus(
+    paymentId: string,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<InternationalRetrieveStatusResponse> {
     return this._client.get(`/payments/international/${paymentId}/status`, options);
+  }
+
+  /**
+   * EU SEPA Credit Transfer
+   */
+  sendSepa(body: InternationalSendSepaParams, options?: Core.RequestOptions): Core.APIPromise<void> {
+    return this._client.post('/payments/international/sepa', {
+      body,
+      ...options,
+      headers: { Accept: '*/*', ...options?.headers },
+    });
+  }
+
+  /**
+   * Global SWIFT Transaction
+   */
+  sendSwift(body: InternationalSendSwiftParams, options?: Core.RequestOptions): Core.APIPromise<void> {
+    return this._client.post('/payments/international/swift', {
+      body,
+      ...options,
+      headers: { Accept: '*/*', ...options?.headers },
+    });
   }
 }
 
-export type InternationalGetStatusResponse = unknown;
+export interface InternationalRetrieveStatusResponse {
+  fx_rate?: number;
+
+  status?: string;
+}
+
+export interface InternationalSendSepaParams {
+  amount: number;
+
+  iban: string;
+}
+
+export interface InternationalSendSwiftParams {
+  amount: number;
+
+  bic: string;
+
+  currency: string;
+
+  iban: string;
+}
 
 export declare namespace International {
-  export { type InternationalGetStatusResponse as InternationalGetStatusResponse };
+  export {
+    type InternationalRetrieveStatusResponse as InternationalRetrieveStatusResponse,
+    type InternationalSendSepaParams as InternationalSendSepaParams,
+    type InternationalSendSwiftParams as InternationalSendSwiftParams,
+  };
 }

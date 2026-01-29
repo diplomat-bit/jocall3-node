@@ -14,10 +14,9 @@ For example:
 
 \`\`\`
 async function run(client) {
-  const response = await client.ai.oracle.simulate.runAdvanced({
-    globalEconomicFactors: { volatility_index: 'VIX_HIGHER_30', geopolitical_tension: 'high' },
-    personalAssumptions: { stop_loss_triggered: true },
-  });
+  const response = await client.ai.oracle.simulate.runAdvanced({ prompt: 'Analyze systemic risk of a 20% BTC drop.', scenarios: [{ name: 'Crypto Black Swan', description: 'Extreme market volatility scenario.' }] });
+
+  console.log(response.simulationId);
 }
 \`\`\`
 

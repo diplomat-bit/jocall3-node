@@ -9,8 +9,8 @@ const client = new Jocall3({
 });
 
 describe('resource international', () => {
-  test('getStatus', async () => {
-    const responsePromise = client.payments.international.getStatus('int_pmt_xyz7890');
+  test('retrieveStatus', async () => {
+    const responsePromise = client.payments.international.retrieveStatus('paymentId');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -20,10 +20,50 @@ describe('resource international', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('getStatus: request options instead of params are passed correctly', async () => {
+  test('retrieveStatus: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.payments.international.getStatus('int_pmt_xyz7890', { path: '/_stainless_unknown_path' }),
+      client.payments.international.retrieveStatus('paymentId', { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Jocall3.NotFoundError);
+  });
+
+  test('sendSepa: only required params', async () => {
+    const responsePromise = client.payments.international.sendSepa({ amount: 0, iban: 'iban' });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('sendSepa: required and optional params', async () => {
+    const response = await client.payments.international.sendSepa({ amount: 0, iban: 'iban' });
+  });
+
+  test('sendSwift: only required params', async () => {
+    const responsePromise = client.payments.international.sendSwift({
+      amount: 0,
+      bic: 'bic',
+      currency: 'currency',
+      iban: 'iban',
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('sendSwift: required and optional params', async () => {
+    const response = await client.payments.international.sendSwift({
+      amount: 0,
+      bic: 'bic',
+      currency: 'currency',
+      iban: 'iban',
+    });
   });
 });

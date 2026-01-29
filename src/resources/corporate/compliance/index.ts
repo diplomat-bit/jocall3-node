@@ -6,4 +6,12 @@ export {
   type AuditRetrieveReportResponse,
   type AuditRequestParams,
 } from './audits';
-export { Compliance } from './compliance';
+export {
+  Compliance,
+  type ComplianceScreenAdverseMediaResponse,
+  type ComplianceScreenPepResponse,
+  type ComplianceScreenSanctionsResponse,
+  type ComplianceScreenAdverseMediaParams,
+  type ComplianceScreenPepParams,
+  type ComplianceScreenSanctionsParams,
+} from './compliance';

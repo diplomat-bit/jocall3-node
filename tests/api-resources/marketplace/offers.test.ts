@@ -9,8 +9,8 @@ const client = new Jocall3({
 });
 
 describe('resource offers', () => {
-  test('redeem', async () => {
-    const responsePromise = client.marketplace.offers.redeem('offer_home_ins_promo_1');
+  test('list', async () => {
+    const responsePromise = client.marketplace.offers.list();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -20,10 +20,28 @@ describe('resource offers', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('redeem: request options and params are passed correctly', async () => {
+  test('list: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(client.marketplace.offers.list({ path: '/_stainless_unknown_path' })).rejects.toThrow(
+      Jocall3.NotFoundError,
+    );
+  });
+
+  test('redeem', async () => {
+    const responsePromise = client.marketplace.offers.redeem('offerId');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('redeem: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.marketplace.offers.redeem('offer_home_ins_promo_1', {}, { path: '/_stainless_unknown_path' }),
+      client.marketplace.offers.redeem('offerId', { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Jocall3.NotFoundError);
   });
 });

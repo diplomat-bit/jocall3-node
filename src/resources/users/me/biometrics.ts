@@ -5,46 +5,72 @@ import * as Core from '../../../core';
 
 export class Biometrics extends APIResource {
   /**
-   * Retrieves the current status of biometric enrollments for the authenticated
-   * user.
-   *
-   * @example
-   * ```ts
-   * const response =
-   *   await client.users.me.biometrics.retrieveStatus();
-   * ```
+   * Remove All Biometric Data
    */
-  retrieveStatus(options?: Core.RequestOptions): Core.APIPromise<unknown> {
+  delete(options?: Core.RequestOptions): Core.APIPromise<void> {
+    return this._client.delete('/users/me/biometrics', {
+      ...options,
+      headers: { Accept: '*/*', ...options?.headers },
+    });
+  }
+
+  /**
+   * Enroll New Biometric Signature
+   */
+  enroll(body: BiometricEnrollParams, options?: Core.RequestOptions): Core.APIPromise<void> {
+    return this._client.post('/users/me/biometrics/enroll', {
+      body,
+      ...options,
+      headers: { Accept: '*/*', ...options?.headers },
+    });
+  }
+
+  /**
+   * Get Biometric Enrollment Status
+   */
+  retrieveStatus(options?: Core.RequestOptions): Core.APIPromise<BiometricRetrieveStatusResponse> {
     return this._client.get('/users/me/biometrics', options);
   }
 
   /**
-   * Performs real-time biometric verification to authorize sensitive actions or
-   * access protected resources, using a one-time biometric signature.
-   *
-   * @example
-   * ```ts
-   * const response = await client.users.me.biometrics.verify();
-   * ```
+   * Verify Biometric Data for Sensitive Operations
    */
-  verify(body: BiometricVerifyParams, options?: Core.RequestOptions): Core.APIPromise<unknown> {
+  verify(
+    body: BiometricVerifyParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<BiometricVerifyResponse> {
     return this._client.post('/users/me/biometrics/verify', { body, ...options });
   }
 }
 
-/**
- * Current biometric enrollment status for a user.
- */
-export type BiometricRetrieveStatusResponse = unknown;
+export interface BiometricRetrieveStatusResponse {
+  biometricsEnrolled?: boolean;
 
-export type BiometricVerifyResponse = unknown;
+  lastUsed?: string;
+}
 
-export interface BiometricVerifyParams {}
+export interface BiometricVerifyResponse {
+  verificationStatus?: string;
+}
+
+export interface BiometricEnrollParams {
+  biometricType: 'fingerprint' | 'facial_recognition';
+
+  /**
+   * Public key or hash of signature
+   */
+  signature: string;
+}
+
+export interface BiometricVerifyParams {
+  biometricSignature: string;
+}
 
 export declare namespace Biometrics {
   export {
     type BiometricRetrieveStatusResponse as BiometricRetrieveStatusResponse,
     type BiometricVerifyResponse as BiometricVerifyResponse,
+    type BiometricEnrollParams as BiometricEnrollParams,
     type BiometricVerifyParams as BiometricVerifyParams,
   };
 }

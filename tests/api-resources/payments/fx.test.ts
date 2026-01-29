@@ -9,8 +9,12 @@ const client = new Jocall3({
 });
 
 describe('resource fx', () => {
-  test('convert', async () => {
-    const responsePromise = client.payments.fx.convert({});
+  test('bookDeal: only required params', async () => {
+    const responsePromise = client.payments.fx.bookDeal({
+      amount: 0,
+      pair: 'pair',
+      valueDate: '2019-12-27',
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -20,8 +24,20 @@ describe('resource fx', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('getRates', async () => {
-    const responsePromise = client.payments.fx.getRates();
+  test('bookDeal: required and optional params', async () => {
+    const response = await client.payments.fx.bookDeal({
+      amount: 0,
+      pair: 'pair',
+      valueDate: '2019-12-27',
+    });
+  });
+
+  test('convertCurrency: only required params', async () => {
+    const responsePromise = client.payments.fx.convertCurrency({
+      amount: 0,
+      from: 'from',
+      to: 'to',
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -31,24 +47,26 @@ describe('resource fx', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('getRates: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.payments.fx.getRates({ path: '/_stainless_unknown_path' })).rejects.toThrow(
-      Jocall3.NotFoundError,
-    );
+  test('convertCurrency: required and optional params', async () => {
+    const response = await client.payments.fx.convertCurrency({
+      amount: 0,
+      from: 'from',
+      to: 'to',
+    });
   });
 
-  test('getRates: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.payments.fx.getRates(
-        {
-          baseCurrency: 'baseCurrency',
-          forecastDays: 0,
-          targetCurrency: 'targetCurrency',
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Jocall3.NotFoundError);
+  test('retrieveRates: only required params', async () => {
+    const responsePromise = client.payments.fx.retrieveRates({ pair: 'EURUSD' });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('retrieveRates: required and optional params', async () => {
+    const response = await client.payments.fx.retrieveRates({ pair: 'EURUSD' });
   });
 });

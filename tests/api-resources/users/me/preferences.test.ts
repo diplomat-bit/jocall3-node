@@ -48,7 +48,10 @@ describe('resource preferences', () => {
   test('update: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.users.me.preferences.update({ notificationChannels: {} }, { path: '/_stainless_unknown_path' }),
+      client.users.me.preferences.update(
+        { aiInteractionMode: 'aiInteractionMode', theme: 'theme' },
+        { path: '/_stainless_unknown_path' },
+      ),
     ).rejects.toThrow(Jocall3.NotFoundError);
   });
 });

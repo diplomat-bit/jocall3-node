@@ -1,114 +1,125 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../resource';
-import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 
 export class Wallets extends APIResource {
   /**
-   * Initiates the process to securely connect a new cryptocurrency wallet to the
-   * user's profile, typically involving a signed message or OAuth flow from the
-   * wallet provider.
+   * Create Non-Custodial Wallet
    *
    * @example
    * ```ts
-   * const wallet = await client.web3.wallets.create();
+   * const wallet = await client.web3.wallets.create({
+   *   network: 'ETH',
+   * });
    * ```
    */
-  create(body: WalletCreateParams, options?: Core.RequestOptions): Core.APIPromise<unknown> {
+  create(body: WalletCreateParams, options?: Core.RequestOptions): Core.APIPromise<WalletCreateResponse> {
     return this._client.post('/web3/wallets', { body, ...options });
   }
 
   /**
-   * Retrieves a list of all securely linked cryptocurrency wallets (e.g., MetaMask,
-   * Ledger integration), showing their addresses, associated networks, and
-   * verification status.
+   * List Connected Wallets
    *
    * @example
    * ```ts
    * const wallets = await client.web3.wallets.list();
    * ```
    */
-  list(query?: WalletListParams, options?: Core.RequestOptions): Core.APIPromise<unknown>;
-  list(options?: Core.RequestOptions): Core.APIPromise<unknown>;
-  list(
-    query: WalletListParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<unknown> {
-    if (isRequestOptions(query)) {
-      return this.list({}, query);
-    }
-    return this._client.get('/web3/wallets', { query, ...options });
+  list(options?: Core.RequestOptions): Core.APIPromise<WalletListResponse> {
+    return this._client.get('/web3/wallets', options);
   }
 
   /**
-   * Retrieves the current balances of all recognized crypto assets within a specific
-   * connected wallet.
+   * Link External Web3 Wallet (MetaMask/Phantom)
    *
    * @example
    * ```ts
-   * const response = await client.web3.wallets.getBalance(
-   *   'wallet_conn_eth_0xabc123',
+   * await client.web3.wallets.connect({
+   *   address: 'address',
+   *   provider: 'provider',
+   *   signature: 'signature',
+   * });
+   * ```
+   */
+  connect(body: WalletConnectParams, options?: Core.RequestOptions): Core.APIPromise<void> {
+    return this._client.post('/web3/wallets/connect', {
+      body,
+      ...options,
+      headers: { Accept: '*/*', ...options?.headers },
+    });
+  }
+
+  /**
+   * Get Multi-chain Token Balances
+   *
+   * @example
+   * ```ts
+   * const response = await client.web3.wallets.retrieveBalances(
+   *   'walletId',
    * );
    * ```
    */
-  getBalance(
+  retrieveBalances(
     walletId: string,
-    query?: WalletGetBalanceParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<unknown>;
-  getBalance(walletId: string, options?: Core.RequestOptions): Core.APIPromise<unknown>;
-  getBalance(
-    walletId: string,
-    query: WalletGetBalanceParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<unknown> {
-    if (isRequestOptions(query)) {
-      return this.getBalance(walletId, {}, query);
-    }
-    return this._client.get(`/web3/wallets/${walletId}/balances`, { query, ...options });
+  ): Core.APIPromise<WalletRetrieveBalancesResponse> {
+    return this._client.get(`/web3/wallets/${walletId}/balances`, options);
   }
 }
 
-export type WalletCreateResponse = unknown;
+export interface WalletCreateResponse {
+  id: string;
 
-export type WalletListResponse = unknown;
+  address: string;
 
-export type WalletGetBalanceResponse = unknown;
-
-export interface WalletCreateParams {}
-
-export interface WalletListParams {
-  /**
-   * Maximum number of items to return in a single page.
-   */
-  limit?: number;
-
-  /**
-   * Number of items to skip before starting to collect the result set.
-   */
-  offset?: number;
+  network: string;
 }
 
-export interface WalletGetBalanceParams {
-  /**
-   * Maximum number of items to return in a single page.
-   */
-  limit?: number;
+export interface WalletListResponse {
+  data?: Array<WalletListResponse.Data>;
+}
 
-  /**
-   * Number of items to skip before starting to collect the result set.
-   */
-  offset?: number;
+export namespace WalletListResponse {
+  export interface Data {
+    id: string;
+
+    address: string;
+
+    network: string;
+  }
+}
+
+export interface WalletRetrieveBalancesResponse {
+  balances?: Array<WalletRetrieveBalancesResponse.Balance>;
+}
+
+export namespace WalletRetrieveBalancesResponse {
+  export interface Balance {
+    amount?: string;
+
+    symbol?: string;
+  }
+}
+
+export interface WalletCreateParams {
+  network: string;
+}
+
+export interface WalletConnectParams {
+  address: string;
+
+  provider: string;
+
+  signature: string;
 }
 
 export declare namespace Wallets {
   export {
     type WalletCreateResponse as WalletCreateResponse,
     type WalletListResponse as WalletListResponse,
-    type WalletGetBalanceResponse as WalletGetBalanceResponse,
+    type WalletRetrieveBalancesResponse as WalletRetrieveBalancesResponse,
     type WalletCreateParams as WalletCreateParams,
-    type WalletListParams as WalletListParams,
-    type WalletGetBalanceParams as WalletGetBalanceParams,
+    type WalletConnectParams as WalletConnectParams,
   };
 }

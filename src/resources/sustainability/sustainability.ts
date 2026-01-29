@@ -3,33 +3,65 @@
 import { APIResource } from '../../resource';
 import * as Core from '../../core';
 import * as ImpactAPI from './impact';
-import { Impact } from './impact';
+import {
+  Impact,
+  ImpactListGreenProjectsParams,
+  ImpactListGreenProjectsResponse,
+  ImpactRetrievePortfolioAnalysisResponse,
+} from './impact';
 import * as OffsetsAPI from './offsets';
-import { Offsets } from './offsets';
+import { OffsetPurchaseParams, OffsetRetireParams, Offsets } from './offsets';
 
 export class Sustainability extends APIResource {
   offsets: OffsetsAPI.Offsets = new OffsetsAPI.Offsets(this._client);
   impact: ImpactAPI.Impact = new ImpactAPI.Impact(this._client);
 
   /**
-   * Generates a detailed report of the user's estimated carbon footprint based on
-   * transaction data, lifestyle choices, and AI-driven impact assessments, offering
-   * insights and reduction strategies.
+   * Analysis of ledger data through Gemini to estimate CO2e output.
    */
-  getFootprint(options?: Core.RequestOptions): Core.APIPromise<unknown> {
+  retrieveCarbonFootprint(
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<SustainabilityRetrieveCarbonFootprintResponse> {
     return this._client.get('/sustainability/carbon-footprint', options);
   }
 }
 
-export type SustainabilityGetFootprintResponse = unknown;
+export interface SustainabilityRetrieveCarbonFootprintResponse {
+  period: string;
+
+  status: 'OPTIMAL' | 'HIGH_OUTPUT' | 'CRITICAL';
+
+  totalKgCO2e: number;
+
+  aiRecommendations?: Array<string>;
+
+  breakdown?: Array<SustainabilityRetrieveCarbonFootprintResponse.Breakdown>;
+}
+
+export namespace SustainabilityRetrieveCarbonFootprintResponse {
+  export interface Breakdown {
+    category?: string;
+
+    value?: number;
+  }
+}
 
 Sustainability.Offsets = Offsets;
 Sustainability.Impact = Impact;
 
 export declare namespace Sustainability {
-  export { type SustainabilityGetFootprintResponse as SustainabilityGetFootprintResponse };
+  export { type SustainabilityRetrieveCarbonFootprintResponse as SustainabilityRetrieveCarbonFootprintResponse };
 
-  export { Offsets as Offsets };
+  export {
+    Offsets as Offsets,
+    type OffsetPurchaseParams as OffsetPurchaseParams,
+    type OffsetRetireParams as OffsetRetireParams,
+  };
 
-  export { Impact as Impact };
+  export {
+    Impact as Impact,
+    type ImpactListGreenProjectsResponse as ImpactListGreenProjectsResponse,
+    type ImpactRetrievePortfolioAnalysisResponse as ImpactRetrievePortfolioAnalysisResponse,
+    type ImpactListGreenProjectsParams as ImpactListGreenProjectsParams,
+  };
 }

@@ -9,8 +9,8 @@ const client = new Jocall3({
 });
 
 describe('resource assets', () => {
-  test('search', async () => {
-    const responsePromise = client.investments.assets.search();
+  test('search: only required params', async () => {
+    const responsePromise = client.investments.assets.search({ query: 'query' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -20,25 +20,7 @@ describe('resource assets', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('search: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.investments.assets.search({ path: '/_stainless_unknown_path' })).rejects.toThrow(
-      Jocall3.NotFoundError,
-    );
-  });
-
-  test('search: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.investments.assets.search(
-        {
-          limit: 0,
-          minESGScore: 0,
-          offset: 0,
-          query: 'query',
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Jocall3.NotFoundError);
+  test('search: required and optional params', async () => {
+    const response = await client.investments.assets.search({ query: 'query', assetType: 'EQUITY' });
   });
 });

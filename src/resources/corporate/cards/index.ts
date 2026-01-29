@@ -3,12 +3,12 @@
 export {
   Cards,
   type CardListResponse,
-  type CardFreezeResponse,
+  type CardIssuePhysicalResponse,
   type CardIssueVirtualResponse,
   type CardListTransactionsResponse,
   type CardListParams,
   type CardFreezeParams,
+  type CardIssuePhysicalParams,
   type CardIssueVirtualParams,
-  type CardListTransactionsParams,
 } from './cards';
-export { Controls, type ControlUpdateResponse, type ControlUpdateParams } from './controls';
+export { Controls, type ControlUpdateParams } from './controls';

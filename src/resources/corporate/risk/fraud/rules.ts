@@ -6,47 +6,51 @@ import * as Core from '../../../../core';
 
 export class Rules extends APIResource {
   /**
-   * Updates an existing custom AI-powered fraud detection rule, modifying its
-   * criteria, actions, or status.
+   * Create Custom Fraud Rule
    *
    * @example
    * ```ts
-   * const rule = await client.corporate.risk.fraud.rules.update(
-   *   'fraud_rule_high_value_inactive',
-   *   {
-   *     action: {
-   *       type: 'flag',
-   *       details: 'Flag for manual review only, do not block.',
-   *     },
-   *     criteria: {
-   *       transactionAmountMin: 7500,
-   *       accountInactivityDays: 60,
-   *     },
-   *   },
-   * );
+   * await client.corporate.risk.fraud.rules.create({
+   *   logic: {},
+   *   name: 'name',
+   * });
    * ```
    */
-  update(
-    ruleId: string,
-    body?: RuleUpdateParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<RuleUpdateResponse>;
-  update(ruleId: string, options?: Core.RequestOptions): Core.APIPromise<RuleUpdateResponse>;
+  create(body: RuleCreateParams, options?: Core.RequestOptions): Core.APIPromise<void> {
+    return this._client.post('/corporate/risk/fraud/rules', {
+      body,
+      ...options,
+      headers: { Accept: '*/*', ...options?.headers },
+    });
+  }
+
+  /**
+   * Update a fraud rule
+   *
+   * @example
+   * ```ts
+   * await client.corporate.risk.fraud.rules.update('ruleId');
+   * ```
+   */
+  update(ruleId: string, body?: RuleUpdateParams, options?: Core.RequestOptions): Core.APIPromise<void>;
+  update(ruleId: string, options?: Core.RequestOptions): Core.APIPromise<void>;
   update(
     ruleId: string,
     body: RuleUpdateParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<RuleUpdateResponse> {
+  ): Core.APIPromise<void> {
     if (isRequestOptions(body)) {
       return this.update(ruleId, {}, body);
     }
-    return this._client.put(`/corporate/risk/fraud/rules/${ruleId}`, { body, ...options });
+    return this._client.put(`/corporate/risk/fraud/rules/${ruleId}`, {
+      body,
+      ...options,
+      headers: { Accept: '*/*', ...options?.headers },
+    });
   }
 
   /**
-   * Retrieves a list of AI-powered fraud detection rules currently active for the
-   * organization, including their parameters, thresholds, and associated actions
-   * (e.g., flag, block, alert).
+   * List Active Fraud Rule Set
    *
    * @example
    * ```ts
@@ -54,62 +58,31 @@ export class Rules extends APIResource {
    *   await client.corporate.risk.fraud.rules.list();
    * ```
    */
-  list(query?: RuleListParams, options?: Core.RequestOptions): Core.APIPromise<unknown>;
-  list(options?: Core.RequestOptions): Core.APIPromise<unknown>;
-  list(
-    query: RuleListParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<unknown> {
-    if (isRequestOptions(query)) {
-      return this.list({}, query);
-    }
-    return this._client.get('/corporate/risk/fraud/rules', { query, ...options });
+  list(options?: Core.RequestOptions): Core.APIPromise<RuleListResponse> {
+    return this._client.get('/corporate/risk/fraud/rules', options);
   }
 }
 
-export interface RuleUpdateResponse {
-  /**
-   * Action to take when a fraud rule is triggered.
-   */
-  action: unknown;
-
-  /**
-   * Criteria that define when a fraud rule should trigger.
-   */
-  criteria: unknown;
+export interface RuleListResponse {
+  rules?: Array<unknown>;
 }
 
-export type RuleListResponse = unknown;
+export interface RuleCreateParams {
+  logic: unknown;
+
+  name: string;
+}
 
 export interface RuleUpdateParams {
-  /**
-   * Action to take when a fraud rule is triggered.
-   */
-  action?: unknown;
+  action?: string;
 
-  /**
-   * Criteria that define when a fraud rule should trigger.
-   */
-  criteria?: unknown;
-}
-
-export interface RuleListParams {
-  /**
-   * Maximum number of items to return in a single page.
-   */
-  limit?: number;
-
-  /**
-   * Number of items to skip before starting to collect the result set.
-   */
-  offset?: number;
+  name?: string;
 }
 
 export declare namespace Rules {
   export {
-    type RuleUpdateResponse as RuleUpdateResponse,
     type RuleListResponse as RuleListResponse,
+    type RuleCreateParams as RuleCreateParams,
     type RuleUpdateParams as RuleUpdateParams,
-    type RuleListParams as RuleListParams,
   };
 }

@@ -1,11 +1,14 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { NFTs, type NFTListResponse, type NFTListParams } from './nfts';
-export { SmartContracts } from './smart-contracts';
+export { NFTs, type NFTListResponse, type NFTMintParams } from './nfts';
+export { SmartContracts, type SmartContractDeployParams } from './smart-contracts';
 export {
   Transactions,
-  type TransactionInitiateResponse,
+  type TransactionSendCryptoResponse,
+  type TransactionBridgeChainParams,
   type TransactionInitiateParams,
+  type TransactionSendCryptoParams,
+  type TransactionSwapTokensParams,
 } from './transactions';
 export {
   Wallets,
@@ -13,7 +16,6 @@ export {
   type WalletListResponse,
   type WalletGetBalanceResponse,
   type WalletCreateParams,
-  type WalletListParams,
-  type WalletGetBalanceParams,
+  type WalletConnectParams,
 } from './wallets';
-export { Web3 } from './web3';
+export { Web3, type Web3GetNetworkStatusResponse } from './web3';

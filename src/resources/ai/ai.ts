@@ -2,24 +2,36 @@
 
 import { APIResource } from '../../resource';
 import * as AdsAPI from './ads';
-import { AdGetOperationResponse, AdListParams, AdListResponse, Ads } from './ads';
-import * as AgentAPI from './agent';
-import { Agent } from './agent';
-import * as ModelsAPI from './models';
-import { Models } from './models';
-import * as AdvisorAPI from './advisor/advisor';
 import {
-  Advisor,
-  AdvisorChatParams,
-  AdvisorChatResponse,
-  AdvisorHistoryParams,
-  AdvisorHistoryResponse,
-} from './advisor/advisor';
+  AdGenerateCopyParams,
+  AdGenerateCopyResponse,
+  AdGenerateVideoParams,
+  AdGenerateVideoResponse,
+  AdGetOperationResponse,
+  AdListResponse,
+  AdOptimizeCampaignParams,
+  AdOptimizeCampaignResponse,
+  Ads,
+} from './ads';
+import * as AgentAPI from './agent';
+import {
+  Agent,
+  AgentGetCapabilitiesResponse,
+  AgentGetPromptsResponse,
+  AgentUpdatePromptsParams,
+} from './agent';
+import * as ModelsAPI from './models';
+import { ModelFineTuneParams, ModelFineTuneResponse, ModelListResponse, Models } from './models';
+import * as AdvisorAPI from './advisor/advisor';
+import { Advisor, AdvisorChatParams, AdvisorChatResponse, AdvisorHistoryResponse } from './advisor/advisor';
 import * as IncubatorAPI from './incubator/incubator';
 import {
   Incubator,
   IncubatorGeneratePitchParams,
   IncubatorGeneratePitchResponse,
+  IncubatorListPitchesResponse,
+  IncubatorValidateIdeaParams,
+  IncubatorValidateIdeaResponse,
 } from './incubator/incubator';
 import * as OracleAPI from './oracle/oracle';
 import { Oracle } from './oracle/oracle';
@@ -46,7 +58,6 @@ export declare namespace AI {
     type AdvisorChatResponse as AdvisorChatResponse,
     type AdvisorHistoryResponse as AdvisorHistoryResponse,
     type AdvisorChatParams as AdvisorChatParams,
-    type AdvisorHistoryParams as AdvisorHistoryParams,
   };
 
   export { Oracle as Oracle };
@@ -54,17 +65,35 @@ export declare namespace AI {
   export {
     Incubator as Incubator,
     type IncubatorGeneratePitchResponse as IncubatorGeneratePitchResponse,
+    type IncubatorListPitchesResponse as IncubatorListPitchesResponse,
+    type IncubatorValidateIdeaResponse as IncubatorValidateIdeaResponse,
     type IncubatorGeneratePitchParams as IncubatorGeneratePitchParams,
+    type IncubatorValidateIdeaParams as IncubatorValidateIdeaParams,
   };
 
   export {
     Ads as Ads,
     type AdListResponse as AdListResponse,
+    type AdGenerateCopyResponse as AdGenerateCopyResponse,
+    type AdGenerateVideoResponse as AdGenerateVideoResponse,
     type AdGetOperationResponse as AdGetOperationResponse,
-    type AdListParams as AdListParams,
+    type AdOptimizeCampaignResponse as AdOptimizeCampaignResponse,
+    type AdGenerateCopyParams as AdGenerateCopyParams,
+    type AdGenerateVideoParams as AdGenerateVideoParams,
+    type AdOptimizeCampaignParams as AdOptimizeCampaignParams,
   };
 
-  export { Agent as Agent };
+  export {
+    Agent as Agent,
+    type AgentGetCapabilitiesResponse as AgentGetCapabilitiesResponse,
+    type AgentGetPromptsResponse as AgentGetPromptsResponse,
+    type AgentUpdatePromptsParams as AgentUpdatePromptsParams,
+  };
 
-  export { Models as Models };
+  export {
+    Models as Models,
+    type ModelListResponse as ModelListResponse,
+    type ModelFineTuneResponse as ModelFineTuneResponse,
+    type ModelFineTuneParams as ModelFineTuneParams,
+  };
 }

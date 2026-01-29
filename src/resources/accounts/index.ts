@@ -5,19 +5,20 @@ export {
   type AccountRetrieveResponse,
   type AccountListResponse,
   type AccountLinkResponse,
-  type AccountListParams,
+  type AccountOpenResponse,
   type AccountLinkParams,
+  type AccountOpenParams,
 } from './accounts';
-export { BalanceHistory } from './balance-history';
 export {
-  Overdraft,
-  type OverdraftUpdateResponse,
-  type OverdraftGetResponse,
-  type OverdraftUpdateParams,
-} from './overdraft';
-export { Statements, type StatementListResponse, type StatementListParams } from './statements';
+  BalanceHistory,
+  type BalanceHistoryRetrieveResponse,
+  type BalanceHistoryRetrieveParams,
+} from './balance-history';
+export { Overdraft, type OverdraftGetResponse, type OverdraftUpdateParams } from './overdraft';
+export { Statements, type StatementListResponse } from './statements';
 export {
   Transactions,
+  type TransactionListArchivedResponse,
   type TransactionListPendingResponse,
-  type TransactionListPendingParams,
+  type TransactionListArchivedParams,
 } from './transactions';

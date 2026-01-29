@@ -50,36 +50,11 @@ describe('resource me', () => {
     await expect(
       client.users.me.update(
         {
-          address: {
-            city: 'city',
-            country: 'country',
-            street: 'street',
-            state: 'state',
-            zip: 'zip',
-          },
-          name: 'name',
-          phone: 'phone',
+          address: {},
+          preferences: { notificationChannels: {} },
         },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Jocall3.NotFoundError);
-  });
-
-  test('delete', async () => {
-    const responsePromise = client.users.me.delete();
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('delete: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.users.me.delete({ path: '/_stainless_unknown_path' })).rejects.toThrow(
-      Jocall3.NotFoundError,
-    );
   });
 });

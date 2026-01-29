@@ -1,0 +1,69 @@
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+import Jocall3 from 'jocall3-node';
+import { Response } from 'node-fetch';
+
+const client = new Jocall3({
+  apiKey: 'My API Key',
+  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
+});
+
+describe('resource preferences', () => {
+  test('retrieve', async () => {
+    const responsePromise = client.users.me.preferences.retrieve();
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('retrieve: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(client.users.me.preferences.retrieve({ path: '/_stainless_unknown_path' })).rejects.toThrow(
+      Jocall3.NotFoundError,
+    );
+  });
+
+  test('update', async () => {
+    const responsePromise = client.users.me.preferences.update();
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('update: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(client.users.me.preferences.update({ path: '/_stainless_unknown_path' })).rejects.toThrow(
+      Jocall3.NotFoundError,
+    );
+  });
+
+  test('update: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.users.me.preferences.update(
+        {
+          aiInteractionMode: 'proactive',
+          dataSharingConsent: true,
+          notificationChannels: {
+            email: true,
+            inApp: true,
+            push: true,
+            sms: true,
+          },
+          preferredLanguage: 'preferredLanguage',
+          theme: 'Dark-Quantum',
+          transactionGrouping: 'transactionGrouping',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Jocall3.NotFoundError);
+  });
+});

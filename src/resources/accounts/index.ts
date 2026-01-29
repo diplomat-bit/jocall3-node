@@ -2,17 +2,18 @@
 
 export {
   Accounts,
-  type AccountRetrieveResponse,
   type AccountListResponse,
   type AccountLinkResponse,
+  type AccountRetrieveDetailsResponse,
   type AccountListParams,
   type AccountLinkParams,
 } from './accounts';
+export { BalanceHistory } from './balance-history';
 export {
   Overdraft,
-  type OverdraftUpdateResponse,
-  type OverdraftGetResponse,
-  type OverdraftUpdateParams,
+  type OverdraftRetrieveSettingsResponse,
+  type OverdraftUpdateSettingsResponse,
+  type OverdraftUpdateSettingsParams,
 } from './overdraft';
 export { Statements, type StatementListResponse, type StatementListParams } from './statements';
 export {

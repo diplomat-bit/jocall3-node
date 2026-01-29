@@ -21,13 +21,16 @@ export class Transactions extends APIResource {
     accountId: string,
     query?: TransactionListPendingParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<unknown>;
-  listPending(accountId: string, options?: Core.RequestOptions): Core.APIPromise<unknown>;
+  ): Core.APIPromise<TransactionListPendingResponse>;
+  listPending(
+    accountId: string,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<TransactionListPendingResponse>;
   listPending(
     accountId: string,
     query: TransactionListPendingParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<unknown> {
+  ): Core.APIPromise<TransactionListPendingResponse> {
     if (isRequestOptions(query)) {
       return this.listPending(accountId, {}, query);
     }
@@ -35,7 +38,45 @@ export class Transactions extends APIResource {
   }
 }
 
-export type TransactionListPendingResponse = unknown;
+export interface TransactionListPendingResponse {
+  data: Array<TransactionListPendingResponse.Data>;
+
+  limit: number;
+
+  offset: number;
+
+  total: number;
+
+  nextOffset?: number;
+}
+
+export namespace TransactionListPendingResponse {
+  export interface Data {
+    id?: string;
+
+    accountId?: string;
+
+    aiCategoryConfidence?: number;
+
+    amount?: number;
+
+    carbonFootprint?: number;
+
+    category?: string;
+
+    currency?: string;
+
+    date?: string;
+
+    description?: string;
+
+    disputeStatus?: string;
+
+    paymentChannel?: string;
+
+    type?: string;
+  }
+}
 
 export interface TransactionListPendingParams {
   /**

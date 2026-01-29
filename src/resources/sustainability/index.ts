@@ -2,4 +2,4 @@
 
 export { Impact } from './impact';
 export { Offsets } from './offsets';
-export { Sustainability, type SustainabilityGetFootprintResponse } from './sustainability';
+export { Sustainability, type SustainabilityRetrieveCarbonFootprintResponse } from './sustainability';

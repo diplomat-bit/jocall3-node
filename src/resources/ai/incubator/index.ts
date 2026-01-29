@@ -3,6 +3,14 @@
 export { Analysis } from './analysis';
 export {
   Incubator,
-  type IncubatorGeneratePitchResponse,
-  type IncubatorGeneratePitchParams,
+  type IncubatorListPitchesResponse,
+  type IncubatorSubmitPitchResponse,
+  type IncubatorListPitchesParams,
+  type IncubatorSubmitPitchParams,
 } from './incubator';
+export {
+  Pitch,
+  type PitchRetrieveDetailsResponse,
+  type PitchSubmitFeedbackResponse,
+  type PitchSubmitFeedbackParams,
+} from './pitch';

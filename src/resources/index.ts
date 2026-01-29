@@ -3,27 +3,30 @@
 export { AI } from './ai/ai';
 export {
   Accounts,
-  type AccountRetrieveResponse,
   type AccountListResponse,
   type AccountLinkResponse,
+  type AccountRetrieveDetailsResponse,
   type AccountListParams,
   type AccountLinkParams,
 } from './accounts/accounts';
 export { Corporate } from './corporate/corporate';
+export { Investments } from './investments/investments';
 export { Lending } from './lending/lending';
-export {
-  Marketplace,
-  type MarketplaceListProductsResponse,
-  type MarketplaceListProductsParams,
-} from './marketplace/marketplace';
+export { Marketplace } from './marketplace/marketplace';
 export { Payments } from './payments/payments';
-export { Sustainability, type SustainabilityGetFootprintResponse } from './sustainability/sustainability';
+export {
+  Sustainability,
+  type SustainabilityRetrieveCarbonFootprintResponse,
+} from './sustainability/sustainability';
+export { System } from './system/system';
 export {
   Transactions,
   type TransactionRetrieveResponse,
   type TransactionListResponse,
+  type TransactionAddNotesResponse,
   type TransactionCategorizeResponse,
   type TransactionListParams,
+  type TransactionAddNotesParams,
   type TransactionCategorizeParams,
 } from './transactions/transactions';
 export {

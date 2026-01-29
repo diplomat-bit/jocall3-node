@@ -8,4 +8,10 @@ export {
 } from './biometrics';
 export { Devices, type DeviceListResponse, type DeviceListParams } from './devices';
 export { Me, type MeRetrieveResponse, type MeUpdateResponse, type MeUpdateParams } from './me';
+export {
+  Preferences,
+  type PreferenceRetrieveResponse,
+  type PreferenceUpdateResponse,
+  type PreferenceUpdateParams,
+} from './preferences';
 export { Security } from './security';

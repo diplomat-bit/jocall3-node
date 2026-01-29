@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../../resource';
-import * as FraudAPI from './fraud';
-import { Fraud, FraudListRulesParams, FraudListRulesResponse } from './fraud';
+import * as FraudAPI from './fraud/fraud';
+import { Fraud } from './fraud/fraud';
 
 export class Risk extends APIResource {
   fraud: FraudAPI.Fraud = new FraudAPI.Fraud(this._client);
@@ -11,9 +11,5 @@ export class Risk extends APIResource {
 Risk.Fraud = Fraud;
 
 export declare namespace Risk {
-  export {
-    Fraud as Fraud,
-    type FraudListRulesResponse as FraudListRulesResponse,
-    type FraudListRulesParams as FraudListRulesParams,
-  };
+  export { Fraud as Fraud };
 }

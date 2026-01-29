@@ -4,9 +4,15 @@ import { APIResource } from '../../resource';
 import * as DomesticAPI from './domestic';
 import { Domestic } from './domestic';
 import * as FxAPI from './fx';
-import { Fx, FxConvertParams, FxConvertResponse, FxGetRatesParams, FxGetRatesResponse } from './fx';
+import {
+  Fx,
+  FxConvertCurrencyParams,
+  FxConvertCurrencyResponse,
+  FxRetrieveRatesParams,
+  FxRetrieveRatesResponse,
+} from './fx';
 import * as InternationalAPI from './international';
-import { International } from './international';
+import { International, InternationalRetrieveStatusResponse } from './international';
 
 export class Payments extends APIResource {
   domestic: DomesticAPI.Domestic = new DomesticAPI.Domestic(this._client);
@@ -21,13 +27,16 @@ Payments.Fx = Fx;
 export declare namespace Payments {
   export { Domestic as Domestic };
 
-  export { International as International };
+  export {
+    International as International,
+    type InternationalRetrieveStatusResponse as InternationalRetrieveStatusResponse,
+  };
 
   export {
     Fx as Fx,
-    type FxConvertResponse as FxConvertResponse,
-    type FxGetRatesResponse as FxGetRatesResponse,
-    type FxConvertParams as FxConvertParams,
-    type FxGetRatesParams as FxGetRatesParams,
+    type FxConvertCurrencyResponse as FxConvertCurrencyResponse,
+    type FxRetrieveRatesResponse as FxRetrieveRatesResponse,
+    type FxConvertCurrencyParams as FxConvertCurrencyParams,
+    type FxRetrieveRatesParams as FxRetrieveRatesParams,
   };
 }

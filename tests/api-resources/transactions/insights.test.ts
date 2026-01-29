@@ -5,14 +5,12 @@ import { Response } from 'node-fetch';
 
 const client = new Jocall3({
   apiKey: 'My API Key',
-  geminiAPIKey: 'My Gemini API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource insights', () => {
-  // Prism tests are disabled
-  test.skip('getTrends', async () => {
-    const responsePromise = client.transactions.insights.getTrends();
+  test('retrieveSpendingTrends', async () => {
+    const responsePromise = client.transactions.insights.retrieveSpendingTrends();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -22,11 +20,10 @@ describe('resource insights', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('getTrends: request options instead of params are passed correctly', async () => {
+  test('retrieveSpendingTrends: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.transactions.insights.getTrends({ path: '/_stainless_unknown_path' }),
+      client.transactions.insights.retrieveSpendingTrends({ path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Jocall3.NotFoundError);
   });
 });

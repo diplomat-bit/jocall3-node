@@ -5,13 +5,11 @@ import { Response } from 'node-fetch';
 
 const client = new Jocall3({
   apiKey: 'My API Key',
-  geminiAPIKey: 'My Gemini API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource simulate', () => {
-  // Prism tests are disabled
-  test.skip('runAdvanced', async () => {
+  test('runAdvanced', async () => {
     const responsePromise = client.ai.oracle.simulate.runAdvanced({});
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -22,8 +20,7 @@ describe('resource simulate', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('runStandard', async () => {
+  test('runStandard', async () => {
     const responsePromise = client.ai.oracle.simulate.runStandard({});
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);

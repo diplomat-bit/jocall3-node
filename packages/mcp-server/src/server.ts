@@ -16,7 +16,7 @@ export const newMcpServer = () =>
   new McpServer(
     {
       name: 'jocall3_node_api',
-      version: '0.0.1',
+      version: '0.1.0',
     },
     { capabilities: { tools: {}, logging: {} } },
   );

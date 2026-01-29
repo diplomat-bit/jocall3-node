@@ -11,11 +11,8 @@ It is generated with [Stainless](https://www.stainless.com/).
 ## Installation
 
 ```sh
-npm install git+ssh://git@github.com:stainless-sdks/jocall3-node.git
+npm install jocall3-node
 ```
-
-> [!NOTE]
-> Once this package is [published to npm](https://www.stainless.com/docs/guides/publish), this will become: `npm install jocall3-node`
 
 ## Usage
 
@@ -46,7 +43,12 @@ const client = new Jocall3({
   environment: 'sandbox', // or 'production' | 'gemini_direct'; defaults to 'production'
 });
 
-const response: Jocall3.UserRegisterResponse = await client.users.register();
+const params: Jocall3.UserRegisterParams = {
+  email: 'user@quantum-ledger.com',
+  name: 'Standard User',
+  password: 'DefaultPassword123!',
+};
+const response: Jocall3.UserRegisterResponse = await client.users.register(params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -59,15 +61,21 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const response = await client.users.register().catch(async (err) => {
-  if (err instanceof Jocall3.APIError) {
-    console.log(err.status); // 400
-    console.log(err.name); // BadRequestError
-    console.log(err.headers); // {server: 'nginx', ...}
-  } else {
-    throw err;
-  }
-});
+const response = await client.users
+  .register({
+    email: 'user@quantum-ledger.com',
+    name: 'Standard User',
+    password: 'DefaultPassword123!',
+  })
+  .catch(async (err) => {
+    if (err instanceof Jocall3.APIError) {
+      console.log(err.status); // 400
+      console.log(err.name); // BadRequestError
+      console.log(err.headers); // {server: 'nginx', ...}
+    } else {
+      throw err;
+    }
+  });
 ```
 
 Error codes are as follows:
@@ -100,6 +108,10 @@ const client = new Jocall3({
 
 // Or, configure per-request:
 await client.users.register({
+  email: 'user@quantum-ledger.com',
+  name: 'Standard User',
+  password: 'DefaultPassword123!',
+}, {
   maxRetries: 5,
 });
 ```
@@ -117,6 +129,10 @@ const client = new Jocall3({
 
 // Override per-request:
 await client.users.register({
+  email: 'user@quantum-ledger.com',
+  name: 'Standard User',
+  password: 'DefaultPassword123!',
+}, {
   timeout: 5 * 1000,
 });
 ```
@@ -137,13 +153,25 @@ You can also use the `.withResponse()` method to get the raw `Response` along wi
 ```ts
 const client = new Jocall3();
 
-const response = await client.users.register().asResponse();
+const response = await client.users
+  .register({
+    email: 'user@quantum-ledger.com',
+    name: 'Standard User',
+    password: 'DefaultPassword123!',
+  })
+  .asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: response, response: raw } = await client.users.register().withResponse();
+const { data: response, response: raw } = await client.users
+  .register({
+    email: 'user@quantum-ledger.com',
+    name: 'Standard User',
+    password: 'DefaultPassword123!',
+  })
+  .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(response.address);
+console.log(response.id);
 ```
 
 ### Making custom/undocumented requests
@@ -206,7 +234,7 @@ import Jocall3 from 'jocall3-node';
 ```
 
 To do the inverse, add `import "jocall3-node/shims/node"` (which does import polyfills).
-This can also be useful if you are getting the wrong TypeScript types for `Response` ([more details](https://github.com/stainless-sdks/jocall3-node/tree/main/src/_shims#readme)).
+This can also be useful if you are getting the wrong TypeScript types for `Response` ([more details](https://github.com/diplomat-bit/jocall3-node/tree/main/src/_shims#readme)).
 
 ### Logging and middleware
 
@@ -247,9 +275,16 @@ const client = new Jocall3({
 });
 
 // Override per-request:
-await client.users.register({
-  httpAgent: new http.Agent({ keepAlive: false }),
-});
+await client.users.register(
+  {
+    email: 'user@quantum-ledger.com',
+    name: 'Standard User',
+    password: 'DefaultPassword123!',
+  },
+  {
+    httpAgent: new http.Agent({ keepAlive: false }),
+  },
+);
 ```
 
 ## Semantic versioning
@@ -262,7 +297,7 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/jocall3-node/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/diplomat-bit/jocall3-node/issues) with questions, bugs, or suggestions.
 
 ## Requirements
 

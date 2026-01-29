@@ -47,24 +47,24 @@ export class Wallets extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.web3.wallets.getBalance(
+   * const response = await client.web3.wallets.retrieveBalances(
    *   'wallet_conn_eth_0xabc123',
    * );
    * ```
    */
-  getBalance(
+  retrieveBalances(
     walletId: string,
-    query?: WalletGetBalanceParams,
+    query?: WalletRetrieveBalancesParams,
     options?: Core.RequestOptions,
   ): Core.APIPromise<unknown>;
-  getBalance(walletId: string, options?: Core.RequestOptions): Core.APIPromise<unknown>;
-  getBalance(
+  retrieveBalances(walletId: string, options?: Core.RequestOptions): Core.APIPromise<unknown>;
+  retrieveBalances(
     walletId: string,
-    query: WalletGetBalanceParams | Core.RequestOptions = {},
+    query: WalletRetrieveBalancesParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
   ): Core.APIPromise<unknown> {
     if (isRequestOptions(query)) {
-      return this.getBalance(walletId, {}, query);
+      return this.retrieveBalances(walletId, {}, query);
     }
     return this._client.get(`/web3/wallets/${walletId}/balances`, { query, ...options });
   }
@@ -74,7 +74,7 @@ export type WalletCreateResponse = unknown;
 
 export type WalletListResponse = unknown;
 
-export type WalletGetBalanceResponse = unknown;
+export type WalletRetrieveBalancesResponse = unknown;
 
 export interface WalletCreateParams {}
 
@@ -90,7 +90,7 @@ export interface WalletListParams {
   offset?: number;
 }
 
-export interface WalletGetBalanceParams {
+export interface WalletRetrieveBalancesParams {
   /**
    * Maximum number of items to return in a single page.
    */
@@ -106,9 +106,9 @@ export declare namespace Wallets {
   export {
     type WalletCreateResponse as WalletCreateResponse,
     type WalletListResponse as WalletListResponse,
-    type WalletGetBalanceResponse as WalletGetBalanceResponse,
+    type WalletRetrieveBalancesResponse as WalletRetrieveBalancesResponse,
     type WalletCreateParams as WalletCreateParams,
     type WalletListParams as WalletListParams,
-    type WalletGetBalanceParams as WalletGetBalanceParams,
+    type WalletRetrieveBalancesParams as WalletRetrieveBalancesParams,
   };
 }

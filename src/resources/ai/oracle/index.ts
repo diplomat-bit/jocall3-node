@@ -9,3 +9,9 @@ export {
   type SimulateRunAdvancedParams,
   type SimulateRunStandardParams,
 } from './simulate';
+export {
+  Simulations,
+  type SimulationRetrieveResponse,
+  type SimulationListResponse,
+  type SimulationListParams,
+} from './simulations';

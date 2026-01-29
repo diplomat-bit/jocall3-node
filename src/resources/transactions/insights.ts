@@ -11,16 +11,56 @@ export class Insights extends APIResource {
    * @example
    * ```ts
    * const response =
-   *   await client.transactions.insights.getTrends();
+   *   await client.transactions.insights.retrieveSpendingTrends();
    * ```
    */
-  getTrends(options?: Core.RequestOptions): Core.APIPromise<unknown> {
+  retrieveSpendingTrends(
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<InsightRetrieveSpendingTrendsResponse> {
     return this._client.get('/transactions/insights/spending-trends', options);
   }
 }
 
-export type InsightGetTrendsResponse = unknown;
+export interface InsightRetrieveSpendingTrendsResponse {
+  aiInsights: Array<InsightRetrieveSpendingTrendsResponse.AIInsight>;
+
+  forecastNextMonth: number;
+
+  overallTrend: string;
+
+  percentageChange: number;
+
+  period: string;
+
+  topCategoriesByChange: Array<InsightRetrieveSpendingTrendsResponse.TopCategoriesByChange>;
+}
+
+export namespace InsightRetrieveSpendingTrendsResponse {
+  export interface AIInsight {
+    id?: string;
+
+    actionableRecommendation?: string;
+
+    category?: string;
+
+    description?: string;
+
+    severity?: string;
+
+    timestamp?: string;
+
+    title?: string;
+  }
+
+  export interface TopCategoriesByChange {
+    absoluteChange?: number;
+
+    category?: string;
+
+    percentageChange?: number;
+  }
+}
 
 export declare namespace Insights {
-  export { type InsightGetTrendsResponse as InsightGetTrendsResponse };
+  export { type InsightRetrieveSpendingTrendsResponse as InsightRetrieveSpendingTrendsResponse };
 }

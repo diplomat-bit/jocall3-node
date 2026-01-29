@@ -15,12 +15,12 @@ export class Recurring extends APIResource {
    *   await client.transactions.recurring.list();
    * ```
    */
-  list(query?: RecurringListParams, options?: Core.RequestOptions): Core.APIPromise<unknown>;
-  list(options?: Core.RequestOptions): Core.APIPromise<unknown>;
+  list(query?: RecurringListParams, options?: Core.RequestOptions): Core.APIPromise<RecurringListResponse>;
+  list(options?: Core.RequestOptions): Core.APIPromise<RecurringListResponse>;
   list(
     query: RecurringListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<unknown> {
+  ): Core.APIPromise<RecurringListResponse> {
     if (isRequestOptions(query)) {
       return this.list({}, query);
     }
@@ -28,7 +28,43 @@ export class Recurring extends APIResource {
   }
 }
 
-export type RecurringListResponse = unknown;
+export interface RecurringListResponse {
+  data: Array<RecurringListResponse.Data>;
+
+  limit: number;
+
+  offset: number;
+
+  total: number;
+
+  nextOffset?: number;
+}
+
+export namespace RecurringListResponse {
+  export interface Data {
+    id?: string;
+
+    aiConfidenceScore?: number;
+
+    amount?: number;
+
+    category?: string;
+
+    currency?: string;
+
+    description?: string;
+
+    frequency?: string;
+
+    lastPaidDate?: string;
+
+    linkedAccountId?: string;
+
+    nextDueDate?: string;
+
+    status?: string;
+  }
+}
 
 export interface RecurringListParams {
   /**

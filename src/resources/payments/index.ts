@@ -3,10 +3,10 @@
 export { Domestic } from './domestic';
 export {
   Fx,
-  type FxConvertResponse,
-  type FxGetRatesResponse,
-  type FxConvertParams,
-  type FxGetRatesParams,
+  type FxConvertCurrencyResponse,
+  type FxRetrieveRatesResponse,
+  type FxConvertCurrencyParams,
+  type FxRetrieveRatesParams,
 } from './fx';
-export { International } from './international';
+export { International, type InternationalRetrieveStatusResponse } from './international';
 export { Payments } from './payments';

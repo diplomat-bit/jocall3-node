@@ -5,13 +5,11 @@ import { Response } from 'node-fetch';
 
 const client = new Jocall3({
   apiKey: 'My API Key',
-  geminiAPIKey: 'My Gemini API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource wallets', () => {
-  // Prism tests are disabled
-  test.skip('create', async () => {
+  test('create', async () => {
     const responsePromise = client.web3.wallets.create({});
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -22,8 +20,7 @@ describe('resource wallets', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('list', async () => {
+  test('list', async () => {
     const responsePromise = client.web3.wallets.list();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -34,25 +31,22 @@ describe('resource wallets', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('list: request options instead of params are passed correctly', async () => {
+  test('list: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(client.web3.wallets.list({ path: '/_stainless_unknown_path' })).rejects.toThrow(
       Jocall3.NotFoundError,
     );
   });
 
-  // Prism tests are disabled
-  test.skip('list: request options and params are passed correctly', async () => {
+  test('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.web3.wallets.list({ limit: 0, offset: 0 }, { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Jocall3.NotFoundError);
   });
 
-  // Prism tests are disabled
-  test.skip('getBalance', async () => {
-    const responsePromise = client.web3.wallets.getBalance('wallet_conn_eth_0xabc123');
+  test('retrieveBalances', async () => {
+    const responsePromise = client.web3.wallets.retrieveBalances('wallet_conn_eth_0xabc123');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -62,19 +56,17 @@ describe('resource wallets', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('getBalance: request options instead of params are passed correctly', async () => {
+  test('retrieveBalances: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.web3.wallets.getBalance('wallet_conn_eth_0xabc123', { path: '/_stainless_unknown_path' }),
+      client.web3.wallets.retrieveBalances('wallet_conn_eth_0xabc123', { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Jocall3.NotFoundError);
   });
 
-  // Prism tests are disabled
-  test.skip('getBalance: request options and params are passed correctly', async () => {
+  test('retrieveBalances: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.web3.wallets.getBalance(
+      client.web3.wallets.retrieveBalances(
         'wallet_conn_eth_0xabc123',
         { limit: 0, offset: 0 },
         { path: '/_stainless_unknown_path' },

@@ -11,10 +11,10 @@ export class Fx extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.payments.fx.convert();
+   * const response = await client.payments.fx.convertCurrency();
    * ```
    */
-  convert(body: FxConvertParams, options?: Core.RequestOptions): Core.APIPromise<unknown> {
+  convertCurrency(body: FxConvertCurrencyParams, options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.post('/payments/fx/convert', { body, ...options });
   }
 
@@ -25,25 +25,28 @@ export class Fx extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.payments.fx.getRates();
+   * const response = await client.payments.fx.retrieveRates();
    * ```
    */
-  getRates(query?: FxGetRatesParams, options?: Core.RequestOptions): Core.APIPromise<FxGetRatesResponse>;
-  getRates(options?: Core.RequestOptions): Core.APIPromise<FxGetRatesResponse>;
-  getRates(
-    query: FxGetRatesParams | Core.RequestOptions = {},
+  retrieveRates(
+    query?: FxRetrieveRatesParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<FxGetRatesResponse> {
+  ): Core.APIPromise<FxRetrieveRatesResponse>;
+  retrieveRates(options?: Core.RequestOptions): Core.APIPromise<FxRetrieveRatesResponse>;
+  retrieveRates(
+    query: FxRetrieveRatesParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<FxRetrieveRatesResponse> {
     if (isRequestOptions(query)) {
-      return this.getRates({}, query);
+      return this.retrieveRates({}, query);
     }
     return this._client.get('/payments/fx/rates', { query, ...options });
   }
 }
 
-export type FxConvertResponse = unknown;
+export type FxConvertCurrencyResponse = unknown;
 
-export interface FxGetRatesResponse {
+export interface FxRetrieveRatesResponse {
   /**
    * Real-time foreign exchange rates.
    */
@@ -52,9 +55,9 @@ export interface FxGetRatesResponse {
   historicalVolatility?: unknown;
 }
 
-export interface FxConvertParams {}
+export interface FxConvertCurrencyParams {}
 
-export interface FxGetRatesParams {
+export interface FxRetrieveRatesParams {
   /**
    * The base currency code (e.g., USD).
    */
@@ -73,9 +76,9 @@ export interface FxGetRatesParams {
 
 export declare namespace Fx {
   export {
-    type FxConvertResponse as FxConvertResponse,
-    type FxGetRatesResponse as FxGetRatesResponse,
-    type FxConvertParams as FxConvertParams,
-    type FxGetRatesParams as FxGetRatesParams,
+    type FxConvertCurrencyResponse as FxConvertCurrencyResponse,
+    type FxRetrieveRatesResponse as FxRetrieveRatesResponse,
+    type FxConvertCurrencyParams as FxConvertCurrencyParams,
+    type FxRetrieveRatesParams as FxRetrieveRatesParams,
   };
 }

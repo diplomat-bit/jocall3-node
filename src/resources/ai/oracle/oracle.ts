@@ -2,23 +2,22 @@
 
 import { APIResource } from '../../../resource';
 import * as PredictionsAPI from './predictions';
-import {
-  PredictionInflationParams,
-  PredictionInflationResponse,
-  PredictionMarketCrashResponse,
-  Predictions,
-} from './predictions';
+import { Predictions } from './predictions';
 import * as SimulateAPI from './simulate';
 import {
   Simulate,
   SimulateRunAdvancedParams,
   SimulateRunAdvancedResponse,
-  SimulateRunMonteCarloParams,
   SimulateRunStandardParams,
   SimulateRunStandardResponse,
 } from './simulate';
 import * as SimulationsAPI from './simulations';
-import { SimulationListResponse, SimulationRetrieveResponse, Simulations } from './simulations';
+import {
+  SimulationListParams,
+  SimulationListResponse,
+  SimulationRetrieveResponse,
+  Simulations,
+} from './simulations';
 
 export class Oracle extends APIResource {
   simulate: SimulateAPI.Simulate = new SimulateAPI.Simulate(this._client);
@@ -36,20 +35,15 @@ export declare namespace Oracle {
     type SimulateRunAdvancedResponse as SimulateRunAdvancedResponse,
     type SimulateRunStandardResponse as SimulateRunStandardResponse,
     type SimulateRunAdvancedParams as SimulateRunAdvancedParams,
-    type SimulateRunMonteCarloParams as SimulateRunMonteCarloParams,
     type SimulateRunStandardParams as SimulateRunStandardParams,
   };
 
-  export {
-    Predictions as Predictions,
-    type PredictionInflationResponse as PredictionInflationResponse,
-    type PredictionMarketCrashResponse as PredictionMarketCrashResponse,
-    type PredictionInflationParams as PredictionInflationParams,
-  };
+  export { Predictions as Predictions };
 
   export {
     Simulations as Simulations,
     type SimulationRetrieveResponse as SimulationRetrieveResponse,
     type SimulationListResponse as SimulationListResponse,
+    type SimulationListParams as SimulationListParams,
   };
 }

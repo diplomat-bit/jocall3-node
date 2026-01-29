@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { Me, type MeRetrieveResponse } from './me/index';
+export { Me, type MeRetrieveResponse, type MeUpdateResponse, type MeUpdateParams } from './me/index';
 export {
   PasswordReset,
   type PasswordResetConfirmResponse,

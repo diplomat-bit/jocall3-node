@@ -5,51 +5,40 @@ import * as Core from '../../core';
 
 export class PasswordReset extends APIResource {
   /**
-   * Confirm Password Reset with Code
+   * Confirms the password reset using the received verification code and sets a new
+   * password.
+   *
+   * @example
+   * ```ts
+   * const response = await client.users.passwordReset.confirm();
+   * ```
    */
-  confirm(
-    body: PasswordResetConfirmParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<PasswordResetConfirmResponse> {
+  confirm(body: PasswordResetConfirmParams, options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.post('/users/password-reset/confirm', { body, ...options });
   }
 
   /**
-   * Initiate Password Reset Flow
+   * Starts the password reset flow by sending a verification code or link to the
+   * user's registered email or phone.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.users.passwordReset.initiate();
+   * ```
    */
-  initiate(
-    body: PasswordResetInitiateParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<PasswordResetInitiateResponse> {
+  initiate(body: PasswordResetInitiateParams, options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.post('/users/password-reset/initiate', { body, ...options });
   }
 }
 
-export interface PasswordResetConfirmResponse {
-  message?: string;
-}
+export type PasswordResetConfirmResponse = unknown;
 
-export interface PasswordResetInitiateResponse {
-  message?: string;
-}
+export type PasswordResetInitiateResponse = unknown;
 
-export interface PasswordResetConfirmParams {
-  identifier: string;
+export interface PasswordResetConfirmParams {}
 
-  newPassword: string;
-
-  /**
-   * The 6-digit code sent to user
-   */
-  verificationCode: string;
-}
-
-export interface PasswordResetInitiateParams {
-  /**
-   * Email or phone number
-   */
-  identifier: string;
-}
+export interface PasswordResetInitiateParams {}
 
 export declare namespace PasswordReset {
   export {

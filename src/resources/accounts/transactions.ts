@@ -3,83 +3,55 @@
 import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
-import * as Shared from '../shared';
 
 export class Transactions extends APIResource {
   /**
-   * Get Historical Ledger Archive
-   *
-   * @example
-   * ```ts
-   * const response =
-   *   await client.accounts.transactions.listArchived(
-   *     'accountId',
-   *   );
-   * ```
-   */
-  listArchived(
-    accountId: string,
-    query?: TransactionListArchivedParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<TransactionListArchivedResponse>;
-  listArchived(
-    accountId: string,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<TransactionListArchivedResponse>;
-  listArchived(
-    accountId: string,
-    query: TransactionListArchivedParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<TransactionListArchivedResponse> {
-    if (isRequestOptions(query)) {
-      return this.listArchived(accountId, {}, query);
-    }
-    return this._client.get(`/accounts/${accountId}/transactions/archived`, { query, ...options });
-  }
-
-  /**
-   * Get Pending Ledger Entries
+   * Retrieves a list of pending transactions that have not yet cleared for a
+   * specific financial account.
    *
    * @example
    * ```ts
    * const response =
    *   await client.accounts.transactions.listPending(
-   *     'accountId',
+   *     'acc_chase_checking_4567',
    *   );
    * ```
    */
   listPending(
     accountId: string,
+    query?: TransactionListPendingParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<TransactionListPendingResponse> {
-    return this._client.get(`/accounts/${accountId}/transactions/pending`, options);
+  ): Core.APIPromise<unknown>;
+  listPending(accountId: string, options?: Core.RequestOptions): Core.APIPromise<unknown>;
+  listPending(
+    accountId: string,
+    query: TransactionListPendingParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<unknown> {
+    if (isRequestOptions(query)) {
+      return this.listPending(accountId, {}, query);
+    }
+    return this._client.get(`/accounts/${accountId}/transactions/pending`, { query, ...options });
   }
 }
 
-export interface TransactionListArchivedResponse {
-  data: Array<Shared.Transaction>;
+export type TransactionListPendingResponse = unknown;
 
-  total: number;
+export interface TransactionListPendingParams {
+  /**
+   * Maximum number of items to return in a single page.
+   */
+  limit?: number;
 
-  nextOffset?: number;
-}
-
-export interface TransactionListPendingResponse {
-  data: Array<Shared.Transaction>;
-
-  total: number;
-
-  nextOffset?: number;
-}
-
-export interface TransactionListArchivedParams {
-  year?: number;
+  /**
+   * Number of items to skip before starting to collect the result set.
+   */
+  offset?: number;
 }
 
 export declare namespace Transactions {
   export {
-    type TransactionListArchivedResponse as TransactionListArchivedResponse,
     type TransactionListPendingResponse as TransactionListPendingResponse,
-    type TransactionListArchivedParams as TransactionListArchivedParams,
+    type TransactionListPendingParams as TransactionListPendingParams,
   };
 }

@@ -49,7 +49,19 @@ describe('resource preferences', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.users.me.preferences.update(
-        { aiInteractionMode: 'aiInteractionMode', theme: 'theme' },
+        {
+          aiInteractionMode: 'proactive',
+          dataSharingConsent: true,
+          notificationChannels: {
+            email: true,
+            inApp: true,
+            push: true,
+            sms: true,
+          },
+          preferredLanguage: 'preferredLanguage',
+          theme: 'Dark-Quantum',
+          transactionGrouping: 'transactionGrouping',
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Jocall3.NotFoundError);

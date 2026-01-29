@@ -34,8 +34,8 @@ describe('resource cards', () => {
     ).rejects.toThrow(Jocall3.NotFoundError);
   });
 
-  test('freeze: only required params', async () => {
-    const responsePromise = client.corporate.cards.freeze('cardId', { frozen: true });
+  test('freeze', async () => {
+    const responsePromise = client.corporate.cards.freeze('corp_card_xyz987654', {});
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -43,48 +43,21 @@ describe('resource cards', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('freeze: required and optional params', async () => {
-    const response = await client.corporate.cards.freeze('cardId', { frozen: true });
-  });
-
-  test('issuePhysical: only required params', async () => {
-    const responsePromise = client.corporate.cards.issuePhysical({
-      holderName: 'holderName',
-      shippingAddress: {
-        city: 'city',
-        country: 'country',
-        street: 'street',
-      },
-    });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('issuePhysical: required and optional params', async () => {
-    const response = await client.corporate.cards.issuePhysical({
-      holderName: 'holderName',
-      shippingAddress: {
-        city: 'city',
-        country: 'country',
-        street: 'street',
-        state: 'state',
-        zip: 'zip',
-      },
-    });
   });
 
   test('issueVirtual: only required params', async () => {
     const responsePromise = client.corporate.cards.issueVirtual({
-      holderName: 'holderName',
-      monthlyLimit: 0,
-      purpose: 'purpose',
+      controls: {
+        atmWithdrawals: false,
+        contactlessPayments: false,
+        onlineTransactions: true,
+        internationalTransactions: false,
+        monthlyLimit: 1000,
+        dailyLimit: 500,
+        singleTransactionLimit: 200,
+        merchantCategoryRestrictions: ['Advertising'],
+        vendorRestrictions: ['Facebook Ads', 'Google Ads'],
+      },
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -97,15 +70,22 @@ describe('resource cards', () => {
 
   test('issueVirtual: required and optional params', async () => {
     const response = await client.corporate.cards.issueVirtual({
-      holderName: 'holderName',
-      monthlyLimit: 0,
-      purpose: 'purpose',
-      metadata: {},
+      controls: {
+        atmWithdrawals: false,
+        contactlessPayments: false,
+        onlineTransactions: true,
+        internationalTransactions: false,
+        monthlyLimit: 1000,
+        dailyLimit: 500,
+        singleTransactionLimit: 200,
+        merchantCategoryRestrictions: ['Advertising'],
+        vendorRestrictions: ['Facebook Ads', 'Google Ads'],
+      },
     });
   });
 
   test('listTransactions', async () => {
-    const responsePromise = client.corporate.cards.listTransactions('cardId');
+    const responsePromise = client.corporate.cards.listTransactions('corp_card_xyz987654');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -118,7 +98,23 @@ describe('resource cards', () => {
   test('listTransactions: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.corporate.cards.listTransactions('cardId', { path: '/_stainless_unknown_path' }),
+      client.corporate.cards.listTransactions('corp_card_xyz987654', { path: '/_stainless_unknown_path' }),
+    ).rejects.toThrow(Jocall3.NotFoundError);
+  });
+
+  test('listTransactions: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.corporate.cards.listTransactions(
+        'corp_card_xyz987654',
+        {
+          endDate: 'endDate',
+          limit: 0,
+          offset: 0,
+          startDate: 'startDate',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
     ).rejects.toThrow(Jocall3.NotFoundError);
   });
 });

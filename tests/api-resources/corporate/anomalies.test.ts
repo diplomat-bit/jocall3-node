@@ -27,8 +27,26 @@ describe('resource anomalies', () => {
     );
   });
 
-  test('updateStatus: only required params', async () => {
-    const responsePromise = client.corporate.anomalies.updateStatus('anomalyId', { status: 'dismissed' });
+  test('list: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.corporate.anomalies.list(
+        {
+          endDate: 'endDate',
+          entityType: 'entityType',
+          limit: 0,
+          offset: 0,
+          severity: 'severity',
+          startDate: 'startDate',
+          status: 'status',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Jocall3.NotFoundError);
+  });
+
+  test('updateStatus', async () => {
+    const responsePromise = client.corporate.anomalies.updateStatus('anom_risk-2024-07-21-D1E2F3', {});
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -36,9 +54,5 @@ describe('resource anomalies', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('updateStatus: required and optional params', async () => {
-    const response = await client.corporate.anomalies.updateStatus('anomalyId', { status: 'dismissed' });
   });
 });

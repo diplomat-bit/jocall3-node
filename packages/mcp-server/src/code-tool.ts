@@ -14,9 +14,7 @@ For example:
 
 \`\`\`
 async function run(client) {
-  const response = await client.ai.oracle.simulate.runAdvanced({ prompt: 'Analyze systemic risk of a 20% BTC drop.', scenarios: [{ name: 'Crypto Black Swan', description: 'Extreme market volatility scenario.' }] });
-
-  console.log(response.simulationId);
+  const response = await client.ai.oracle.simulate.runAdvanced();
 }
 \`\`\`
 

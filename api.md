@@ -1,10 +1,3 @@
-# Shared
-
-Types:
-
-- <code><a href="./src/resources/shared.ts">Address</a></code>
-- <code><a href="./src/resources/shared.ts">Transaction</a></code>
-
 # Users
 
 Types:
@@ -15,7 +8,6 @@ Types:
 Methods:
 
 - <code title="post /users/login">client.users.<a href="./src/resources/users/users.ts">login</a>({ ...params }) -> UserLoginResponse</code>
-- <code title="post /users/logout">client.users.<a href="./src/resources/users/users.ts">logout</a>() -> void</code>
 - <code title="post /users/register">client.users.<a href="./src/resources/users/users.ts">register</a>({ ...params }) -> UserRegisterResponse</code>
 
 ## PasswordReset
@@ -35,12 +27,12 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/users/me/me.ts">MeRetrieveResponse</a></code>
+- <code><a href="./src/resources/users/me/me.ts">MeUpdateResponse</a></code>
 
 Methods:
 
 - <code title="get /users/me">client.users.me.<a href="./src/resources/users/me/me.ts">retrieve</a>() -> MeRetrieveResponse</code>
-- <code title="put /users/me">client.users.me.<a href="./src/resources/users/me/me.ts">update</a>() -> void</code>
-- <code title="delete /users/me">client.users.me.<a href="./src/resources/users/me/me.ts">delete</a>() -> void</code>
+- <code title="put /users/me">client.users.me.<a href="./src/resources/users/me/me.ts">update</a>({ ...params }) -> MeUpdateResponse</code>
 
 ### Preferences
 
@@ -56,16 +48,6 @@ Methods:
 
 ### Security
 
-Types:
-
-- <code><a href="./src/resources/users/me/security.ts">SecurityRetrieveLogResponse</a></code>
-- <code><a href="./src/resources/users/me/security.ts">SecurityRotateKeysResponse</a></code>
-
-Methods:
-
-- <code title="get /users/me/security/log">client.users.me.security.<a href="./src/resources/users/me/security.ts">retrieveLog</a>({ ...params }) -> SecurityRetrieveLogResponse</code>
-- <code title="post /users/me/security/rotate-keys">client.users.me.security.<a href="./src/resources/users/me/security.ts">rotateKeys</a>() -> SecurityRotateKeysResponse</code>
-
 ### Devices
 
 Types:
@@ -74,9 +56,7 @@ Types:
 
 Methods:
 
-- <code title="get /users/me/devices">client.users.me.devices.<a href="./src/resources/users/me/devices.ts">list</a>() -> DeviceListResponse</code>
-- <code title="delete /users/me/devices/{deviceId}">client.users.me.devices.<a href="./src/resources/users/me/devices.ts">deregister</a>(deviceId) -> void</code>
-- <code title="post /users/me/devices">client.users.me.devices.<a href="./src/resources/users/me/devices.ts">register</a>({ ...params }) -> void</code>
+- <code title="get /users/me/devices">client.users.me.devices.<a href="./src/resources/users/me/devices.ts">list</a>({ ...params }) -> DeviceListResponse</code>
 
 ### Biometrics
 
@@ -87,8 +67,6 @@ Types:
 
 Methods:
 
-- <code title="delete /users/me/biometrics">client.users.me.biometrics.<a href="./src/resources/users/me/biometrics.ts">delete</a>() -> void</code>
-- <code title="post /users/me/biometrics/enroll">client.users.me.biometrics.<a href="./src/resources/users/me/biometrics.ts">enroll</a>({ ...params }) -> void</code>
 - <code title="get /users/me/biometrics">client.users.me.biometrics.<a href="./src/resources/users/me/biometrics.ts">retrieveStatus</a>() -> BiometricRetrieveStatusResponse</code>
 - <code title="post /users/me/biometrics/verify">client.users.me.biometrics.<a href="./src/resources/users/me/biometrics.ts">verify</a>({ ...params }) -> BiometricVerifyResponse</code>
 
@@ -98,38 +76,25 @@ Types:
 
 - <code><a href="./src/resources/accounts/accounts.ts">AccountListResponse</a></code>
 - <code><a href="./src/resources/accounts/accounts.ts">AccountLinkResponse</a></code>
-- <code><a href="./src/resources/accounts/accounts.ts">AccountOpenResponse</a></code>
 - <code><a href="./src/resources/accounts/accounts.ts">AccountRetrieveDetailsResponse</a></code>
 
 Methods:
 
-- <code title="get /accounts/me">client.accounts.<a href="./src/resources/accounts/accounts.ts">list</a>() -> AccountListResponse</code>
-- <code title="delete /accounts/{accountId}">client.accounts.<a href="./src/resources/accounts/accounts.ts">close</a>(accountId) -> void</code>
+- <code title="get /accounts/me">client.accounts.<a href="./src/resources/accounts/accounts.ts">list</a>({ ...params }) -> AccountListResponse</code>
 - <code title="post /accounts/link">client.accounts.<a href="./src/resources/accounts/accounts.ts">link</a>({ ...params }) -> AccountLinkResponse</code>
-- <code title="post /accounts/open">client.accounts.<a href="./src/resources/accounts/accounts.ts">open</a>({ ...params }) -> AccountOpenResponse</code>
 - <code title="get /accounts/{accountId}/details">client.accounts.<a href="./src/resources/accounts/accounts.ts">retrieveDetails</a>(accountId) -> AccountRetrieveDetailsResponse</code>
 
 ## Transactions
 
 Types:
 
-- <code><a href="./src/resources/accounts/transactions.ts">TransactionListArchivedResponse</a></code>
 - <code><a href="./src/resources/accounts/transactions.ts">TransactionListPendingResponse</a></code>
 
 Methods:
 
-- <code title="get /accounts/{accountId}/transactions/archived">client.accounts.transactions.<a href="./src/resources/accounts/transactions.ts">listArchived</a>(accountId, { ...params }) -> TransactionListArchivedResponse</code>
-- <code title="get /accounts/{accountId}/transactions/pending">client.accounts.transactions.<a href="./src/resources/accounts/transactions.ts">listPending</a>(accountId) -> TransactionListPendingResponse</code>
+- <code title="get /accounts/{accountId}/transactions/pending">client.accounts.transactions.<a href="./src/resources/accounts/transactions.ts">listPending</a>(accountId, { ...params }) -> TransactionListPendingResponse</code>
 
 ## BalanceHistory
-
-Types:
-
-- <code><a href="./src/resources/accounts/balance-history.ts">BalanceHistoryRetrieveResponse</a></code>
-
-Methods:
-
-- <code title="get /accounts/{accountId}/balance-history">client.accounts.balanceHistory.<a href="./src/resources/accounts/balance-history.ts">retrieve</a>(accountId, { ...params }) -> BalanceHistoryRetrieveResponse</code>
 
 ## Statements
 
@@ -139,34 +104,35 @@ Types:
 
 Methods:
 
-- <code title="get /accounts/{accountId}/statements">client.accounts.statements.<a href="./src/resources/accounts/statements.ts">list</a>(accountId) -> StatementListResponse</code>
-- <code title="get /accounts/{accountId}/statements/{statementId}/pdf">client.accounts.statements.<a href="./src/resources/accounts/statements.ts">downloadPdf</a>(accountId, statementId) -> Response</code>
+- <code title="get /accounts/{accountId}/statements">client.accounts.statements.<a href="./src/resources/accounts/statements.ts">list</a>(accountId, { ...params }) -> StatementListResponse</code>
 
 ## Overdraft
 
 Types:
 
 - <code><a href="./src/resources/accounts/overdraft.ts">OverdraftRetrieveSettingsResponse</a></code>
+- <code><a href="./src/resources/accounts/overdraft.ts">OverdraftUpdateSettingsResponse</a></code>
 
 Methods:
 
 - <code title="get /accounts/{accountId}/overdraft-settings">client.accounts.overdraft.<a href="./src/resources/accounts/overdraft.ts">retrieveSettings</a>(accountId) -> OverdraftRetrieveSettingsResponse</code>
-- <code title="put /accounts/{accountId}/overdraft-settings">client.accounts.overdraft.<a href="./src/resources/accounts/overdraft.ts">updateSettings</a>(accountId, { ...params }) -> void</code>
+- <code title="put /accounts/{accountId}/overdraft-settings">client.accounts.overdraft.<a href="./src/resources/accounts/overdraft.ts">updateSettings</a>(accountId, { ...params }) -> OverdraftUpdateSettingsResponse</code>
 
 # Transactions
 
 Types:
 
+- <code><a href="./src/resources/transactions/transactions.ts">TransactionRetrieveResponse</a></code>
 - <code><a href="./src/resources/transactions/transactions.ts">TransactionListResponse</a></code>
+- <code><a href="./src/resources/transactions/transactions.ts">TransactionAddNotesResponse</a></code>
+- <code><a href="./src/resources/transactions/transactions.ts">TransactionCategorizeResponse</a></code>
 
 Methods:
 
-- <code title="get /transactions/{transactionId}">client.transactions.<a href="./src/resources/transactions/transactions.ts">retrieve</a>(transactionId) -> Transaction</code>
+- <code title="get /transactions/{transactionId}">client.transactions.<a href="./src/resources/transactions/transactions.ts">retrieve</a>(transactionId) -> TransactionRetrieveResponse</code>
 - <code title="get /transactions">client.transactions.<a href="./src/resources/transactions/transactions.ts">list</a>({ ...params }) -> TransactionListResponse</code>
-- <code title="put /transactions/{transactionId}/notes">client.transactions.<a href="./src/resources/transactions/transactions.ts">addNotes</a>(transactionId, { ...params }) -> void</code>
-- <code title="put /transactions/{transactionId}/categorize">client.transactions.<a href="./src/resources/transactions/transactions.ts">categorize</a>(transactionId, { ...params }) -> Transaction</code>
-- <code title="post /transactions/{transactionId}/dispute">client.transactions.<a href="./src/resources/transactions/transactions.ts">dispute</a>(transactionId, { ...params }) -> void</code>
-- <code title="post /transactions/{transactionId}/split">client.transactions.<a href="./src/resources/transactions/transactions.ts">split</a>(transactionId, { ...params }) -> void</code>
+- <code title="put /transactions/{transactionId}/notes">client.transactions.<a href="./src/resources/transactions/transactions.ts">addNotes</a>(transactionId, { ...params }) -> TransactionAddNotesResponse</code>
+- <code title="put /transactions/{transactionId}/categorize">client.transactions.<a href="./src/resources/transactions/transactions.ts">categorize</a>(transactionId, { ...params }) -> TransactionCategorizeResponse</code>
 
 ## Recurring
 
@@ -176,20 +142,16 @@ Types:
 
 Methods:
 
-- <code title="post /transactions/recurring">client.transactions.recurring.<a href="./src/resources/transactions/recurring.ts">create</a>({ ...params }) -> void</code>
-- <code title="get /transactions/recurring">client.transactions.recurring.<a href="./src/resources/transactions/recurring.ts">list</a>() -> RecurringListResponse</code>
-- <code title="delete /transactions/recurring/{recurringId}">client.transactions.recurring.<a href="./src/resources/transactions/recurring.ts">cancel</a>(recurringId) -> void</code>
+- <code title="get /transactions/recurring">client.transactions.recurring.<a href="./src/resources/transactions/recurring.ts">list</a>({ ...params }) -> RecurringListResponse</code>
 
 ## Insights
 
 Types:
 
-- <code><a href="./src/resources/transactions/insights.ts">InsightRetrieveFutureFlowResponse</a></code>
 - <code><a href="./src/resources/transactions/insights.ts">InsightRetrieveSpendingTrendsResponse</a></code>
 
 Methods:
 
-- <code title="get /transactions/insights/future-flow">client.transactions.insights.<a href="./src/resources/transactions/insights.ts">retrieveFutureFlow</a>() -> InsightRetrieveFutureFlowResponse</code>
 - <code title="get /transactions/insights/spending-trends">client.transactions.insights.<a href="./src/resources/transactions/insights.ts">retrieveSpendingTrends</a>() -> InsightRetrieveSpendingTrendsResponse</code>
 
 # AI
@@ -203,8 +165,8 @@ Types:
 
 Methods:
 
-- <code title="post /ai/advisor/chat">client.ai.advisor.<a href="./src/resources/ai/advisor/advisor.ts">chat</a>({ ...params }) -> AdvisorChatResponse</code>
-- <code title="get /ai/advisor/chat/history">client.ai.advisor.<a href="./src/resources/ai/advisor/advisor.ts">retrieveHistory</a>() -> AdvisorRetrieveHistoryResponse</code>
+- <code title="post /ai/advisor/chat">client.ai.advisor.<a href="./src/resources/ai/advisor/advisor.ts">chat</a>({ ...params }) -> unknown</code>
+- <code title="get /ai/advisor/chat/history">client.ai.advisor.<a href="./src/resources/ai/advisor/advisor.ts">retrieveHistory</a>({ ...params }) -> unknown</code>
 
 ### Tools
 
@@ -214,8 +176,7 @@ Types:
 
 Methods:
 
-- <code title="get /ai/advisor/tools">client.ai.advisor.tools.<a href="./src/resources/ai/advisor/tools.ts">list</a>() -> ToolListResponse</code>
-- <code title="post /ai/advisor/tools/{toolId}/enable">client.ai.advisor.tools.<a href="./src/resources/ai/advisor/tools.ts">enable</a>(toolId) -> void</code>
+- <code title="get /ai/advisor/tools">client.ai.advisor.tools.<a href="./src/resources/ai/advisor/tools.ts">list</a>({ ...params }) -> unknown</code>
 
 ## Oracle
 
@@ -228,21 +189,10 @@ Types:
 
 Methods:
 
-- <code title="post /ai/oracle/simulate/advanced">client.ai.oracle.simulate.<a href="./src/resources/ai/oracle/simulate.ts">runAdvanced</a>({ ...params }) -> SimulateRunAdvancedResponse</code>
-- <code title="post /ai/oracle/simulate/monte-carlo">client.ai.oracle.simulate.<a href="./src/resources/ai/oracle/simulate.ts">runMonteCarlo</a>({ ...params }) -> void</code>
-- <code title="post /ai/oracle/simulate">client.ai.oracle.simulate.<a href="./src/resources/ai/oracle/simulate.ts">runStandard</a>({ ...params }) -> SimulateRunStandardResponse</code>
+- <code title="post /ai/oracle/simulate/advanced">client.ai.oracle.simulate.<a href="./src/resources/ai/oracle/simulate.ts">runAdvanced</a>({ ...params }) -> unknown</code>
+- <code title="post /ai/oracle/simulate">client.ai.oracle.simulate.<a href="./src/resources/ai/oracle/simulate.ts">runStandard</a>() -> SimulateRunStandardResponse</code>
 
 ### Predictions
-
-Types:
-
-- <code><a href="./src/resources/ai/oracle/predictions.ts">PredictionRetrieveInflationForecastResponse</a></code>
-- <code><a href="./src/resources/ai/oracle/predictions.ts">PredictionRetrieveMarketCrashProbabilityResponse</a></code>
-
-Methods:
-
-- <code title="get /ai/oracle/predictions/inflation">client.ai.oracle.predictions.<a href="./src/resources/ai/oracle/predictions.ts">retrieveInflationForecast</a>({ ...params }) -> PredictionRetrieveInflationForecastResponse</code>
-- <code title="get /ai/oracle/predictions/market-crash-probability">client.ai.oracle.predictions.<a href="./src/resources/ai/oracle/predictions.ts">retrieveMarketCrashProbability</a>() -> PredictionRetrieveMarketCrashProbabilityResponse</code>
 
 ### Simulations
 
@@ -254,7 +204,7 @@ Types:
 Methods:
 
 - <code title="get /ai/oracle/simulations/{simulationId}">client.ai.oracle.simulations.<a href="./src/resources/ai/oracle/simulations.ts">retrieve</a>(simulationId) -> SimulationRetrieveResponse</code>
-- <code title="get /ai/oracle/simulations">client.ai.oracle.simulations.<a href="./src/resources/ai/oracle/simulations.ts">list</a>() -> SimulationListResponse</code>
+- <code title="get /ai/oracle/simulations">client.ai.oracle.simulations.<a href="./src/resources/ai/oracle/simulations.ts">list</a>({ ...params }) -> unknown</code>
 
 ## Incubator
 
@@ -262,103 +212,45 @@ Types:
 
 - <code><a href="./src/resources/ai/incubator/incubator.ts">IncubatorListPitchesResponse</a></code>
 - <code><a href="./src/resources/ai/incubator/incubator.ts">IncubatorSubmitPitchResponse</a></code>
-- <code><a href="./src/resources/ai/incubator/incubator.ts">IncubatorValidateIdeaResponse</a></code>
 
 Methods:
 
-- <code title="get /ai/incubator/pitches">client.ai.incubator.<a href="./src/resources/ai/incubator/incubator.ts">listPitches</a>() -> IncubatorListPitchesResponse</code>
-- <code title="post /ai/incubator/pitch">client.ai.incubator.<a href="./src/resources/ai/incubator/incubator.ts">submitPitch</a>({ ...params }) -> IncubatorSubmitPitchResponse</code>
-- <code title="post /ai/incubator/validate">client.ai.incubator.<a href="./src/resources/ai/incubator/incubator.ts">validateIdea</a>({ ...params }) -> IncubatorValidateIdeaResponse</code>
+- <code title="get /ai/incubator/pitches">client.ai.incubator.<a href="./src/resources/ai/incubator/incubator.ts">listPitches</a>({ ...params }) -> unknown</code>
+- <code title="post /ai/incubator/pitch">client.ai.incubator.<a href="./src/resources/ai/incubator/incubator.ts">submitPitch</a>({ ...params }) -> unknown</code>
 
 ### Analysis
-
-Types:
-
-- <code><a href="./src/resources/ai/incubator/analysis.ts">AnalysisGenerateSwotResponse</a></code>
-- <code><a href="./src/resources/ai/incubator/analysis.ts">AnalysisScanCompetitorsResponse</a></code>
-
-Methods:
-
-- <code title="post /ai/incubator/analysis/swot">client.ai.incubator.analysis.<a href="./src/resources/ai/incubator/analysis.ts">generateSwot</a>({ ...params }) -> AnalysisGenerateSwotResponse</code>
-- <code title="post /ai/incubator/analysis/competitors">client.ai.incubator.analysis.<a href="./src/resources/ai/incubator/analysis.ts">scanCompetitors</a>({ ...params }) -> AnalysisScanCompetitorsResponse</code>
 
 ### Pitch
 
 Types:
 
 - <code><a href="./src/resources/ai/incubator/pitch.ts">PitchRetrieveDetailsResponse</a></code>
+- <code><a href="./src/resources/ai/incubator/pitch.ts">PitchSubmitFeedbackResponse</a></code>
 
 Methods:
 
 - <code title="get /ai/incubator/pitch/{pitchId}/details">client.ai.incubator.pitch.<a href="./src/resources/ai/incubator/pitch.ts">retrieveDetails</a>(pitchId) -> PitchRetrieveDetailsResponse</code>
-- <code title="put /ai/incubator/pitch/{pitchId}/feedback">client.ai.incubator.pitch.<a href="./src/resources/ai/incubator/pitch.ts">submitFeedback</a>(pitchId, { ...params }) -> void</code>
+- <code title="put /ai/incubator/pitch/{pitchId}/feedback">client.ai.incubator.pitch.<a href="./src/resources/ai/incubator/pitch.ts">submitFeedback</a>(pitchId) -> unknown</code>
 
 ## Ads
 
 Types:
 
 - <code><a href="./src/resources/ai/ads.ts">AdListResponse</a></code>
-- <code><a href="./src/resources/ai/ads.ts">AdGenerateCopyResponse</a></code>
-- <code><a href="./src/resources/ai/ads.ts">AdGenerateVideoResponse</a></code>
-- <code><a href="./src/resources/ai/ads.ts">AdOptimizeCampaignResponse</a></code>
 - <code><a href="./src/resources/ai/ads.ts">AdRetrieveOperationStatusResponse</a></code>
 
 Methods:
 
-- <code title="get /ai/ads">client.ai.ads.<a href="./src/resources/ai/ads.ts">list</a>() -> AdListResponse</code>
-- <code title="post /ai/ads/generate/copy">client.ai.ads.<a href="./src/resources/ai/ads.ts">generateCopy</a>({ ...params }) -> AdGenerateCopyResponse</code>
-- <code title="post /ai/ads/generate/video">client.ai.ads.<a href="./src/resources/ai/ads.ts">generateVideo</a>({ ...params }) -> AdGenerateVideoResponse</code>
-- <code title="post /ai/ads/optimize">client.ai.ads.<a href="./src/resources/ai/ads.ts">optimizeCampaign</a>({ ...params }) -> AdOptimizeCampaignResponse</code>
-- <code title="get /ai/ads/operations/{operationId}">client.ai.ads.<a href="./src/resources/ai/ads.ts">retrieveOperationStatus</a>(operationId) -> AdRetrieveOperationStatusResponse</code>
+- <code title="get /ai/ads">client.ai.ads.<a href="./src/resources/ai/ads.ts">list</a>({ ...params }) -> unknown</code>
+- <code title="get /ai/ads/operations/{operationId}">client.ai.ads.<a href="./src/resources/ai/ads.ts">retrieveOperationStatus</a>(operationId) -> unknown</code>
 
 ## Agent
 
-Types:
-
-- <code><a href="./src/resources/ai/agent.ts">AgentRetrieveCapabilitiesResponse</a></code>
-- <code><a href="./src/resources/ai/agent.ts">AgentRetrievePromptsResponse</a></code>
-
-Methods:
-
-- <code title="get /ai/agent/capabilities">client.ai.agent.<a href="./src/resources/ai/agent.ts">retrieveCapabilities</a>() -> AgentRetrieveCapabilitiesResponse</code>
-- <code title="get /ai/agent/prompts">client.ai.agent.<a href="./src/resources/ai/agent.ts">retrievePrompts</a>() -> AgentRetrievePromptsResponse</code>
-- <code title="put /ai/agent/prompts">client.ai.agent.<a href="./src/resources/ai/agent.ts">updatePrompts</a>({ ...params }) -> void</code>
-
 ## Models
-
-Types:
-
-- <code><a href="./src/resources/ai/models.ts">ModelFineTuneResponse</a></code>
-- <code><a href="./src/resources/ai/models.ts">ModelListVersionsResponse</a></code>
-
-Methods:
-
-- <code title="post /ai/models/fine-tune">client.ai.models.<a href="./src/resources/ai/models.ts">fineTune</a>({ ...params }) -> ModelFineTuneResponse</code>
-- <code title="get /ai/models/versions">client.ai.models.<a href="./src/resources/ai/models.ts">listVersions</a>() -> ModelListVersionsResponse</code>
 
 # Corporate
 
-Types:
-
-- <code><a href="./src/resources/corporate/corporate.ts">CorporateOnboardEntityResponse</a></code>
-
-Methods:
-
-- <code title="post /corporate/onboard">client.corporate.<a href="./src/resources/corporate/corporate.ts">onboardEntity</a>({ ...params }) -> CorporateOnboardEntityResponse</code>
-
 ## Compliance
-
-Types:
-
-- <code><a href="./src/resources/corporate/compliance/compliance.ts">ComplianceScreenAdverseMediaResponse</a></code>
-- <code><a href="./src/resources/corporate/compliance/compliance.ts">ComplianceScreenPepResponse</a></code>
-- <code><a href="./src/resources/corporate/compliance/compliance.ts">ComplianceScreenSanctionsResponse</a></code>
-
-Methods:
-
-- <code title="post /corporate/compliance/media">client.corporate.compliance.<a href="./src/resources/corporate/compliance/compliance.ts">screenAdverseMedia</a>({ ...params }) -> ComplianceScreenAdverseMediaResponse</code>
-- <code title="post /corporate/compliance/pep">client.corporate.compliance.<a href="./src/resources/corporate/compliance/compliance.ts">screenPep</a>({ ...params }) -> ComplianceScreenPepResponse</code>
-- <code title="post /corporate/compliance/sanctions">client.corporate.compliance.<a href="./src/resources/corporate/compliance/compliance.ts">screenSanctions</a>({ ...params }) -> ComplianceScreenSanctionsResponse</code>
 
 ### Audits
 
@@ -369,128 +261,84 @@ Types:
 
 Methods:
 
-- <code title="post /corporate/compliance/audits">client.corporate.compliance.audits.<a href="./src/resources/corporate/compliance/audits.ts">request</a>({ ...params }) -> AuditRequestResponse</code>
+- <code title="post /corporate/compliance/audits">client.corporate.compliance.audits.<a href="./src/resources/corporate/compliance/audits.ts">request</a>() -> unknown</code>
 - <code title="get /corporate/compliance/audits/{auditId}/report">client.corporate.compliance.audits.<a href="./src/resources/corporate/compliance/audits.ts">retrieveReport</a>(auditId) -> AuditRetrieveReportResponse</code>
 
 ## Treasury
 
 Types:
 
-- <code><a href="./src/resources/corporate/treasury/treasury.ts">TreasuryOptimizeLiquidityResponse</a></code>
 - <code><a href="./src/resources/corporate/treasury/treasury.ts">TreasuryRetrieveCashFlowForecastResponse</a></code>
 - <code><a href="./src/resources/corporate/treasury/treasury.ts">TreasuryRetrieveLiquidityPositionsResponse</a></code>
 
 Methods:
 
-- <code title="post /corporate/treasury/bulk-payouts">client.corporate.treasury.<a href="./src/resources/corporate/treasury/treasury.ts">executeBulkPayouts</a>({ ...params }) -> void</code>
-- <code title="post /corporate/treasury/liquidity/optimize">client.corporate.treasury.<a href="./src/resources/corporate/treasury/treasury.ts">optimizeLiquidity</a>({ ...params }) -> TreasuryOptimizeLiquidityResponse</code>
 - <code title="get /corporate/treasury/cash-flow/forecast">client.corporate.treasury.<a href="./src/resources/corporate/treasury/treasury.ts">retrieveCashFlowForecast</a>({ ...params }) -> TreasuryRetrieveCashFlowForecastResponse</code>
 - <code title="get /corporate/treasury/liquidity-positions">client.corporate.treasury.<a href="./src/resources/corporate/treasury/treasury.ts">retrieveLiquidityPositions</a>() -> TreasuryRetrieveLiquidityPositionsResponse</code>
 
 ### Sweeping
 
-Methods:
-
-- <code title="post /corporate/treasury/sweeping/rules">client.corporate.treasury.sweeping.<a href="./src/resources/corporate/treasury/sweeping.ts">configureRules</a>({ ...params }) -> void</code>
-- <code title="post /corporate/treasury/sweeping/execute">client.corporate.treasury.sweeping.<a href="./src/resources/corporate/treasury/sweeping.ts">execute</a>({ ...params }) -> void</code>
-
 ### Pooling
-
-Methods:
-
-- <code title="post /corporate/treasury/liquidity/pooling">client.corporate.treasury.pooling.<a href="./src/resources/corporate/treasury/pooling.ts">configure</a>({ ...params }) -> void</code>
 
 ## Cards
 
 Types:
 
 - <code><a href="./src/resources/corporate/cards/cards.ts">CardListResponse</a></code>
-- <code><a href="./src/resources/corporate/cards/cards.ts">CardIssuePhysicalResponse</a></code>
+- <code><a href="./src/resources/corporate/cards/cards.ts">CardFreezeResponse</a></code>
 - <code><a href="./src/resources/corporate/cards/cards.ts">CardIssueVirtualResponse</a></code>
 - <code><a href="./src/resources/corporate/cards/cards.ts">CardListTransactionsResponse</a></code>
 
 Methods:
 
-- <code title="get /corporate/cards">client.corporate.cards.<a href="./src/resources/corporate/cards/cards.ts">list</a>({ ...params }) -> CardListResponse</code>
-- <code title="post /corporate/cards/{cardId}/freeze">client.corporate.cards.<a href="./src/resources/corporate/cards/cards.ts">freeze</a>(cardId, { ...params }) -> void</code>
-- <code title="post /corporate/cards/physical">client.corporate.cards.<a href="./src/resources/corporate/cards/cards.ts">issuePhysical</a>({ ...params }) -> CardIssuePhysicalResponse</code>
+- <code title="get /corporate/cards">client.corporate.cards.<a href="./src/resources/corporate/cards/cards.ts">list</a>({ ...params }) -> unknown</code>
+- <code title="post /corporate/cards/{cardId}/freeze">client.corporate.cards.<a href="./src/resources/corporate/cards/cards.ts">freeze</a>(cardId) -> CardFreezeResponse</code>
 - <code title="post /corporate/cards/virtual">client.corporate.cards.<a href="./src/resources/corporate/cards/cards.ts">issueVirtual</a>({ ...params }) -> CardIssueVirtualResponse</code>
-- <code title="get /corporate/cards/{cardId}/transactions">client.corporate.cards.<a href="./src/resources/corporate/cards/cards.ts">listTransactions</a>(cardId) -> CardListTransactionsResponse</code>
+- <code title="get /corporate/cards/{cardId}/transactions">client.corporate.cards.<a href="./src/resources/corporate/cards/cards.ts">listTransactions</a>(cardId, { ...params }) -> unknown</code>
 
 ### Controls
 
+Types:
+
+- <code><a href="./src/resources/corporate/cards/controls.ts">ControlUpdateResponse</a></code>
+
 Methods:
 
-- <code title="put /corporate/cards/{cardId}/controls">client.corporate.cards.controls.<a href="./src/resources/corporate/cards/controls.ts">update</a>(cardId, { ...params }) -> void</code>
+- <code title="put /corporate/cards/{cardId}/controls">client.corporate.cards.controls.<a href="./src/resources/corporate/cards/controls.ts">update</a>(cardId) -> ControlUpdateResponse</code>
 
 ## Risk
 
-Types:
-
-- <code><a href="./src/resources/corporate/risk/risk.ts">RiskRetrieveExposureResponse</a></code>
-- <code><a href="./src/resources/corporate/risk/risk.ts">RiskRunStressTestResponse</a></code>
-
-Methods:
-
-- <code title="get /corporate/risk/exposure">client.corporate.risk.<a href="./src/resources/corporate/risk/risk.ts">retrieveExposure</a>() -> RiskRetrieveExposureResponse</code>
-- <code title="post /corporate/risk/stress-test">client.corporate.risk.<a href="./src/resources/corporate/risk/risk.ts">runStressTest</a>({ ...params }) -> RiskRunStressTestResponse</code>
-
 ### Fraud
-
-Types:
-
-- <code><a href="./src/resources/corporate/risk/fraud/fraud.ts">FraudAnalyzeResponse</a></code>
-
-Methods:
-
-- <code title="post /corporate/risk/fraud/analyze">client.corporate.risk.fraud.<a href="./src/resources/corporate/risk/fraud/fraud.ts">analyze</a>({ ...params }) -> FraudAnalyzeResponse</code>
 
 #### Rules
 
 Types:
 
+- <code><a href="./src/resources/corporate/risk/fraud/rules.ts">RuleUpdateResponse</a></code>
 - <code><a href="./src/resources/corporate/risk/fraud/rules.ts">RuleListResponse</a></code>
 
 Methods:
 
-- <code title="post /corporate/risk/fraud/rules">client.corporate.risk.fraud.rules.<a href="./src/resources/corporate/risk/fraud/rules.ts">create</a>({ ...params }) -> void</code>
-- <code title="put /corporate/risk/fraud/rules/{ruleId}">client.corporate.risk.fraud.rules.<a href="./src/resources/corporate/risk/fraud/rules.ts">update</a>(ruleId, { ...params }) -> void</code>
-- <code title="get /corporate/risk/fraud/rules">client.corporate.risk.fraud.rules.<a href="./src/resources/corporate/risk/fraud/rules.ts">list</a>() -> RuleListResponse</code>
+- <code title="put /corporate/risk/fraud/rules/{ruleId}">client.corporate.risk.fraud.rules.<a href="./src/resources/corporate/risk/fraud/rules.ts">update</a>(ruleId, { ...params }) -> RuleUpdateResponse</code>
+- <code title="get /corporate/risk/fraud/rules">client.corporate.risk.fraud.rules.<a href="./src/resources/corporate/risk/fraud/rules.ts">list</a>({ ...params }) -> unknown</code>
 
 ## Governance
 
 ### Proposals
-
-Types:
-
-- <code><a href="./src/resources/corporate/governance/proposals.ts">ProposalListResponse</a></code>
-
-Methods:
-
-- <code title="post /corporate/governance/proposals">client.corporate.governance.proposals.<a href="./src/resources/corporate/governance/proposals.ts">create</a>({ ...params }) -> void</code>
-- <code title="get /corporate/governance/proposals">client.corporate.governance.proposals.<a href="./src/resources/corporate/governance/proposals.ts">list</a>() -> ProposalListResponse</code>
-- <code title="post /corporate/governance/proposals/{proposalId}/vote">client.corporate.governance.proposals.<a href="./src/resources/corporate/governance/proposals.ts">vote</a>(proposalId, { ...params }) -> void</code>
 
 ## Anomalies
 
 Types:
 
 - <code><a href="./src/resources/corporate/anomalies.ts">AnomalyListResponse</a></code>
+- <code><a href="./src/resources/corporate/anomalies.ts">AnomalyUpdateStatusResponse</a></code>
 
 Methods:
 
-- <code title="get /corporate/anomalies">client.corporate.anomalies.<a href="./src/resources/corporate/anomalies.ts">list</a>() -> AnomalyListResponse</code>
-- <code title="put /corporate/anomalies/{anomalyId}/status">client.corporate.anomalies.<a href="./src/resources/corporate/anomalies.ts">updateStatus</a>(anomalyId, { ...params }) -> void</code>
+- <code title="get /corporate/anomalies">client.corporate.anomalies.<a href="./src/resources/corporate/anomalies.ts">list</a>({ ...params }) -> unknown</code>
+- <code title="put /corporate/anomalies/{anomalyId}/status">client.corporate.anomalies.<a href="./src/resources/corporate/anomalies.ts">updateStatus</a>(anomalyId) -> unknown</code>
 
 # Web3
-
-Types:
-
-- <code><a href="./src/resources/web3/web3.ts">Web3RetrieveNetworkStatusResponse</a></code>
-
-Methods:
-
-- <code title="get /web3/network/status">client.web3.<a href="./src/resources/web3/web3.ts">retrieveNetworkStatus</a>() -> Web3RetrieveNetworkStatusResponse</code>
 
 ## Wallets
 
@@ -502,23 +350,19 @@ Types:
 
 Methods:
 
-- <code title="post /web3/wallets">client.web3.wallets.<a href="./src/resources/web3/wallets.ts">create</a>({ ...params }) -> WalletCreateResponse</code>
-- <code title="get /web3/wallets">client.web3.wallets.<a href="./src/resources/web3/wallets.ts">list</a>() -> WalletListResponse</code>
-- <code title="post /web3/wallets/connect">client.web3.wallets.<a href="./src/resources/web3/wallets.ts">connect</a>({ ...params }) -> void</code>
-- <code title="get /web3/wallets/{walletId}/balances">client.web3.wallets.<a href="./src/resources/web3/wallets.ts">retrieveBalances</a>(walletId) -> WalletRetrieveBalancesResponse</code>
+- <code title="post /web3/wallets">client.web3.wallets.<a href="./src/resources/web3/wallets.ts">create</a>() -> unknown</code>
+- <code title="get /web3/wallets">client.web3.wallets.<a href="./src/resources/web3/wallets.ts">list</a>({ ...params }) -> unknown</code>
+- <code title="get /web3/wallets/{walletId}/balances">client.web3.wallets.<a href="./src/resources/web3/wallets.ts">retrieveBalances</a>(walletId, { ...params }) -> unknown</code>
 
 ## Transactions
 
 Types:
 
-- <code><a href="./src/resources/web3/transactions.ts">TransactionSendResponse</a></code>
+- <code><a href="./src/resources/web3/transactions.ts">TransactionInitiateResponse</a></code>
 
 Methods:
 
-- <code title="post /web3/transactions/bridge">client.web3.transactions.<a href="./src/resources/web3/transactions.ts">bridgeChain</a>({ ...params }) -> void</code>
-- <code title="post /web3/transactions/initiate">client.web3.transactions.<a href="./src/resources/web3/transactions.ts">initiate</a>({ ...params }) -> void</code>
-- <code title="post /web3/transactions/send">client.web3.transactions.<a href="./src/resources/web3/transactions.ts">send</a>({ ...params }) -> TransactionSendResponse</code>
-- <code title="post /web3/transactions/swap">client.web3.transactions.<a href="./src/resources/web3/transactions.ts">swapTokens</a>({ ...params }) -> void</code>
+- <code title="post /web3/transactions/initiate">client.web3.transactions.<a href="./src/resources/web3/transactions.ts">initiate</a>() -> unknown</code>
 
 ## NFTs
 
@@ -528,33 +372,13 @@ Types:
 
 Methods:
 
-- <code title="get /web3/nfts">client.web3.nfts.<a href="./src/resources/web3/nfts.ts">list</a>() -> NFTListResponse</code>
-- <code title="post /web3/nfts/mint">client.web3.nfts.<a href="./src/resources/web3/nfts.ts">mint</a>({ ...params }) -> void</code>
+- <code title="get /web3/nfts">client.web3.nfts.<a href="./src/resources/web3/nfts.ts">list</a>({ ...params }) -> unknown</code>
 
 ## Contracts
 
-Methods:
-
-- <code title="post /web3/contracts/deploy">client.web3.contracts.<a href="./src/resources/web3/contracts.ts">deploy</a>({ ...params }) -> void</code>
-
 # Payments
 
-Types:
-
-- <code><a href="./src/resources/payments/payments.ts">PaymentListResponse</a></code>
-
-Methods:
-
-- <code title="get /payments/{paymentId}">client.payments.<a href="./src/resources/payments/payments.ts">retrieve</a>(paymentId) -> void</code>
-- <code title="get /payments">client.payments.<a href="./src/resources/payments/payments.ts">list</a>() -> PaymentListResponse</code>
-
 ## Domestic
-
-Methods:
-
-- <code title="post /payments/domestic/ach">client.payments.domestic.<a href="./src/resources/payments/domestic.ts">sendACH</a>({ ...params }) -> void</code>
-- <code title="post /payments/domestic/rtp">client.payments.domestic.<a href="./src/resources/payments/domestic.ts">sendRtp</a>({ ...params }) -> void</code>
-- <code title="post /payments/domestic/wire">client.payments.domestic.<a href="./src/resources/payments/domestic.ts">sendWire</a>({ ...params }) -> void</code>
 
 ## International
 
@@ -564,20 +388,18 @@ Types:
 
 Methods:
 
-- <code title="get /payments/international/{paymentId}/status">client.payments.international.<a href="./src/resources/payments/international.ts">retrieveStatus</a>(paymentId) -> InternationalRetrieveStatusResponse</code>
-- <code title="post /payments/international/sepa">client.payments.international.<a href="./src/resources/payments/international.ts">sendSepa</a>({ ...params }) -> void</code>
-- <code title="post /payments/international/swift">client.payments.international.<a href="./src/resources/payments/international.ts">sendSwift</a>({ ...params }) -> void</code>
+- <code title="get /payments/international/{paymentId}/status">client.payments.international.<a href="./src/resources/payments/international.ts">retrieveStatus</a>(paymentId) -> unknown</code>
 
 ## Fx
 
 Types:
 
+- <code><a href="./src/resources/payments/fx.ts">FxConvertCurrencyResponse</a></code>
 - <code><a href="./src/resources/payments/fx.ts">FxRetrieveRatesResponse</a></code>
 
 Methods:
 
-- <code title="post /payments/fx/deals">client.payments.fx.<a href="./src/resources/payments/fx.ts">bookDeal</a>({ ...params }) -> void</code>
-- <code title="post /payments/fx/convert">client.payments.fx.<a href="./src/resources/payments/fx.ts">convertCurrency</a>({ ...params }) -> void</code>
+- <code title="post /payments/fx/convert">client.payments.fx.<a href="./src/resources/payments/fx.ts">convertCurrency</a>() -> unknown</code>
 - <code title="get /payments/fx/rates">client.payments.fx.<a href="./src/resources/payments/fx.ts">retrieveRates</a>({ ...params }) -> FxRetrieveRatesResponse</code>
 
 # Sustainability
@@ -588,77 +410,21 @@ Types:
 
 Methods:
 
-- <code title="get /sustainability/carbon-footprint">client.sustainability.<a href="./src/resources/sustainability/sustainability.ts">retrieveCarbonFootprint</a>() -> SustainabilityRetrieveCarbonFootprintResponse</code>
+- <code title="get /sustainability/carbon-footprint">client.sustainability.<a href="./src/resources/sustainability/sustainability.ts">retrieveCarbonFootprint</a>() -> unknown</code>
 
 ## Offsets
 
-Methods:
-
-- <code title="post /sustainability/offsets/purchase">client.sustainability.offsets.<a href="./src/resources/sustainability/offsets.ts">purchase</a>({ ...params }) -> void</code>
-- <code title="post /sustainability/offsets/retire">client.sustainability.offsets.<a href="./src/resources/sustainability/offsets.ts">retire</a>({ ...params }) -> void</code>
-
 ## Impact
-
-Types:
-
-- <code><a href="./src/resources/sustainability/impact.ts">ImpactListGreenProjectsResponse</a></code>
-- <code><a href="./src/resources/sustainability/impact.ts">ImpactRetrievePortfolioAnalysisResponse</a></code>
-
-Methods:
-
-- <code title="get /sustainability/impact/projects">client.sustainability.impact.<a href="./src/resources/sustainability/impact.ts">listGreenProjects</a>({ ...params }) -> ImpactListGreenProjectsResponse</code>
-- <code title="get /sustainability/impact/portfolio">client.sustainability.impact.<a href="./src/resources/sustainability/impact.ts">retrievePortfolioAnalysis</a>() -> ImpactRetrievePortfolioAnalysisResponse</code>
 
 # Marketplace
 
-Types:
-
-- <code><a href="./src/resources/marketplace/marketplace.ts">MarketplaceListProductsResponse</a></code>
-
-Methods:
-
-- <code title="get /marketplace/products">client.marketplace.<a href="./src/resources/marketplace/marketplace.ts">listProducts</a>() -> MarketplaceListProductsResponse</code>
-
 ## Offers
-
-Types:
-
-- <code><a href="./src/resources/marketplace/offers.ts">OfferListResponse</a></code>
-
-Methods:
-
-- <code title="get /marketplace/offers">client.marketplace.offers.<a href="./src/resources/marketplace/offers.ts">list</a>() -> OfferListResponse</code>
-- <code title="post /marketplace/offers/{offerId}/redeem">client.marketplace.offers.<a href="./src/resources/marketplace/offers.ts">redeem</a>(offerId) -> void</code>
 
 # Lending
 
-Types:
-
-- <code><a href="./src/resources/lending/lending.ts">LendingSubmitApplicationResponse</a></code>
-
-Methods:
-
-- <code title="post /lending/applications">client.lending.<a href="./src/resources/lending/lending.ts">submitApplication</a>({ ...params }) -> LendingSubmitApplicationResponse</code>
-
 ## Applications
 
-Types:
-
-- <code><a href="./src/resources/lending/applications.ts">ApplicationRetrieveStatusResponse</a></code>
-
-Methods:
-
-- <code title="get /lending/applications/{appId}/status">client.lending.applications.<a href="./src/resources/lending/applications.ts">retrieveStatus</a>(appId) -> ApplicationRetrieveStatusResponse</code>
-
 ## Decisions
-
-Types:
-
-- <code><a href="./src/resources/lending/decisions.ts">DecisionRetrieveRationaleResponse</a></code>
-
-Methods:
-
-- <code title="get /lending/decisions/{decisionId}/rationale">client.lending.decisions.<a href="./src/resources/lending/decisions.ts">retrieveRationale</a>(decisionId) -> DecisionRetrieveRationaleResponse</code>
 
 # Investments
 
@@ -666,16 +432,17 @@ Methods:
 
 Types:
 
+- <code><a href="./src/resources/investments/portfolios.ts">PortfolioRetrieveResponse</a></code>
+- <code><a href="./src/resources/investments/portfolios.ts">PortfolioUpdateResponse</a></code>
 - <code><a href="./src/resources/investments/portfolios.ts">PortfolioListResponse</a></code>
 - <code><a href="./src/resources/investments/portfolios.ts">PortfolioRebalanceResponse</a></code>
 
 Methods:
 
-- <code title="post /investments/portfolios">client.investments.portfolios.<a href="./src/resources/investments/portfolios.ts">create</a>({ ...params }) -> void</code>
-- <code title="get /investments/portfolios/{portfolioId}">client.investments.portfolios.<a href="./src/resources/investments/portfolios.ts">retrieve</a>(portfolioId) -> void</code>
-- <code title="put /investments/portfolios/{portfolioId}">client.investments.portfolios.<a href="./src/resources/investments/portfolios.ts">update</a>(portfolioId, { ...params }) -> void</code>
-- <code title="get /investments/portfolios">client.investments.portfolios.<a href="./src/resources/investments/portfolios.ts">list</a>({ ...params }) -> PortfolioListResponse</code>
-- <code title="post /investments/portfolios/{portfolioId}/rebalance">client.investments.portfolios.<a href="./src/resources/investments/portfolios.ts">rebalance</a>(portfolioId, { ...params }) -> PortfolioRebalanceResponse</code>
+- <code title="get /investments/portfolios/{portfolioId}">client.investments.portfolios.<a href="./src/resources/investments/portfolios.ts">retrieve</a>(portfolioId) -> unknown</code>
+- <code title="put /investments/portfolios/{portfolioId}">client.investments.portfolios.<a href="./src/resources/investments/portfolios.ts">update</a>(portfolioId) -> unknown</code>
+- <code title="get /investments/portfolios">client.investments.portfolios.<a href="./src/resources/investments/portfolios.ts">list</a>({ ...params }) -> unknown</code>
+- <code title="post /investments/portfolios/{portfolioId}/rebalance">client.investments.portfolios.<a href="./src/resources/investments/portfolios.ts">rebalance</a>(portfolioId) -> unknown</code>
 
 ## Assets
 
@@ -685,77 +452,20 @@ Types:
 
 Methods:
 
-- <code title="get /investments/assets/search">client.investments.assets.<a href="./src/resources/investments/assets.ts">search</a>({ ...params }) -> AssetSearchResponse</code>
+- <code title="get /investments/assets/search">client.investments.assets.<a href="./src/resources/investments/assets.ts">search</a>({ ...params }) -> unknown</code>
 
 ## Performance
-
-Types:
-
-- <code><a href="./src/resources/investments/performance.ts">PerformanceRetrieveHistoricalResponse</a></code>
-
-Methods:
-
-- <code title="get /investments/performance/historical">client.investments.performance.<a href="./src/resources/investments/performance.ts">retrieveHistorical</a>({ ...params }) -> PerformanceRetrieveHistoricalResponse</code>
 
 # System
 
 ## Status
 
-Types:
-
-- <code><a href="./src/resources/system/status.ts">StatusRetrieveResponse</a></code>
-
-Methods:
-
-- <code title="get /system/status">client.system.status.<a href="./src/resources/system/status.ts">retrieve</a>() -> StatusRetrieveResponse</code>
-
 ## Webhooks
-
-Types:
-
-- <code><a href="./src/resources/system/webhooks.ts">WebhookListResponse</a></code>
-
-Methods:
-
-- <code title="post /system/webhooks">client.system.webhooks.<a href="./src/resources/system/webhooks.ts">create</a>({ ...params }) -> void</code>
-- <code title="get /system/webhooks">client.system.webhooks.<a href="./src/resources/system/webhooks.ts">list</a>() -> WebhookListResponse</code>
-- <code title="delete /system/webhooks/{webhookId}">client.system.webhooks.<a href="./src/resources/system/webhooks.ts">delete</a>(webhookId) -> void</code>
 
 ## AuditLogs
 
-Types:
-
-- <code><a href="./src/resources/system/audit-logs.ts">AuditLogListResponse</a></code>
-
-Methods:
-
-- <code title="get /system/audit-logs">client.system.auditLogs.<a href="./src/resources/system/audit-logs.ts">list</a>({ ...params }) -> AuditLogListResponse</code>
-
 ## Sandbox
-
-Types:
-
-- <code><a href="./src/resources/system/sandbox.ts">SandboxForceErrorResponse</a></code>
-
-Methods:
-
-- <code title="post /system/sandbox/simulate-error">client.system.sandbox.<a href="./src/resources/system/sandbox.ts">forceError</a>({ ...params }) -> SandboxForceErrorResponse</code>
-- <code title="post /system/sandbox/reset">client.system.sandbox.<a href="./src/resources/system/sandbox.ts">reset</a>() -> void</code>
 
 ## Verification
 
-Methods:
-
-- <code title="post /system/verification/biometric-comparison">client.system.verification.<a href="./src/resources/system/verification.ts">compareBiometrics</a>({ ...params }) -> void</code>
-- <code title="post /system/verification/document">client.system.verification.<a href="./src/resources/system/verification.ts">verifyDocument</a>({ ...params }) -> void</code>
-
 ## Notifications
-
-Types:
-
-- <code><a href="./src/resources/system/notifications.ts">NotificationListTemplatesResponse</a></code>
-
-Methods:
-
-- <code title="get /system/notifications/templates">client.system.notifications.<a href="./src/resources/system/notifications.ts">listTemplates</a>() -> NotificationListTemplatesResponse</code>
-- <code title="post /system/notifications/push">client.system.notifications.<a href="./src/resources/system/notifications.ts">sendPush</a>({ ...params }) -> void</code>

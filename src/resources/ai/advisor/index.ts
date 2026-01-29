@@ -5,5 +5,6 @@ export {
   type AdvisorChatResponse,
   type AdvisorRetrieveHistoryResponse,
   type AdvisorChatParams,
+  type AdvisorRetrieveHistoryParams,
 } from './advisor';
-export { Tools, type ToolListResponse } from './tools';
+export { Tools, type ToolListResponse, type ToolListParams } from './tools';

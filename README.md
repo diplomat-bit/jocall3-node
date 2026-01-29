@@ -27,12 +27,7 @@ const client = new Jocall3({
   environment: 'sandbox', // or 'production' | 'gemini_direct'; defaults to 'production'
 });
 
-const response = await client.ai.oracle.simulate.runAdvanced({
-  prompt: 'Analyze systemic risk of a 20% BTC drop.',
-  scenarios: [{ name: 'Crypto Black Swan', description: 'Extreme market volatility scenario.' }],
-});
-
-console.log(response.simulationId);
+const response = await client.ai.oracle.simulate.runAdvanced();
 ```
 
 ### Request & Response types
@@ -57,40 +52,6 @@ const response: Jocall3.UserRegisterResponse = await client.users.register(param
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
-
-## File uploads
-
-Request parameters that correspond to file uploads can be passed in many different forms:
-
-- `File` (or an object with the same structure)
-- a `fetch` `Response` (or an object with the same structure)
-- an `fs.ReadStream`
-- the return value of our `toFile` helper
-
-```ts
-import fs from 'fs';
-import fetch from 'node-fetch';
-import Jocall3, { toFile } from 'jocall3-node';
-
-const client = new Jocall3();
-
-// If you have access to Node `fs` we recommend using `fs.createReadStream()`:
-await client.system.verification.verifyDocument({ file: fs.createReadStream('/path/to/file') });
-
-// Or if you have the web `File` API you can pass a `File` instance:
-await client.system.verification.verifyDocument({ file: new File(['my bytes'], 'file') });
-
-// You can also pass a `fetch` `Response`:
-await client.system.verification.verifyDocument({ file: await fetch('https://somesite/file') });
-
-// Finally, if none of the above are convenient, you can use our `toFile` helper:
-await client.system.verification.verifyDocument({
-  file: await toFile(Buffer.from('my bytes'), 'file'),
-});
-await client.system.verification.verifyDocument({
-  file: await toFile(new Uint8Array([0, 1, 2]), 'file'),
-});
-```
 
 ## Handling errors
 

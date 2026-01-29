@@ -9,8 +9,8 @@ const client = new Jocall3({
 });
 
 describe('resource wallets', () => {
-  test('create: only required params', async () => {
-    const responsePromise = client.web3.wallets.create({ network: 'ETH' });
+  test('create', async () => {
+    const responsePromise = client.web3.wallets.create({});
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -18,10 +18,6 @@ describe('resource wallets', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('create: required and optional params', async () => {
-    const response = await client.web3.wallets.create({ network: 'ETH' });
   });
 
   test('list', async () => {
@@ -42,31 +38,15 @@ describe('resource wallets', () => {
     );
   });
 
-  test('connect: only required params', async () => {
-    const responsePromise = client.web3.wallets.connect({
-      address: 'address',
-      provider: 'provider',
-      signature: 'signature',
-    });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('connect: required and optional params', async () => {
-    const response = await client.web3.wallets.connect({
-      address: 'address',
-      provider: 'provider',
-      signature: 'signature',
-    });
+  test('list: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.web3.wallets.list({ limit: 0, offset: 0 }, { path: '/_stainless_unknown_path' }),
+    ).rejects.toThrow(Jocall3.NotFoundError);
   });
 
   test('retrieveBalances', async () => {
-    const responsePromise = client.web3.wallets.retrieveBalances('walletId');
+    const responsePromise = client.web3.wallets.retrieveBalances('wallet_conn_eth_0xabc123');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -79,7 +59,18 @@ describe('resource wallets', () => {
   test('retrieveBalances: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.web3.wallets.retrieveBalances('walletId', { path: '/_stainless_unknown_path' }),
+      client.web3.wallets.retrieveBalances('wallet_conn_eth_0xabc123', { path: '/_stainless_unknown_path' }),
+    ).rejects.toThrow(Jocall3.NotFoundError);
+  });
+
+  test('retrieveBalances: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.web3.wallets.retrieveBalances(
+        'wallet_conn_eth_0xabc123',
+        { limit: 0, offset: 0 },
+        { path: '/_stainless_unknown_path' },
+      ),
     ).rejects.toThrow(Jocall3.NotFoundError);
   });
 });

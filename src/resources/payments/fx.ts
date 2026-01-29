@@ -1,72 +1,83 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../resource';
+import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 
 export class Fx extends APIResource {
   /**
-   * Book a Forward FX Deal
+   * Executes an instant currency conversion between two currencies, either from a
+   * balance or into a specified account.
+   *
+   * @example
+   * ```ts
+   * const response = await client.payments.fx.convertCurrency();
+   * ```
    */
-  bookDeal(body: FxBookDealParams, options?: Core.RequestOptions): Core.APIPromise<void> {
-    return this._client.post('/payments/fx/deals', {
-      body,
-      ...options,
-      headers: { Accept: '*/*', ...options?.headers },
-    });
+  convertCurrency(body: FxConvertCurrencyParams, options?: Core.RequestOptions): Core.APIPromise<unknown> {
+    return this._client.post('/payments/fx/convert', { body, ...options });
   }
 
   /**
-   * Execute Currency Conversion
-   */
-  convertCurrency(body: FxConvertCurrencyParams, options?: Core.RequestOptions): Core.APIPromise<void> {
-    return this._client.post('/payments/fx/convert', {
-      body,
-      ...options,
-      headers: { Accept: '*/*', ...options?.headers },
-    });
-  }
-
-  /**
-   * Market FX Rates
+   * Retrieves current and AI-predicted future foreign exchange rates for a specified
+   * currency pair, including bid/ask spreads and historical volatility data for
+   * informed decisions.
+   *
+   * @example
+   * ```ts
+   * const response = await client.payments.fx.retrieveRates();
+   * ```
    */
   retrieveRates(
-    query: FxRetrieveRatesParams,
+    query?: FxRetrieveRatesParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<FxRetrieveRatesResponse>;
+  retrieveRates(options?: Core.RequestOptions): Core.APIPromise<FxRetrieveRatesResponse>;
+  retrieveRates(
+    query: FxRetrieveRatesParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
   ): Core.APIPromise<FxRetrieveRatesResponse> {
+    if (isRequestOptions(query)) {
+      return this.retrieveRates({}, query);
+    }
     return this._client.get('/payments/fx/rates', { query, ...options });
   }
 }
 
+export type FxConvertCurrencyResponse = unknown;
+
 export interface FxRetrieveRatesResponse {
-  midRate?: number;
+  /**
+   * Real-time foreign exchange rates.
+   */
+  currentRate: unknown;
 
-  timestamp?: string;
+  historicalVolatility?: unknown;
 }
 
-export interface FxBookDealParams {
-  amount: number;
-
-  pair: string;
-
-  valueDate: string;
-}
-
-export interface FxConvertCurrencyParams {
-  amount: number;
-
-  from: string;
-
-  to: string;
-}
+export interface FxConvertCurrencyParams {}
 
 export interface FxRetrieveRatesParams {
-  pair: string;
+  /**
+   * The base currency code (e.g., USD).
+   */
+  baseCurrency?: string;
+
+  /**
+   * Number of days into the future to provide an AI-driven prediction.
+   */
+  forecastDays?: number;
+
+  /**
+   * The target currency code (e.g., EUR).
+   */
+  targetCurrency?: string;
 }
 
 export declare namespace Fx {
   export {
+    type FxConvertCurrencyResponse as FxConvertCurrencyResponse,
     type FxRetrieveRatesResponse as FxRetrieveRatesResponse,
-    type FxBookDealParams as FxBookDealParams,
     type FxConvertCurrencyParams as FxConvertCurrencyParams,
     type FxRetrieveRatesParams as FxRetrieveRatesParams,
   };

@@ -1,4 +1,4 @@
-configured_endpoints: 152
-openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/citibank-demo-business-inc-diplomat-bit%2Fjocall3-80db16031e13fe55e0751e61157a6511ca533597c034e5ee866d9c0358193650.yml
-openapi_spec_hash: 6b289e0e80f367adcb993e0c619ffd5a
-config_hash: 95db42c8bc00b3e5672fa0dc7fb4b60a
+configured_endpoints: 64
+openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/citibank-demo-business-inc-diplomat-bit%2Fjocall3-04fba4df0567e24837177698460ecb8dcd3c622a8ae3beb385dd63da5e7225f8.yml
+openapi_spec_hash: a5277d756d82fa311576b59d51813745
+config_hash: 230fa25dd5b97b9011033420c00e53db

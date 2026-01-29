@@ -10,7 +10,7 @@ const client = new Jocall3({
 
 describe('resource statements', () => {
   test('list', async () => {
-    const responsePromise = client.accounts.statements.list('accountId');
+    const responsePromise = client.accounts.statements.list('acc_chase_checking_4567');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -23,16 +23,22 @@ describe('resource statements', () => {
   test('list: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.accounts.statements.list('accountId', { path: '/_stainless_unknown_path' }),
+      client.accounts.statements.list('acc_chase_checking_4567', { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Jocall3.NotFoundError);
   });
 
-  test('downloadPdf: request options instead of params are passed correctly', async () => {
+  test('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.accounts.statements.downloadPdf('accountId', 'statementId', {
-        path: '/_stainless_unknown_path',
-      }),
+      client.accounts.statements.list(
+        'acc_chase_checking_4567',
+        {
+          format: 'format',
+          month: 0,
+          year: 0,
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
     ).rejects.toThrow(Jocall3.NotFoundError);
   });
 });

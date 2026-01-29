@@ -5,14 +5,14 @@ import * as Core from '../../core';
 
 export class Insights extends APIResource {
   /**
-   * Get Cash Flow Prediction (Gemini Powered)
-   */
-  retrieveFutureFlow(options?: Core.RequestOptions): Core.APIPromise<InsightRetrieveFutureFlowResponse> {
-    return this._client.get('/transactions/insights/future-flow', options);
-  }
-
-  /**
-   * Get AISpending Trend Analysis
+   * Retrieves AI-generated insights into user spending trends over time, identifying
+   * patterns and anomalies.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.transactions.insights.retrieveSpendingTrends();
+   * ```
    */
   retrieveSpendingTrends(
     options?: Core.RequestOptions,
@@ -21,25 +21,46 @@ export class Insights extends APIResource {
   }
 }
 
-export interface InsightRetrieveFutureFlowResponse {
-  forecastDays?: number;
+export interface InsightRetrieveSpendingTrendsResponse {
+  aiInsights: Array<InsightRetrieveSpendingTrendsResponse.AIInsight>;
 
-  projectedLowPoint?: number;
+  forecastNextMonth: number;
 
-  recommendations?: Array<string>;
+  overallTrend: string;
+
+  percentageChange: number;
+
+  period: string;
+
+  topCategoriesByChange: Array<InsightRetrieveSpendingTrendsResponse.TopCategoriesByChange>;
 }
 
-export interface InsightRetrieveSpendingTrendsResponse {
-  aiNarrative?: string;
+export namespace InsightRetrieveSpendingTrendsResponse {
+  export interface AIInsight {
+    id?: string;
 
-  anomaliesDetected?: number;
+    actionableRecommendation?: string;
 
-  overallTrend?: string;
+    category?: string;
+
+    description?: string;
+
+    severity?: string;
+
+    timestamp?: string;
+
+    title?: string;
+  }
+
+  export interface TopCategoriesByChange {
+    absoluteChange?: number;
+
+    category?: string;
+
+    percentageChange?: number;
+  }
 }
 
 export declare namespace Insights {
-  export {
-    type InsightRetrieveFutureFlowResponse as InsightRetrieveFutureFlowResponse,
-    type InsightRetrieveSpendingTrendsResponse as InsightRetrieveSpendingTrendsResponse,
-  };
+  export { type InsightRetrieveSpendingTrendsResponse as InsightRetrieveSpendingTrendsResponse };
 }

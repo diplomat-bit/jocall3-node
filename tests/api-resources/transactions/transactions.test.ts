@@ -10,7 +10,7 @@ const client = new Jocall3({
 
 describe('resource transactions', () => {
   test('retrieve', async () => {
-    const responsePromise = client.transactions.retrieve('transactionId');
+    const responsePromise = client.transactions.retrieve('txn_quantum-2024-07-21-A7B8C9');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -23,7 +23,7 @@ describe('resource transactions', () => {
   test('retrieve: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.transactions.retrieve('transactionId', { path: '/_stainless_unknown_path' }),
+      client.transactions.retrieve('txn_quantum-2024-07-21-A7B8C9', { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Jocall3.NotFoundError);
   });
 
@@ -50,10 +50,14 @@ describe('resource transactions', () => {
     await expect(
       client.transactions.list(
         {
+          category: 'category',
+          endDate: 'endDate',
           limit: 0,
           maxAmount: 0,
           minAmount: 0,
           offset: 0,
+          searchQuery: 'searchQuery',
+          startDate: 'startDate',
           type: 'type',
         },
         { path: '/_stainless_unknown_path' },
@@ -62,7 +66,9 @@ describe('resource transactions', () => {
   });
 
   test('addNotes: only required params', async () => {
-    const responsePromise = client.transactions.addNotes('transactionId', { notes: 'notes' });
+    const responsePromise = client.transactions.addNotes('txn_quantum-2024-07-21-A7B8C9', {
+      notes: 'This was a special coffee for a client meeting.',
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -73,11 +79,15 @@ describe('resource transactions', () => {
   });
 
   test('addNotes: required and optional params', async () => {
-    const response = await client.transactions.addNotes('transactionId', { notes: 'notes' });
+    const response = await client.transactions.addNotes('txn_quantum-2024-07-21-A7B8C9', {
+      notes: 'This was a special coffee for a client meeting.',
+    });
   });
 
   test('categorize: only required params', async () => {
-    const responsePromise = client.transactions.categorize('transactionId', { category: 'category' });
+    const responsePromise = client.transactions.categorize('txn_quantum-2024-07-21-A7B8C9', {
+      category: 'Home > Groceries',
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -88,44 +98,10 @@ describe('resource transactions', () => {
   });
 
   test('categorize: required and optional params', async () => {
-    const response = await client.transactions.categorize('transactionId', {
-      category: 'category',
+    const response = await client.transactions.categorize('txn_quantum-2024-07-21-A7B8C9', {
+      category: 'Home > Groceries',
       applyToFuture: true,
-    });
-  });
-
-  test('dispute: only required params', async () => {
-    const responsePromise = client.transactions.dispute('transactionId', { reason: 'fraudulent' });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('dispute: required and optional params', async () => {
-    const response = await client.transactions.dispute('transactionId', {
-      reason: 'fraudulent',
-      evidenceFiles: ['string'],
-    });
-  });
-
-  test('split: only required params', async () => {
-    const responsePromise = client.transactions.split('transactionId', { splits: [{}] });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('split: required and optional params', async () => {
-    const response = await client.transactions.split('transactionId', {
-      splits: [{ amount: 0, category: 'category' }],
+      notes: 'Bulk purchase for party',
     });
   });
 });

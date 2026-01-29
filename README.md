@@ -26,14 +26,7 @@ const client = new Jocall3({
   environment: 'sandbox', // or 'production' | 'gemini_direct'; defaults to 'production'
 });
 
-const response = await client.users.register({
-  email: 'executive@corp.com',
-  name: 'Alice Wonderland',
-  password: 'ComplexPassword99!',
-  phone: '+1-555-0199',
-});
-
-console.log(response.id);
+const response = await client.ai.oracle.simulate.runAdvanced();
 ```
 
 ### Request & Response types
@@ -48,13 +41,7 @@ const client = new Jocall3({
   environment: 'sandbox', // or 'production' | 'gemini_direct'; defaults to 'production'
 });
 
-const params: Jocall3.UserRegisterParams = {
-  email: 'executive@corp.com',
-  name: 'Alice Wonderland',
-  password: 'ComplexPassword99!',
-  phone: '+1-555-0199',
-};
-const response: Jocall3.UserRegisterResponse = await client.users.register(params);
+const response: Jocall3.UserRegisterResponse = await client.users.register();
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -67,22 +54,15 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const response = await client.users
-  .register({
-    email: 'executive@corp.com',
-    name: 'Alice Wonderland',
-    password: 'ComplexPassword99!',
-    phone: '+1-555-0199',
-  })
-  .catch(async (err) => {
-    if (err instanceof Jocall3.APIError) {
-      console.log(err.status); // 400
-      console.log(err.name); // BadRequestError
-      console.log(err.headers); // {server: 'nginx', ...}
-    } else {
-      throw err;
-    }
-  });
+const response = await client.users.register().catch(async (err) => {
+  if (err instanceof Jocall3.APIError) {
+    console.log(err.status); // 400
+    console.log(err.name); // BadRequestError
+    console.log(err.headers); // {server: 'nginx', ...}
+  } else {
+    throw err;
+  }
+});
 ```
 
 Error codes are as follows:
@@ -115,11 +95,6 @@ const client = new Jocall3({
 
 // Or, configure per-request:
 await client.users.register({
-  email: 'executive@corp.com',
-  name: 'Alice Wonderland',
-  password: 'ComplexPassword99!',
-  phone: '+1-555-0199',
-}, {
   maxRetries: 5,
 });
 ```
@@ -137,11 +112,6 @@ const client = new Jocall3({
 
 // Override per-request:
 await client.users.register({
-  email: 'executive@corp.com',
-  name: 'Alice Wonderland',
-  password: 'ComplexPassword99!',
-  phone: '+1-555-0199',
-}, {
   timeout: 5 * 1000,
 });
 ```
@@ -162,27 +132,13 @@ You can also use the `.withResponse()` method to get the raw `Response` along wi
 ```ts
 const client = new Jocall3();
 
-const response = await client.users
-  .register({
-    email: 'executive@corp.com',
-    name: 'Alice Wonderland',
-    password: 'ComplexPassword99!',
-    phone: '+1-555-0199',
-  })
-  .asResponse();
+const response = await client.users.register().asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: response, response: raw } = await client.users
-  .register({
-    email: 'executive@corp.com',
-    name: 'Alice Wonderland',
-    password: 'ComplexPassword99!',
-    phone: '+1-555-0199',
-  })
-  .withResponse();
+const { data: response, response: raw } = await client.users.register().withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(response.id);
+console.log(response.address);
 ```
 
 ### Making custom/undocumented requests
@@ -286,17 +242,9 @@ const client = new Jocall3({
 });
 
 // Override per-request:
-await client.users.register(
-  {
-    email: 'executive@corp.com',
-    name: 'Alice Wonderland',
-    password: 'ComplexPassword99!',
-    phone: '+1-555-0199',
-  },
-  {
-    httpAgent: new http.Agent({ keepAlive: false }),
-  },
-);
+await client.users.register({
+  httpAgent: new http.Agent({ keepAlive: false }),
+});
 ```
 
 ## Semantic versioning

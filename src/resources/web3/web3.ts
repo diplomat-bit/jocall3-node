@@ -2,11 +2,19 @@
 
 import { APIResource } from '../../resource';
 import * as NFTsAPI from './nfts';
-import { NFTs } from './nfts';
+import { NFTListParams, NFTListResponse, NFTs } from './nfts';
 import * as TransactionsAPI from './transactions';
-import { Transactions } from './transactions';
+import { TransactionInitiateParams, TransactionInitiateResponse, Transactions } from './transactions';
 import * as WalletsAPI from './wallets';
-import { Wallets } from './wallets';
+import {
+  WalletConnectParams,
+  WalletConnectResponse,
+  WalletGetBalanceParams,
+  WalletGetBalanceResponse,
+  WalletListParams,
+  WalletListResponse,
+  Wallets,
+} from './wallets';
 
 export class Web3 extends APIResource {
   wallets: WalletsAPI.Wallets = new WalletsAPI.Wallets(this._client);
@@ -19,9 +27,21 @@ Web3.Transactions = Transactions;
 Web3.NFTs = NFTs;
 
 export declare namespace Web3 {
-  export { Wallets as Wallets };
+  export {
+    Wallets as Wallets,
+    type WalletListResponse as WalletListResponse,
+    type WalletConnectResponse as WalletConnectResponse,
+    type WalletGetBalanceResponse as WalletGetBalanceResponse,
+    type WalletListParams as WalletListParams,
+    type WalletConnectParams as WalletConnectParams,
+    type WalletGetBalanceParams as WalletGetBalanceParams,
+  };
 
-  export { Transactions as Transactions };
+  export {
+    Transactions as Transactions,
+    type TransactionInitiateResponse as TransactionInitiateResponse,
+    type TransactionInitiateParams as TransactionInitiateParams,
+  };
 
-  export { NFTs as NFTs };
+  export { NFTs as NFTs, type NFTListResponse as NFTListResponse, type NFTListParams as NFTListParams };
 }

@@ -14,50 +14,12 @@ export class Insights extends APIResource {
    *   await client.transactions.insights.getTrends();
    * ```
    */
-  getTrends(options?: Core.RequestOptions): Core.APIPromise<InsightGetTrendsResponse> {
+  getTrends(options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.get('/transactions/insights/spending-trends', options);
   }
 }
 
-export interface InsightGetTrendsResponse {
-  aiInsights: Array<InsightGetTrendsResponse.AIInsight>;
-
-  forecastNextMonth: number;
-
-  overallTrend: string;
-
-  percentageChange: number;
-
-  period: string;
-
-  topCategoriesByChange: Array<InsightGetTrendsResponse.TopCategoriesByChange>;
-}
-
-export namespace InsightGetTrendsResponse {
-  export interface AIInsight {
-    id?: string;
-
-    actionableRecommendation?: string;
-
-    category?: string;
-
-    description?: string;
-
-    severity?: string;
-
-    timestamp?: string;
-
-    title?: string;
-  }
-
-  export interface TopCategoriesByChange {
-    absoluteChange?: number;
-
-    category?: string;
-
-    percentageChange?: number;
-  }
-}
+export type InsightGetTrendsResponse = unknown;
 
 export declare namespace Insights {
   export { type InsightGetTrendsResponse as InsightGetTrendsResponse };

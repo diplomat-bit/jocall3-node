@@ -14,14 +14,7 @@ For example:
 
 \`\`\`
 async function run(client) {
-  const response = await client.users.register({
-    email: 'executive@corp.com',
-    name: 'Alice Wonderland',
-    password: 'ComplexPassword99!',
-    phone: '+1-555-0199',
-  });
-
-  console.log(response.id);
+  const response = await client.ai.oracle.simulate.runAdvanced();
 }
 \`\`\`
 

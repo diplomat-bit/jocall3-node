@@ -14,13 +14,10 @@ export class Users extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.users.login({
-   *   email: 'quantum.visionary@demobank.com',
-   *   password: 'YourSecurePassword123',
-   * });
+   * const response = await client.users.login();
    * ```
    */
-  login(body: UserLoginParams, options?: Core.RequestOptions): Core.APIPromise<UserLoginResponse> {
+  login(body: UserLoginParams, options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.post('/users/login', { body, ...options });
   }
 
@@ -30,12 +27,7 @@ export class Users extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.users.register({
-   *   email: 'alice.w@example.com',
-   *   name: 'Alice Wonderland',
-   *   password: 'SecureP@ssw0rd2024!',
-   *   phone: '+1-555-987-6543',
-   * });
+   * const response = await client.users.register();
    * ```
    */
   register(body: UserRegisterParams, options?: Core.RequestOptions): Core.APIPromise<UserRegisterResponse> {
@@ -43,38 +35,10 @@ export class Users extends APIResource {
   }
 }
 
-export interface UserLoginResponse {
-  accessToken: string;
-
-  expiresIn: number;
-
-  refreshToken: string;
-
-  tokenType: string;
-}
+export type UserLoginResponse = unknown;
 
 export interface UserRegisterResponse {
-  id: string;
-
-  email: string;
-
-  identityVerified: boolean;
-
-  name: string;
-
-  address?: UserRegisterResponse.Address;
-
-  aiPersona?: string;
-
-  dateOfBirth?: string;
-
-  gamificationLevel?: number;
-
-  loyaltyPoints?: number;
-
-  loyaltyTier?: string;
-
-  phone?: string;
+  address?: unknown;
 
   /**
    * User's personalized preferences for the platform.
@@ -84,101 +48,25 @@ export interface UserRegisterResponse {
   /**
    * Security-related status for the user account.
    */
-  securityStatus?: UserRegisterResponse.SecurityStatus;
+  securityStatus?: unknown;
 }
 
 export namespace UserRegisterResponse {
-  export interface Address {
-    city?: string;
-
-    country?: string;
-
-    state?: string;
-
-    street?: string;
-
-    zip?: string;
-  }
-
   /**
    * User's personalized preferences for the platform.
    */
   export interface Preferences {
-    aiInteractionMode?: string;
-
-    dataSharingConsent?: boolean;
-
     /**
      * Preferred channels for receiving notifications.
      */
-    notificationChannels?: Preferences.NotificationChannels;
-
-    preferredLanguage?: string;
-
-    theme?: string;
-
-    transactionGrouping?: string;
-  }
-
-  export namespace Preferences {
-    /**
-     * Preferred channels for receiving notifications.
-     */
-    export interface NotificationChannels {
-      email?: boolean;
-
-      inApp?: boolean;
-
-      push?: boolean;
-
-      sms?: boolean;
-    }
-  }
-
-  /**
-   * Security-related status for the user account.
-   */
-  export interface SecurityStatus {
-    biometricsEnrolled?: boolean;
-
-    lastLogin?: string;
-
-    lastLoginIp?: string;
-
-    twoFactorEnabled?: boolean;
+    notificationChannels?: unknown;
   }
 }
 
-export interface UserLoginParams {
-  email: string;
-
-  password: string;
-}
+export interface UserLoginParams {}
 
 export interface UserRegisterParams {
-  email: string;
-
-  name: string;
-
-  password: string;
-
-  address?: UserRegisterParams.Address;
-
-  phone?: string;
-}
-
-export namespace UserRegisterParams {
-  export interface Address {
-    city?: string;
-
-    country?: string;
-
-    state?: string;
-
-    street?: string;
-
-    zip?: string;
-  }
+  address?: unknown;
 }
 
 Users.Me = Me;

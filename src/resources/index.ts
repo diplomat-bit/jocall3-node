@@ -20,7 +20,7 @@ export {
 export { Corporate } from './corporate/corporate';
 export { Investments } from './investments/investments';
 export { Payments } from './payments/payments';
-export { Sustainability } from './sustainability/sustainability';
+export { Sustainability, type SustainabilityGetFootprintResponse } from './sustainability/sustainability';
 export {
   Transactions,
   type TransactionRetrieveResponse,

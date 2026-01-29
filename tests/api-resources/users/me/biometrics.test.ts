@@ -27,12 +27,8 @@ describe('resource biometrics', () => {
   });
 
   // Prism tests are disabled
-  test.skip('verify: only required params', async () => {
-    const responsePromise = client.users.me.biometrics.verify({
-      biometricSignature: 'base64encoded_one_time_fingerprint_proof',
-      biometricType: 'fingerprint',
-      deviceId: 'dev_mobile_android_ddeeff',
-    });
+  test.skip('verify', async () => {
+    const responsePromise = client.users.me.biometrics.verify({});
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -40,14 +36,5 @@ describe('resource biometrics', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Prism tests are disabled
-  test.skip('verify: required and optional params', async () => {
-    const response = await client.users.me.biometrics.verify({
-      biometricSignature: 'base64encoded_one_time_fingerprint_proof',
-      biometricType: 'fingerprint',
-      deviceId: 'dev_mobile_android_ddeeff',
-    });
   });
 });

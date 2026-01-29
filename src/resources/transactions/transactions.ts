@@ -41,15 +41,12 @@ export class Transactions extends APIResource {
    * const transactions = await client.transactions.list();
    * ```
    */
-  list(
-    query?: TransactionListParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<TransactionListResponse>;
-  list(options?: Core.RequestOptions): Core.APIPromise<TransactionListResponse>;
+  list(query?: TransactionListParams, options?: Core.RequestOptions): Core.APIPromise<unknown>;
+  list(options?: Core.RequestOptions): Core.APIPromise<unknown>;
   list(
     query: TransactionListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<TransactionListResponse> {
+  ): Core.APIPromise<unknown> {
     if (isRequestOptions(query)) {
       return this.list({}, query);
     }
@@ -63,10 +60,6 @@ export class Transactions extends APIResource {
    * ```ts
    * const response = await client.transactions.addNotes(
    *   'txn_quantum-2024-07-21-A7B8C9',
-   *   {
-   *     notes:
-   *       'This was a special coffee for a client meeting.',
-   *   },
    * );
    * ```
    */
@@ -86,11 +79,6 @@ export class Transactions extends APIResource {
    * ```ts
    * const response = await client.transactions.categorize(
    *   'txn_quantum-2024-07-21-A7B8C9',
-   *   {
-   *     category: 'Home > Groceries',
-   *     applyToFuture: true,
-   *     notes: 'Bulk purchase for party',
-   *   },
    * );
    * ```
    */
@@ -104,288 +92,67 @@ export class Transactions extends APIResource {
 }
 
 export interface TransactionRetrieveResponse {
-  id: string;
+  /**
+   * Geographic location details for a transaction.
+   */
+  location?: unknown;
 
-  accountId: string;
-
-  amount: number;
-
-  category: string;
-
-  currency: string;
-
-  date: string;
-
-  description: string;
-
-  type: string;
-
-  aiCategoryConfidence?: number;
-
-  carbonFootprint?: number;
-
-  disputeStatus?: string;
-
-  location?: TransactionRetrieveResponse.Location;
-
+  /**
+   * Detailed information about a merchant associated with a transaction.
+   */
   merchantDetails?: TransactionRetrieveResponse.MerchantDetails;
-
-  notes?: string;
-
-  paymentChannel?: string;
-
-  postedDate?: string;
-
-  receiptUrl?: string;
-
-  tags?: Array<string>;
 }
 
 export namespace TransactionRetrieveResponse {
-  export interface Location {
-    city?: string;
-
-    latitude?: number;
-
-    longitude?: number;
-  }
-
+  /**
+   * Detailed information about a merchant associated with a transaction.
+   */
   export interface MerchantDetails {
-    address?: MerchantDetails.Address;
-
-    logoUrl?: string;
-
-    name?: string;
-
-    website?: string;
-  }
-
-  export namespace MerchantDetails {
-    export interface Address {
-      city?: string;
-
-      state?: string;
-
-      zip?: string;
-    }
+    address?: unknown;
   }
 }
 
-export interface TransactionListResponse {
-  data: Array<TransactionListResponse.Data>;
-
-  limit: number;
-
-  offset: number;
-
-  total: number;
-
-  nextOffset?: number;
-}
-
-export namespace TransactionListResponse {
-  export interface Data {
-    id?: string;
-
-    accountId?: string;
-
-    aiCategoryConfidence?: number;
-
-    amount?: number;
-
-    carbonFootprint?: number;
-
-    category?: string;
-
-    currency?: string;
-
-    date?: string;
-
-    description?: string;
-
-    disputeStatus?: string;
-
-    location?: Data.Location;
-
-    merchantDetails?: Data.MerchantDetails;
-
-    notes?: string;
-
-    paymentChannel?: string;
-
-    postedDate?: string;
-
-    receiptUrl?: string;
-
-    tags?: Array<string>;
-
-    type?: string;
-  }
-
-  export namespace Data {
-    export interface Location {
-      city?: string;
-
-      latitude?: number;
-
-      longitude?: number;
-    }
-
-    export interface MerchantDetails {
-      address?: MerchantDetails.Address;
-
-      logoUrl?: string;
-
-      name?: string;
-
-      website?: string;
-    }
-
-    export namespace MerchantDetails {
-      export interface Address {
-        city?: string;
-
-        state?: string;
-
-        zip?: string;
-      }
-    }
-  }
-}
+export type TransactionListResponse = unknown;
 
 export interface TransactionAddNotesResponse {
-  id: string;
+  /**
+   * Geographic location details for a transaction.
+   */
+  location?: unknown;
 
-  accountId: string;
-
-  amount: number;
-
-  category: string;
-
-  currency: string;
-
-  date: string;
-
-  description: string;
-
-  type: string;
-
-  aiCategoryConfidence?: number;
-
-  carbonFootprint?: number;
-
-  disputeStatus?: string;
-
-  location?: TransactionAddNotesResponse.Location;
-
+  /**
+   * Detailed information about a merchant associated with a transaction.
+   */
   merchantDetails?: TransactionAddNotesResponse.MerchantDetails;
-
-  notes?: string;
-
-  paymentChannel?: string;
-
-  postedDate?: string;
-
-  receiptUrl?: string;
-
-  tags?: Array<string>;
 }
 
 export namespace TransactionAddNotesResponse {
-  export interface Location {
-    city?: string;
-
-    latitude?: number;
-
-    longitude?: number;
-  }
-
+  /**
+   * Detailed information about a merchant associated with a transaction.
+   */
   export interface MerchantDetails {
-    address?: MerchantDetails.Address;
-
-    logoUrl?: string;
-
-    name?: string;
-
-    website?: string;
-  }
-
-  export namespace MerchantDetails {
-    export interface Address {
-      city?: string;
-
-      state?: string;
-
-      zip?: string;
-    }
+    address?: unknown;
   }
 }
 
 export interface TransactionCategorizeResponse {
-  id: string;
+  /**
+   * Geographic location details for a transaction.
+   */
+  location?: unknown;
 
-  accountId: string;
-
-  amount: number;
-
-  category: string;
-
-  currency: string;
-
-  date: string;
-
-  description: string;
-
-  type: string;
-
-  aiCategoryConfidence?: number;
-
-  carbonFootprint?: number;
-
-  disputeStatus?: string;
-
-  location?: TransactionCategorizeResponse.Location;
-
+  /**
+   * Detailed information about a merchant associated with a transaction.
+   */
   merchantDetails?: TransactionCategorizeResponse.MerchantDetails;
-
-  notes?: string;
-
-  paymentChannel?: string;
-
-  postedDate?: string;
-
-  receiptUrl?: string;
-
-  tags?: Array<string>;
 }
 
 export namespace TransactionCategorizeResponse {
-  export interface Location {
-    city?: string;
-
-    latitude?: number;
-
-    longitude?: number;
-  }
-
+  /**
+   * Detailed information about a merchant associated with a transaction.
+   */
   export interface MerchantDetails {
-    address?: MerchantDetails.Address;
-
-    logoUrl?: string;
-
-    name?: string;
-
-    website?: string;
-  }
-
-  export namespace MerchantDetails {
-    export interface Address {
-      city?: string;
-
-      state?: string;
-
-      zip?: string;
-    }
+    address?: unknown;
   }
 }
 
@@ -436,17 +203,9 @@ export interface TransactionListParams {
   type?: string;
 }
 
-export interface TransactionAddNotesParams {
-  notes: string;
-}
+export interface TransactionAddNotesParams {}
 
-export interface TransactionCategorizeParams {
-  category: string;
-
-  applyToFuture?: boolean;
-
-  notes?: string;
-}
+export interface TransactionCategorizeParams {}
 
 Transactions.Recurring = Recurring;
 Transactions.Insights = Insights;

@@ -2,7 +2,14 @@
 
 import { APIResource } from '../../resource';
 import * as AdsAPI from './ads';
-import { Ads } from './ads';
+import {
+  AdGenerateParams,
+  AdGenerateResponse,
+  AdGetOperationResponse,
+  AdListParams,
+  AdListResponse,
+  Ads,
+} from './ads';
 import * as AdvisorAPI from './advisor/advisor';
 import {
   Advisor,
@@ -12,7 +19,13 @@ import {
   AdvisorHistoryResponse,
 } from './advisor/advisor';
 import * as IncubatorAPI from './incubator/incubator';
-import { Incubator } from './incubator/incubator';
+import {
+  Incubator,
+  IncubatorGeneratePitchParams,
+  IncubatorGeneratePitchResponse,
+  IncubatorListPitchesParams,
+  IncubatorListPitchesResponse,
+} from './incubator/incubator';
 import * as OracleAPI from './oracle/oracle';
 import { Oracle } from './oracle/oracle';
 
@@ -39,7 +52,20 @@ export declare namespace AI {
 
   export { Oracle as Oracle };
 
-  export { Incubator as Incubator };
+  export {
+    Incubator as Incubator,
+    type IncubatorGeneratePitchResponse as IncubatorGeneratePitchResponse,
+    type IncubatorListPitchesResponse as IncubatorListPitchesResponse,
+    type IncubatorGeneratePitchParams as IncubatorGeneratePitchParams,
+    type IncubatorListPitchesParams as IncubatorListPitchesParams,
+  };
 
-  export { Ads as Ads };
+  export {
+    Ads as Ads,
+    type AdListResponse as AdListResponse,
+    type AdGenerateResponse as AdGenerateResponse,
+    type AdGetOperationResponse as AdGetOperationResponse,
+    type AdListParams as AdListParams,
+    type AdGenerateParams as AdGenerateParams,
+  };
 }

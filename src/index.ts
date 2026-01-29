@@ -25,7 +25,10 @@ import { AI } from './resources/ai/ai';
 import { Corporate } from './resources/corporate/corporate';
 import { Investments } from './resources/investments/investments';
 import { Payments } from './resources/payments/payments';
-import { Sustainability } from './resources/sustainability/sustainability';
+import {
+  Sustainability,
+  SustainabilityGetFootprintResponse,
+} from './resources/sustainability/sustainability';
 import {
   TransactionAddNotesParams,
   TransactionAddNotesResponse,
@@ -301,7 +304,10 @@ export declare namespace Jocall3 {
 
   export { Payments as Payments };
 
-  export { Sustainability as Sustainability };
+  export {
+    Sustainability as Sustainability,
+    type SustainabilityGetFootprintResponse as SustainabilityGetFootprintResponse,
+  };
 }
 
 export { toFile, fileFromPath } from './uploads';

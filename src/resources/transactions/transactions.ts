@@ -108,29 +108,17 @@ export interface TransactionRetrieveResponse {
 
   description: string;
 
-  accountId?: string;
-
-  carbonFootprint?: number;
-
   category?: string;
 
-  merchantDetails?: TransactionRetrieveResponse.MerchantDetails;
-}
-
-export namespace TransactionRetrieveResponse {
-  export interface MerchantDetails {
-    logoUrl?: string;
-
-    name?: string;
-  }
+  notes?: string;
 }
 
 export interface TransactionListResponse {
-  data?: Array<TransactionListResponse.Data>;
+  data: Array<TransactionListResponse.Data>;
+
+  total: number;
 
   nextOffset?: number;
-
-  total?: number;
 }
 
 export namespace TransactionListResponse {
@@ -145,21 +133,9 @@ export namespace TransactionListResponse {
 
     description: string;
 
-    accountId?: string;
-
-    carbonFootprint?: number;
-
     category?: string;
 
-    merchantDetails?: Data.MerchantDetails;
-  }
-
-  export namespace Data {
-    export interface MerchantDetails {
-      logoUrl?: string;
-
-      name?: string;
-    }
+    notes?: string;
   }
 }
 
@@ -174,21 +150,9 @@ export interface TransactionCategorizeResponse {
 
   description: string;
 
-  accountId?: string;
-
-  carbonFootprint?: number;
-
   category?: string;
 
-  merchantDetails?: TransactionCategorizeResponse.MerchantDetails;
-}
-
-export namespace TransactionCategorizeResponse {
-  export interface MerchantDetails {
-    logoUrl?: string;
-
-    name?: string;
-  }
+  notes?: string;
 }
 
 export interface TransactionListParams {

@@ -6,6 +6,7 @@ export {
   Transactions,
   type TransactionSendCryptoResponse,
   type TransactionBridgeChainParams,
+  type TransactionInitiateParams,
   type TransactionSendCryptoParams,
   type TransactionSwapTokensParams,
 } from './transactions';

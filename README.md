@@ -30,27 +30,12 @@ const client = new Jocall3({
 const response = await client.ai.oracle.simulate.runAdvanced({
   prompt:
     'Analyze the systemic risk of a 20% drop in BTC prices on my cross-chain collateralized debt positions, factoring in a simultaneous 50bps hike by the Fed and a liquidity squeeze on Aave.',
-  scenarios: [
-    {
-      name: 'Crypto Black Swan + Macro Contagion',
-      durationYears: 1,
-      events: [
-        {
-          type: 'liquidation_cascade',
-          details: { magnitude: 'extreme', threshold: '0.85' },
-        },
-        {
-          type: 'interest_rate_shock',
-          details: { basis_points: 50 },
-        },
-      ],
-    },
-  ],
+  scenarios: [{ name: 'Crypto Black Swan + Macro Contagion' }],
   globalEconomicFactors: { volatility_index: 'VIX_HIGHER_30', geopolitical_tension: 'high' },
   personalAssumptions: { stop_loss_triggered: true },
 });
 
-console.log(response.overallSummary);
+console.log(response.confidenceScore);
 ```
 
 ### Request & Response types
@@ -74,6 +59,38 @@ const response: Jocall3.UserRegisterResponse = await client.users.register(param
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
+
+## File uploads
+
+Request parameters that correspond to file uploads can be passed in many different forms:
+
+- `File` (or an object with the same structure)
+- a `fetch` `Response` (or an object with the same structure)
+- an `fs.ReadStream`
+- the return value of our `toFile` helper
+
+```ts
+import fs from 'fs';
+import fetch from 'node-fetch';
+import Jocall3, { toFile } from 'jocall3-node';
+
+const client = new Jocall3();
+
+// If you have access to Node `fs` we recommend using `fs.createReadStream()`:
+await client.system.verification.document({ file: fs.createReadStream('/path/to/file') });
+
+// Or if you have the web `File` API you can pass a `File` instance:
+await client.system.verification.document({ file: new File(['my bytes'], 'file') });
+
+// You can also pass a `fetch` `Response`:
+await client.system.verification.document({ file: await fetch('https://somesite/file') });
+
+// Finally, if none of the above are convenient, you can use our `toFile` helper:
+await client.system.verification.document({ file: await toFile(Buffer.from('my bytes'), 'file') });
+await client.system.verification.document({
+  file: await toFile(new Uint8Array([0, 1, 2]), 'file'),
+});
+```
 
 ## Handling errors
 

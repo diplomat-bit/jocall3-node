@@ -321,6 +321,16 @@ Methods:
 
 ## Models
 
+Types:
+
+- <code><a href="./src/resources/ai/models.ts">ModelListResponse</a></code>
+- <code><a href="./src/resources/ai/models.ts">ModelFineTuneResponse</a></code>
+
+Methods:
+
+- <code title="get /ai/models/versions">client.ai.models.<a href="./src/resources/ai/models.ts">list</a>() -> ModelListResponse</code>
+- <code title="post /ai/models/fine-tune">client.ai.models.<a href="./src/resources/ai/models.ts">fineTune</a>({ ...params }) -> ModelFineTuneResponse</code>
+
 # Corporate
 
 Types:
@@ -362,11 +372,14 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/corporate/treasury/treasury.ts">TreasuryForecastCashFlowResponse</a></code>
+- <code><a href="./src/resources/corporate/treasury/treasury.ts">TreasuryGetLiquidityPositionsResponse</a></code>
 - <code><a href="./src/resources/corporate/treasury/treasury.ts">TreasuryManageLiquidityResponse</a></code>
 
 Methods:
 
+- <code title="post /corporate/treasury/bulk-payouts">client.corporate.treasury.<a href="./src/resources/corporate/treasury/treasury.ts">bulkPayout</a>({ ...params }) -> void</code>
 - <code title="get /corporate/treasury/cash-flow/forecast">client.corporate.treasury.<a href="./src/resources/corporate/treasury/treasury.ts">forecastCashFlow</a>({ ...params }) -> TreasuryForecastCashFlowResponse</code>
+- <code title="get /corporate/treasury/liquidity-positions">client.corporate.treasury.<a href="./src/resources/corporate/treasury/treasury.ts">getLiquidityPositions</a>() -> TreasuryGetLiquidityPositionsResponse</code>
 - <code title="post /corporate/treasury/liquidity/optimize">client.corporate.treasury.<a href="./src/resources/corporate/treasury/treasury.ts">manageLiquidity</a>({ ...params }) -> TreasuryManageLiquidityResponse</code>
 
 ### Sweeping
@@ -378,18 +391,26 @@ Methods:
 
 ### Pooling
 
+Methods:
+
+- <code title="post /corporate/treasury/liquidity/pooling">client.corporate.treasury.pooling.<a href="./src/resources/corporate/treasury/pooling.ts">configure</a>({ ...params }) -> void</code>
+
 ## Cards
 
 Types:
 
+- <code><a href="./src/resources/corporate/cards/cards.ts">CardListResponse</a></code>
 - <code><a href="./src/resources/corporate/cards/cards.ts">CardIssuePhysicalResponse</a></code>
 - <code><a href="./src/resources/corporate/cards/cards.ts">CardIssueVirtualResponse</a></code>
+- <code><a href="./src/resources/corporate/cards/cards.ts">CardListTransactionsResponse</a></code>
 
 Methods:
 
+- <code title="get /corporate/cards">client.corporate.cards.<a href="./src/resources/corporate/cards/cards.ts">list</a>({ ...params }) -> CardListResponse</code>
 - <code title="post /corporate/cards/{cardId}/freeze">client.corporate.cards.<a href="./src/resources/corporate/cards/cards.ts">freeze</a>(cardId, { ...params }) -> void</code>
 - <code title="post /corporate/cards/physical">client.corporate.cards.<a href="./src/resources/corporate/cards/cards.ts">issuePhysical</a>({ ...params }) -> CardIssuePhysicalResponse</code>
 - <code title="post /corporate/cards/virtual">client.corporate.cards.<a href="./src/resources/corporate/cards/cards.ts">issueVirtual</a>({ ...params }) -> CardIssueVirtualResponse</code>
+- <code title="get /corporate/cards/{cardId}/transactions">client.corporate.cards.<a href="./src/resources/corporate/cards/cards.ts">listTransactions</a>(cardId) -> CardListTransactionsResponse</code>
 
 ### Controls
 
@@ -428,6 +449,7 @@ Types:
 Methods:
 
 - <code title="post /corporate/risk/fraud/rules">client.corporate.risk.fraud.rules.<a href="./src/resources/corporate/risk/fraud/rules.ts">create</a>({ ...params }) -> void</code>
+- <code title="put /corporate/risk/fraud/rules/{ruleId}">client.corporate.risk.fraud.rules.<a href="./src/resources/corporate/risk/fraud/rules.ts">update</a>(ruleId, { ...params }) -> void</code>
 - <code title="get /corporate/risk/fraud/rules">client.corporate.risk.fraud.rules.<a href="./src/resources/corporate/risk/fraud/rules.ts">list</a>() -> RuleListResponse</code>
 
 ## Governance
@@ -445,6 +467,15 @@ Methods:
 - <code title="post /corporate/governance/proposals/{proposalId}/vote">client.corporate.governance.proposals.<a href="./src/resources/corporate/governance/proposals.ts">vote</a>(proposalId, { ...params }) -> void</code>
 
 ## Anomalies
+
+Types:
+
+- <code><a href="./src/resources/corporate/anomalies.ts">AnomalyListResponse</a></code>
+
+Methods:
+
+- <code title="get /corporate/anomalies">client.corporate.anomalies.<a href="./src/resources/corporate/anomalies.ts">list</a>() -> AnomalyListResponse</code>
+- <code title="put /corporate/anomalies/{anomalyId}/status">client.corporate.anomalies.<a href="./src/resources/corporate/anomalies.ts">updateStatus</a>(anomalyId, { ...params }) -> void</code>
 
 # Web3
 
@@ -480,6 +511,7 @@ Types:
 Methods:
 
 - <code title="post /web3/transactions/bridge">client.web3.transactions.<a href="./src/resources/web3/transactions.ts">bridgeChain</a>({ ...params }) -> void</code>
+- <code title="post /web3/transactions/initiate">client.web3.transactions.<a href="./src/resources/web3/transactions.ts">initiate</a>({ ...params }) -> void</code>
 - <code title="post /web3/transactions/send">client.web3.transactions.<a href="./src/resources/web3/transactions.ts">sendCrypto</a>({ ...params }) -> TransactionSendCryptoResponse</code>
 - <code title="post /web3/transactions/swap">client.web3.transactions.<a href="./src/resources/web3/transactions.ts">swapTokens</a>({ ...params }) -> void</code>
 
@@ -521,8 +553,13 @@ Methods:
 
 ## International
 
+Types:
+
+- <code><a href="./src/resources/payments/international.ts">InternationalGetStatusResponse</a></code>
+
 Methods:
 
+- <code title="get /payments/international/{paymentId}/status">client.payments.international.<a href="./src/resources/payments/international.ts">getStatus</a>(paymentId) -> InternationalGetStatusResponse</code>
 - <code title="post /payments/international/sepa">client.payments.international.<a href="./src/resources/payments/international.ts">sepa</a>({ ...params }) -> void</code>
 - <code title="post /payments/international/swift">client.payments.international.<a href="./src/resources/payments/international.ts">swift</a>({ ...params }) -> void</code>
 
@@ -694,4 +731,18 @@ Methods:
 
 ## Verification
 
+Methods:
+
+- <code title="post /system/verification/biometric-comparison">client.system.verification.<a href="./src/resources/system/verification.ts">biometricMatch</a>({ ...params }) -> void</code>
+- <code title="post /system/verification/document">client.system.verification.<a href="./src/resources/system/verification.ts">document</a>({ ...params }) -> void</code>
+
 ## Notifications
+
+Types:
+
+- <code><a href="./src/resources/system/notifications.ts">NotificationListTemplatesResponse</a></code>
+
+Methods:
+
+- <code title="get /system/notifications/templates">client.system.notifications.<a href="./src/resources/system/notifications.ts">listTemplates</a>() -> NotificationListTemplatesResponse</code>
+- <code title="post /system/notifications/push">client.system.notifications.<a href="./src/resources/system/notifications.ts">send</a>({ ...params }) -> void</code>

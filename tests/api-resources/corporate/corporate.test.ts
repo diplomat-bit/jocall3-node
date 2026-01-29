@@ -40,15 +40,11 @@ describe('resource corporate', () => {
           address: {
             city: 'city',
             country: 'country',
-            state: 'state',
             street: 'street',
+            state: 'state',
             zip: 'zip',
           },
-          phone: 'phone',
-          preferences: {
-            notificationChannels: {},
-            theme: 'theme',
-          },
+          preferences: { foo: 'bar' },
           securityStatus: { lastLogin: '2019-12-27T18:11:19.117Z', twoFactorEnabled: true },
         },
       ],

@@ -30,6 +30,35 @@ describe('resource rules', () => {
     });
   });
 
+  test('update', async () => {
+    const responsePromise = client.corporate.risk.fraud.rules.update('ruleId');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('update: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.corporate.risk.fraud.rules.update('ruleId', { path: '/_stainless_unknown_path' }),
+    ).rejects.toThrow(Jocall3.NotFoundError);
+  });
+
+  test('update: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.corporate.risk.fraud.rules.update(
+        'ruleId',
+        { action: 'action', name: 'name' },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Jocall3.NotFoundError);
+  });
+
   test('list', async () => {
     const responsePromise = client.corporate.risk.fraud.rules.list();
     const rawResponse = await responsePromise.asResponse();

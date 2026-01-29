@@ -1,12 +1,33 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../../resource';
+import { isRequestOptions } from '../../../core';
 import * as Core from '../../../core';
 import * as ControlsAPI from './controls';
-import { ControlUpdateParams, Controls as ControlsAPIControls } from './controls';
+import { ControlUpdateParams, Controls } from './controls';
 
 export class Cards extends APIResource {
   controls: ControlsAPI.Controls = new ControlsAPI.Controls(this._client);
+
+  /**
+   * List all corporate cards
+   *
+   * @example
+   * ```ts
+   * const cards = await client.corporate.cards.list();
+   * ```
+   */
+  list(query?: CardListParams, options?: Core.RequestOptions): Core.APIPromise<CardListResponse>;
+  list(options?: Core.RequestOptions): Core.APIPromise<CardListResponse>;
+  list(
+    query: CardListParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<CardListResponse> {
+    if (isRequestOptions(query)) {
+      return this.list({}, query);
+    }
+    return this._client.get('/corporate/cards', { query, ...options });
+  }
 
   /**
    * Toggle Card Lock
@@ -34,7 +55,11 @@ export class Cards extends APIResource {
    * const response = await client.corporate.cards.issuePhysical(
    *   {
    *     holderName: 'holderName',
-   *     shippingAddress: {},
+   *     shippingAddress: {
+   *       city: 'city',
+   *       country: 'country',
+   *       street: 'street',
+   *     },
    *   },
    * );
    * ```
@@ -64,6 +89,44 @@ export class Cards extends APIResource {
   ): Core.APIPromise<CardIssueVirtualResponse> {
     return this._client.post('/corporate/cards/virtual', { body, ...options });
   }
+
+  /**
+   * Get card transactions
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.corporate.cards.listTransactions('cardId');
+   * ```
+   */
+  listTransactions(
+    cardId: string,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<CardListTransactionsResponse> {
+    return this._client.get(`/corporate/cards/${cardId}/transactions`, options);
+  }
+}
+
+export interface CardListResponse {
+  data?: Array<CardListResponse.Data>;
+
+  total?: number;
+}
+
+export namespace CardListResponse {
+  export interface Data {
+    id: string;
+
+    cardNumberMask: string;
+
+    holderName: string;
+
+    status: string;
+
+    controls?: { [key: string]: unknown };
+
+    frozen?: boolean;
+  }
 }
 
 export interface CardIssuePhysicalResponse {
@@ -75,19 +138,9 @@ export interface CardIssuePhysicalResponse {
 
   status: string;
 
-  controls?: CardIssuePhysicalResponse.Controls;
-
-  expirationDate?: string;
+  controls?: { [key: string]: unknown };
 
   frozen?: boolean;
-}
-
-export namespace CardIssuePhysicalResponse {
-  export interface Controls {
-    categories?: Array<string>;
-
-    monthlyLimit?: number;
-  }
 }
 
 export interface CardIssueVirtualResponse {
@@ -99,19 +152,37 @@ export interface CardIssueVirtualResponse {
 
   status: string;
 
-  controls?: CardIssueVirtualResponse.Controls;
-
-  expirationDate?: string;
+  controls?: { [key: string]: unknown };
 
   frozen?: boolean;
 }
 
-export namespace CardIssueVirtualResponse {
-  export interface Controls {
-    categories?: Array<string>;
+export interface CardListTransactionsResponse {
+  data?: Array<CardListTransactionsResponse.Data>;
+}
 
-    monthlyLimit?: number;
+export namespace CardListTransactionsResponse {
+  export interface Data {
+    id: string;
+
+    amount: number;
+
+    currency: string;
+
+    date: string;
+
+    description: string;
+
+    category?: string;
+
+    notes?: string;
   }
+}
+
+export interface CardListParams {
+  limit?: number;
+
+  offset?: number;
 }
 
 export interface CardFreezeParams {
@@ -126,13 +197,13 @@ export interface CardIssuePhysicalParams {
 
 export namespace CardIssuePhysicalParams {
   export interface ShippingAddress {
-    city?: string;
+    city: string;
 
-    country?: string;
+    country: string;
+
+    street: string;
 
     state?: string;
-
-    street?: string;
 
     zip?: string;
   }
@@ -148,16 +219,19 @@ export interface CardIssueVirtualParams {
   metadata?: unknown;
 }
 
-Cards.Controls = ControlsAPIControls;
+Cards.Controls = Controls;
 
 export declare namespace Cards {
   export {
+    type CardListResponse as CardListResponse,
     type CardIssuePhysicalResponse as CardIssuePhysicalResponse,
     type CardIssueVirtualResponse as CardIssueVirtualResponse,
+    type CardListTransactionsResponse as CardListTransactionsResponse,
+    type CardListParams as CardListParams,
     type CardFreezeParams as CardFreezeParams,
     type CardIssuePhysicalParams as CardIssuePhysicalParams,
     type CardIssueVirtualParams as CardIssueVirtualParams,
   };
 
-  export { ControlsAPIControls as Controls, type ControlUpdateParams as ControlUpdateParams };
+  export { Controls as Controls, type ControlUpdateParams as ControlUpdateParams };
 }

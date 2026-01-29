@@ -12,7 +12,7 @@ export class Simulate extends APIResource {
    * const response =
    *   await client.ai.oracle.simulate.runAdvanced({
    *     prompt: 'prompt',
-   *     scenarios: [{ durationYears: 0, name: 'name' }],
+   *     scenarios: [{ name: 'name' }],
    *   });
    * ```
    */
@@ -62,21 +62,17 @@ export class Simulate extends APIResource {
 }
 
 export interface SimulateRunAdvancedResponse {
-  overallSummary: string;
-
-  scenarioResults: Array<SimulateRunAdvancedResponse.ScenarioResult>;
-
   simulationId: string;
-}
 
-export namespace SimulateRunAdvancedResponse {
-  export interface ScenarioResult {
-    finalNetWorth?: number;
+  status: string;
 
-    narrative?: string;
+  confidenceScore?: number;
 
-    scenarioName?: string;
-  }
+  data?: Array<{ [key: string]: unknown }>;
+
+  outcomeNarrative?: string;
+
+  projectedValue?: number;
 }
 
 export interface SimulateRunMonteCarloResponse {
@@ -88,21 +84,17 @@ export interface SimulateRunMonteCarloResponse {
 }
 
 export interface SimulateRunStandardResponse {
-  overallSummary: string;
-
-  scenarioResults: Array<SimulateRunStandardResponse.ScenarioResult>;
-
   simulationId: string;
-}
 
-export namespace SimulateRunStandardResponse {
-  export interface ScenarioResult {
-    finalNetWorth?: number;
+  status: string;
 
-    narrative?: string;
+  confidenceScore?: number;
 
-    scenarioName?: string;
-  }
+  data?: Array<{ [key: string]: unknown }>;
+
+  outcomeNarrative?: string;
+
+  projectedValue?: number;
 }
 
 export interface SimulateRunAdvancedParams {
@@ -117,19 +109,11 @@ export interface SimulateRunAdvancedParams {
 
 export namespace SimulateRunAdvancedParams {
   export interface Scenario {
-    durationYears: number;
-
     name: string;
 
-    events?: Array<Scenario.Event>;
-  }
+    description?: string;
 
-  export namespace Scenario {
-    export interface Event {
-      details?: unknown;
-
-      type?: string;
-    }
+    variables?: { [key: string]: unknown };
   }
 }
 

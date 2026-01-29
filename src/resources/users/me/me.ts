@@ -18,7 +18,7 @@ import {
   PreferenceRetrieveResponse,
   PreferenceUpdateParams,
   PreferenceUpdateResponse,
-  Preferences as PreferencesAPIPreferences,
+  Preferences,
 } from './preferences';
 import * as SecurityAPI from './security';
 import {
@@ -75,30 +75,22 @@ export interface MeRetrieveResponse {
 
   address?: MeRetrieveResponse.Address;
 
-  phone?: string;
-
-  preferences?: MeRetrieveResponse.Preferences;
+  preferences?: { [key: string]: unknown };
 
   securityStatus?: MeRetrieveResponse.SecurityStatus;
 }
 
 export namespace MeRetrieveResponse {
   export interface Address {
-    city?: string;
+    city: string;
 
-    country?: string;
+    country: string;
+
+    street: string;
 
     state?: string;
 
-    street?: string;
-
     zip?: string;
-  }
-
-  export interface Preferences {
-    notificationChannels?: unknown;
-
-    theme?: string;
   }
 
   export interface SecurityStatus {
@@ -119,30 +111,22 @@ export interface MeUpdateResponse {
 
   address?: MeUpdateResponse.Address;
 
-  phone?: string;
-
-  preferences?: MeUpdateResponse.Preferences;
+  preferences?: { [key: string]: unknown };
 
   securityStatus?: MeUpdateResponse.SecurityStatus;
 }
 
 export namespace MeUpdateResponse {
   export interface Address {
-    city?: string;
+    city: string;
 
-    country?: string;
+    country: string;
+
+    street: string;
 
     state?: string;
 
-    street?: string;
-
     zip?: string;
-  }
-
-  export interface Preferences {
-    notificationChannels?: unknown;
-
-    theme?: string;
   }
 
   export interface SecurityStatus {
@@ -162,19 +146,19 @@ export interface MeUpdateParams {
 
 export namespace MeUpdateParams {
   export interface Address {
-    city?: string;
+    city: string;
 
-    country?: string;
+    country: string;
+
+    street: string;
 
     state?: string;
-
-    street?: string;
 
     zip?: string;
   }
 }
 
-Me.Preferences = PreferencesAPIPreferences;
+Me.Preferences = Preferences;
 Me.Security = Security;
 Me.Devices = Devices;
 Me.Biometrics = Biometrics;
@@ -187,7 +171,7 @@ export declare namespace Me {
   };
 
   export {
-    PreferencesAPIPreferences as Preferences,
+    Preferences as Preferences,
     type PreferenceRetrieveResponse as PreferenceRetrieveResponse,
     type PreferenceUpdateResponse as PreferenceUpdateResponse,
     type PreferenceUpdateParams as PreferenceUpdateParams,

@@ -34,6 +34,29 @@ describe('resource transactions', () => {
     });
   });
 
+  test('initiate: only required params', async () => {
+    const responsePromise = client.web3.transactions.initiate({
+      amount: 0,
+      asset: 'asset',
+      wallet_id: 'wallet_id',
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('initiate: required and optional params', async () => {
+    const response = await client.web3.transactions.initiate({
+      amount: 0,
+      asset: 'asset',
+      wallet_id: 'wallet_id',
+    });
+  });
+
   test('sendCrypto: only required params', async () => {
     const responsePromise = client.web3.transactions.sendCrypto({
       token: 'token',

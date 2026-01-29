@@ -31,5 +31,10 @@ export {
   type IncubatorGeneratePitchParams,
   type IncubatorValidateIdeaParams,
 } from './incubator/index';
-export { Models } from './models';
+export {
+  Models,
+  type ModelListResponse,
+  type ModelFineTuneResponse,
+  type ModelFineTuneParams,
+} from './models';
 export { Oracle } from './oracle/index';

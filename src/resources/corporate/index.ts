@@ -1,10 +1,13 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { Anomalies } from './anomalies';
+export { Anomalies, type AnomalyListResponse, type AnomalyUpdateStatusParams } from './anomalies';
 export {
   Cards,
+  type CardListResponse,
   type CardIssuePhysicalResponse,
   type CardIssueVirtualResponse,
+  type CardListTransactionsResponse,
+  type CardListParams,
   type CardFreezeParams,
   type CardIssuePhysicalParams,
   type CardIssueVirtualParams,
@@ -33,7 +36,9 @@ export {
 export {
   Treasury,
   type TreasuryForecastCashFlowResponse,
+  type TreasuryGetLiquidityPositionsResponse,
   type TreasuryManageLiquidityResponse,
+  type TreasuryBulkPayoutParams,
   type TreasuryForecastCashFlowParams,
   type TreasuryManageLiquidityParams,
 } from './treasury/index';

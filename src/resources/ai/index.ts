@@ -1,21 +1,41 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export { AI } from './ai';
-export { Ads, type AdListResponse, type AdGetOperationResponse, type AdListParams } from './ads';
+export {
+  Ads,
+  type AdListResponse,
+  type AdGenerateCopyResponse,
+  type AdGenerateVideoResponse,
+  type AdOptimizeCampaignResponse,
+  type AdRetrieveOperationStatusResponse,
+  type AdGenerateCopyParams,
+  type AdGenerateVideoParams,
+  type AdOptimizeCampaignParams,
+} from './ads';
 export {
   Advisor,
   type AdvisorChatResponse,
-  type AdvisorHistoryResponse,
+  type AdvisorRetrieveHistoryResponse,
   type AdvisorChatParams,
-  type AdvisorHistoryParams,
 } from './advisor/index';
-export { Agent } from './agent';
+export {
+  Agent,
+  type AgentRetrieveCapabilitiesResponse,
+  type AgentRetrievePromptsResponse,
+  type AgentUpdatePromptsParams,
+} from './agent';
 export {
   Incubator,
-  type IncubatorGeneratePitchResponse,
   type IncubatorListPitchesResponse,
-  type IncubatorGeneratePitchParams,
-  type IncubatorListPitchesParams,
+  type IncubatorSubmitPitchResponse,
+  type IncubatorValidateIdeaResponse,
+  type IncubatorSubmitPitchParams,
+  type IncubatorValidateIdeaParams,
 } from './incubator/index';
-export { Models } from './models';
+export {
+  Models,
+  type ModelFineTuneResponse,
+  type ModelListVersionsResponse,
+  type ModelFineTuneParams,
+} from './models';
 export { Oracle } from './oracle/index';

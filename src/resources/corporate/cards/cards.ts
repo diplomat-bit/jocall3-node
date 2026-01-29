@@ -3,28 +3,27 @@
 import { APIResource } from '../../../resource';
 import { isRequestOptions } from '../../../core';
 import * as Core from '../../../core';
+import * as Shared from '../../shared';
 import * as ControlsAPI from './controls';
-import { ControlUpdateParams, ControlUpdateResponse, Controls } from './controls';
+import { ControlUpdateParams, Controls } from './controls';
 
 export class Cards extends APIResource {
   controls: ControlsAPI.Controls = new ControlsAPI.Controls(this._client);
 
   /**
-   * Retrieves a comprehensive list of all physical and virtual corporate cards
-   * associated with the user's organization, including their status, assigned
-   * holder, and current spending controls.
+   * List all corporate cards
    *
    * @example
    * ```ts
    * const cards = await client.corporate.cards.list();
    * ```
    */
-  list(query?: CardListParams, options?: Core.RequestOptions): Core.APIPromise<unknown>;
-  list(options?: Core.RequestOptions): Core.APIPromise<unknown>;
+  list(query?: CardListParams, options?: Core.RequestOptions): Core.APIPromise<CardListResponse>;
+  list(options?: Core.RequestOptions): Core.APIPromise<CardListResponse>;
   list(
     query: CardListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<unknown> {
+  ): Core.APIPromise<CardListResponse> {
     if (isRequestOptions(query)) {
       return this.list({}, query);
     }
@@ -32,44 +31,56 @@ export class Cards extends APIResource {
   }
 
   /**
-   * Immediately changes the frozen status of a corporate card, preventing or
-   * allowing transactions in real-time, critical for security and expense
-   * management.
+   * Toggle Card Lock
    *
    * @example
    * ```ts
-   * const response = await client.corporate.cards.freeze(
-   *   'corp_card_xyz987654',
-   * );
+   * await client.corporate.cards.freeze('cardId', {
+   *   frozen: true,
+   * });
    * ```
    */
-  freeze(
-    cardId: string,
-    body: CardFreezeParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CardFreezeResponse> {
-    return this._client.post(`/corporate/cards/${cardId}/freeze`, { body, ...options });
+  freeze(cardId: string, body: CardFreezeParams, options?: Core.RequestOptions): Core.APIPromise<void> {
+    return this._client.post(`/corporate/cards/${cardId}/freeze`, {
+      body,
+      ...options,
+      headers: { Accept: '*/*', ...options?.headers },
+    });
   }
 
   /**
-   * Creates and issues a new virtual corporate card with specified spending limits,
-   * merchant restrictions, and expiration dates, ideal for secure online purchases
-   * and temporary projects.
+   * Request Physical Corporate Card
+   *
+   * @example
+   * ```ts
+   * const response = await client.corporate.cards.issuePhysical(
+   *   {
+   *     holderName: 'holderName',
+   *     shippingAddress: {
+   *       city: 'city',
+   *       country: 'country',
+   *       street: 'street',
+   *     },
+   *   },
+   * );
+   * ```
+   */
+  issuePhysical(
+    body: CardIssuePhysicalParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<CardIssuePhysicalResponse> {
+    return this._client.post('/corporate/cards/physical', { body, ...options });
+  }
+
+  /**
+   * Issue Corporate Virtual Card
    *
    * @example
    * ```ts
    * const response = await client.corporate.cards.issueVirtual({
-   *   controls: {
-   *     atmWithdrawals: false,
-   *     contactlessPayments: false,
-   *     onlineTransactions: true,
-   *     internationalTransactions: false,
-   *     monthlyLimit: 1000,
-   *     dailyLimit: 500,
-   *     singleTransactionLimit: 200,
-   *     merchantCategoryRestrictions: ['Advertising'],
-   *     vendorRestrictions: ['Facebook Ads', 'Google Ads'],
-   *   },
+   *   holderName: 'holderName',
+   *   monthlyLimit: 0,
+   *   purpose: 'purpose',
    * });
    * ```
    */
@@ -81,94 +92,94 @@ export class Cards extends APIResource {
   }
 
   /**
-   * Retrieves a paginated list of transactions made with a specific corporate card,
-   * including AI categorization and compliance flags.
+   * Get card transactions
    *
    * @example
    * ```ts
    * const response =
-   *   await client.corporate.cards.listTransactions(
-   *     'corp_card_xyz987654',
-   *   );
+   *   await client.corporate.cards.listTransactions('cardId');
    * ```
    */
   listTransactions(
     cardId: string,
-    query?: CardListTransactionsParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<unknown>;
-  listTransactions(cardId: string, options?: Core.RequestOptions): Core.APIPromise<unknown>;
-  listTransactions(
-    cardId: string,
-    query: CardListTransactionsParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<unknown> {
-    if (isRequestOptions(query)) {
-      return this.listTransactions(cardId, {}, query);
-    }
-    return this._client.get(`/corporate/cards/${cardId}/transactions`, { query, ...options });
+  ): Core.APIPromise<CardListTransactionsResponse> {
+    return this._client.get(`/corporate/cards/${cardId}/transactions`, options);
   }
 }
 
-export type CardListResponse = unknown;
+export interface CardListResponse {
+  data?: Array<CardListResponse.Data>;
 
-export interface CardFreezeResponse {
-  /**
-   * Granular spending controls for a corporate card.
-   */
-  controls: unknown;
+  total?: number;
+}
+
+export namespace CardListResponse {
+  export interface Data {
+    id: string;
+
+    cardNumberMask: string;
+
+    holderName: string;
+
+    status: string;
+
+    frozen?: boolean;
+  }
+}
+
+export interface CardIssuePhysicalResponse {
+  id: string;
+
+  cardNumberMask: string;
+
+  holderName: string;
+
+  status: string;
+
+  frozen?: boolean;
 }
 
 export interface CardIssueVirtualResponse {
-  /**
-   * Granular spending controls for a corporate card.
-   */
-  controls: unknown;
+  id: string;
+
+  cardNumberMask: string;
+
+  holderName: string;
+
+  status: string;
+
+  frozen?: boolean;
 }
 
-export type CardListTransactionsResponse = unknown;
+export interface CardListTransactionsResponse {
+  data?: Array<Shared.Transaction>;
+}
 
 export interface CardListParams {
-  /**
-   * Maximum number of items to return in a single page.
-   */
   limit?: number;
 
-  /**
-   * Number of items to skip before starting to collect the result set.
-   */
   offset?: number;
 }
 
-export interface CardFreezeParams {}
+export interface CardFreezeParams {
+  frozen: boolean;
+}
+
+export interface CardIssuePhysicalParams {
+  holderName: string;
+
+  shippingAddress: Shared.Address;
+}
 
 export interface CardIssueVirtualParams {
-  /**
-   * Granular spending controls for a corporate card.
-   */
-  controls: unknown;
-}
+  holderName: string;
 
-export interface CardListTransactionsParams {
-  /**
-   * End date for filtering results (inclusive, YYYY-MM-DD).
-   */
-  endDate?: string;
+  monthlyLimit: number;
 
-  /**
-   * Maximum number of items to return in a single page.
-   */
-  limit?: number;
+  purpose: string;
 
-  /**
-   * Number of items to skip before starting to collect the result set.
-   */
-  offset?: number;
-
-  /**
-   * Start date for filtering results (inclusive, YYYY-MM-DD).
-   */
-  startDate?: string;
+  metadata?: unknown;
 }
 
 Cards.Controls = Controls;
@@ -176,18 +187,14 @@ Cards.Controls = Controls;
 export declare namespace Cards {
   export {
     type CardListResponse as CardListResponse,
-    type CardFreezeResponse as CardFreezeResponse,
+    type CardIssuePhysicalResponse as CardIssuePhysicalResponse,
     type CardIssueVirtualResponse as CardIssueVirtualResponse,
     type CardListTransactionsResponse as CardListTransactionsResponse,
     type CardListParams as CardListParams,
     type CardFreezeParams as CardFreezeParams,
+    type CardIssuePhysicalParams as CardIssuePhysicalParams,
     type CardIssueVirtualParams as CardIssueVirtualParams,
-    type CardListTransactionsParams as CardListTransactionsParams,
   };
 
-  export {
-    Controls as Controls,
-    type ControlUpdateResponse as ControlUpdateResponse,
-    type ControlUpdateParams as ControlUpdateParams,
-  };
+  export { Controls as Controls, type ControlUpdateParams as ControlUpdateParams };
 }

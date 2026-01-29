@@ -1,12 +1,22 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { Domestic } from './domestic';
+export {
+  Domestic,
+  type DomesticSendACHParams,
+  type DomesticSendRtpParams,
+  type DomesticSendWireParams,
+} from './domestic';
 export {
   Fx,
-  type FxConvertResponse,
-  type FxGetRatesResponse,
-  type FxConvertParams,
-  type FxGetRatesParams,
+  type FxRetrieveRatesResponse,
+  type FxBookDealParams,
+  type FxConvertCurrencyParams,
+  type FxRetrieveRatesParams,
 } from './fx';
-export { International, type InternationalGetStatusResponse } from './international';
-export { Payments } from './payments';
+export {
+  International,
+  type InternationalRetrieveStatusResponse,
+  type InternationalSendSepaParams,
+  type InternationalSendSwiftParams,
+} from './international';
+export { Payments, type PaymentListResponse } from './payments';

@@ -9,8 +9,8 @@ const client = new Jocall3({
 });
 
 describe('resource advisor', () => {
-  test('chat', async () => {
-    const responsePromise = client.ai.advisor.chat();
+  test('chat: only required params', async () => {
+    const responsePromise = client.ai.advisor.chat({ message: 'message' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -20,22 +20,17 @@ describe('resource advisor', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('chat: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.ai.advisor.chat({ path: '/_stainless_unknown_path' })).rejects.toThrow(
-      Jocall3.NotFoundError,
-    );
+  test('chat: required and optional params', async () => {
+    const response = await client.ai.advisor.chat({
+      message: 'message',
+      contextAccountIds: ['string'],
+      mode: 'mode',
+      stream: true,
+    });
   });
 
-  test('chat: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.ai.advisor.chat({ functionResponse: {} }, { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(Jocall3.NotFoundError);
-  });
-
-  test('history', async () => {
-    const responsePromise = client.ai.advisor.history();
+  test('retrieveHistory', async () => {
+    const responsePromise = client.ai.advisor.retrieveHistory();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -45,24 +40,10 @@ describe('resource advisor', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('history: request options instead of params are passed correctly', async () => {
+  test('retrieveHistory: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.ai.advisor.history({ path: '/_stainless_unknown_path' })).rejects.toThrow(
+    await expect(client.ai.advisor.retrieveHistory({ path: '/_stainless_unknown_path' })).rejects.toThrow(
       Jocall3.NotFoundError,
     );
-  });
-
-  test('history: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.ai.advisor.history(
-        {
-          limit: 0,
-          offset: 0,
-          sessionId: 'sessionId',
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Jocall3.NotFoundError);
   });
 });

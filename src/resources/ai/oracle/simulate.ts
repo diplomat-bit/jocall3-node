@@ -4,32 +4,23 @@ import { APIResource } from '../../../resource';
 import * as Core from '../../../core';
 
 export class Simulate extends APIResource {
-  /**
-   * Engages the Quantum Oracle for highly complex, multi-variable simulations,
-   * allowing precise control over numerous financial parameters, market conditions,
-   * and personal events to generate deep, predictive insights and sensitivity
-   * analysis.
-   *
-   * @example
-   * ```ts
-   * const response =
-   *   await client.ai.oracle.simulate.runAdvanced();
-   * ```
-   */
-  runAdvanced(body: SimulateRunAdvancedParams, options?: Core.RequestOptions): Core.APIPromise<unknown> {
+  runAdvanced(
+    body: SimulateRunAdvancedParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<SimulateRunAdvancedResponse> {
     return this._client.post('/ai/oracle/simulate/advanced', { body, ...options });
   }
 
+  runMonteCarlo(body: SimulateRunMonteCarloParams, options?: Core.RequestOptions): Core.APIPromise<void> {
+    return this._client.post('/ai/oracle/simulate/monte-carlo', {
+      body,
+      ...options,
+      headers: { Accept: '*/*', ...options?.headers },
+    });
+  }
+
   /**
-   * Submits a hypothetical scenario to the Quantum Oracle AI for standard financial
-   * impact analysis. The AI simulates the effect on the user's current financial
-   * state and provides a summary.
-   *
-   * @example
-   * ```ts
-   * const response =
-   *   await client.ai.oracle.simulate.runStandard();
-   * ```
+   * Run a 'What-If' Financial Simulation (Standard)
    */
   runStandard(
     body: SimulateRunStandardParams,
@@ -39,34 +30,64 @@ export class Simulate extends APIResource {
   }
 }
 
-export type SimulateRunAdvancedResponse = unknown;
+export interface SimulateRunAdvancedResponse {
+  simulationId: string;
+
+  status: string;
+
+  outcomeNarrative?: string;
+
+  projectedValue?: number;
+}
 
 export interface SimulateRunStandardResponse {
-  /**
-   * AI-driven risk assessment of the simulated scenario.
-   */
-  riskAnalysis?: unknown;
+  simulationId: string;
+
+  status: string;
+
+  outcomeNarrative?: string;
+
+  projectedValue?: number;
 }
 
 export interface SimulateRunAdvancedParams {
-  /**
-   * Optional: Global economic conditions to apply to all scenarios.
-   */
-  globalEconomicFactors?: unknown;
+  prompt: string;
 
-  /**
-   * Optional: Personal financial assumptions to override defaults.
-   */
-  personalAssumptions?: unknown;
+  scenarios: Array<SimulateRunAdvancedParams.Scenario>;
 }
 
-export interface SimulateRunStandardParams {}
+export namespace SimulateRunAdvancedParams {
+  export interface Scenario {
+    name: string;
+
+    description?: string;
+  }
+}
+
+export interface SimulateRunMonteCarloParams {
+  iterations: number;
+
+  variables: Array<string>;
+}
+
+export interface SimulateRunStandardParams {
+  /**
+   * Describe the financial scenario
+   */
+  prompt: string;
+
+  /**
+   * Key variables like duration, rate, or amount
+   */
+  parameters?: unknown;
+}
 
 export declare namespace Simulate {
   export {
     type SimulateRunAdvancedResponse as SimulateRunAdvancedResponse,
     type SimulateRunStandardResponse as SimulateRunStandardResponse,
     type SimulateRunAdvancedParams as SimulateRunAdvancedParams,
+    type SimulateRunMonteCarloParams as SimulateRunMonteCarloParams,
     type SimulateRunStandardParams as SimulateRunStandardParams,
   };
 }

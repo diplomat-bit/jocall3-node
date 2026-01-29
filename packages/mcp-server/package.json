@@ -1,6 +1,6 @@
 {
   "name": "jocall3-node-mcp",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "The official MCP Server for the Jocall3 API",
   "author": "Jocall3 <diplomat@citibankdemobusiness.dev>",
   "types": "dist/index.d.ts",

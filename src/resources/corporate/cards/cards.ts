@@ -1,75 +1,60 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../../resource';
-import { isRequestOptions } from '../../../core';
 import * as Core from '../../../core';
 import * as ControlsAPI from './controls';
-import { ControlUpdateParams, ControlUpdateResponse, Controls } from './controls';
+import { ControlUpdateParams, Controls as ControlsAPIControls } from './controls';
 
 export class Cards extends APIResource {
   controls: ControlsAPI.Controls = new ControlsAPI.Controls(this._client);
 
   /**
-   * Retrieves a comprehensive list of all physical and virtual corporate cards
-   * associated with the user's organization, including their status, assigned
-   * holder, and current spending controls.
+   * Toggle Card Lock
    *
    * @example
    * ```ts
-   * const cards = await client.corporate.cards.list();
+   * await client.corporate.cards.freeze('cardId', {
+   *   frozen: true,
+   * });
    * ```
    */
-  list(query?: CardListParams, options?: Core.RequestOptions): Core.APIPromise<unknown>;
-  list(options?: Core.RequestOptions): Core.APIPromise<unknown>;
-  list(
-    query: CardListParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<unknown> {
-    if (isRequestOptions(query)) {
-      return this.list({}, query);
-    }
-    return this._client.get('/corporate/cards', { query, ...options });
+  freeze(cardId: string, body: CardFreezeParams, options?: Core.RequestOptions): Core.APIPromise<void> {
+    return this._client.post(`/corporate/cards/${cardId}/freeze`, {
+      body,
+      ...options,
+      headers: { Accept: '*/*', ...options?.headers },
+    });
   }
 
   /**
-   * Immediately changes the frozen status of a corporate card, preventing or
-   * allowing transactions in real-time, critical for security and expense
-   * management.
+   * Request Physical Corporate Card
    *
    * @example
    * ```ts
-   * const response = await client.corporate.cards.freeze(
-   *   'corp_card_xyz987654',
+   * const response = await client.corporate.cards.issuePhysical(
+   *   {
+   *     holderName: 'holderName',
+   *     shippingAddress: {},
+   *   },
    * );
    * ```
    */
-  freeze(
-    cardId: string,
-    body: CardFreezeParams,
+  issuePhysical(
+    body: CardIssuePhysicalParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<CardFreezeResponse> {
-    return this._client.post(`/corporate/cards/${cardId}/freeze`, { body, ...options });
+  ): Core.APIPromise<CardIssuePhysicalResponse> {
+    return this._client.post('/corporate/cards/physical', { body, ...options });
   }
 
   /**
-   * Creates and issues a new virtual corporate card with specified spending limits,
-   * merchant restrictions, and expiration dates, ideal for secure online purchases
-   * and temporary projects.
+   * Issue Corporate Virtual Card
    *
    * @example
    * ```ts
    * const response = await client.corporate.cards.issueVirtual({
-   *   controls: {
-   *     atmWithdrawals: false,
-   *     contactlessPayments: false,
-   *     onlineTransactions: true,
-   *     internationalTransactions: false,
-   *     monthlyLimit: 1000,
-   *     dailyLimit: 500,
-   *     singleTransactionLimit: 200,
-   *     merchantCategoryRestrictions: ['Advertising'],
-   *     vendorRestrictions: ['Facebook Ads', 'Google Ads'],
-   *   },
+   *   holderName: 'holderName',
+   *   monthlyLimit: 0,
+   *   purpose: 'purpose',
    * });
    * ```
    */
@@ -79,115 +64,100 @@ export class Cards extends APIResource {
   ): Core.APIPromise<CardIssueVirtualResponse> {
     return this._client.post('/corporate/cards/virtual', { body, ...options });
   }
+}
 
-  /**
-   * Retrieves a paginated list of transactions made with a specific corporate card,
-   * including AI categorization and compliance flags.
-   *
-   * @example
-   * ```ts
-   * const response =
-   *   await client.corporate.cards.listTransactions(
-   *     'corp_card_xyz987654',
-   *   );
-   * ```
-   */
-  listTransactions(
-    cardId: string,
-    query?: CardListTransactionsParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<unknown>;
-  listTransactions(cardId: string, options?: Core.RequestOptions): Core.APIPromise<unknown>;
-  listTransactions(
-    cardId: string,
-    query: CardListTransactionsParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<unknown> {
-    if (isRequestOptions(query)) {
-      return this.listTransactions(cardId, {}, query);
-    }
-    return this._client.get(`/corporate/cards/${cardId}/transactions`, { query, ...options });
+export interface CardIssuePhysicalResponse {
+  id: string;
+
+  cardNumberMask: string;
+
+  holderName: string;
+
+  status: string;
+
+  controls?: CardIssuePhysicalResponse.Controls;
+
+  expirationDate?: string;
+
+  frozen?: boolean;
+}
+
+export namespace CardIssuePhysicalResponse {
+  export interface Controls {
+    categories?: Array<string>;
+
+    monthlyLimit?: number;
   }
 }
 
-export type CardListResponse = unknown;
-
-export interface CardFreezeResponse {
-  /**
-   * Granular spending controls for a corporate card.
-   */
-  controls: unknown;
-}
-
 export interface CardIssueVirtualResponse {
-  /**
-   * Granular spending controls for a corporate card.
-   */
-  controls: unknown;
+  id: string;
+
+  cardNumberMask: string;
+
+  holderName: string;
+
+  status: string;
+
+  controls?: CardIssueVirtualResponse.Controls;
+
+  expirationDate?: string;
+
+  frozen?: boolean;
 }
 
-export type CardListTransactionsResponse = unknown;
+export namespace CardIssueVirtualResponse {
+  export interface Controls {
+    categories?: Array<string>;
 
-export interface CardListParams {
-  /**
-   * Maximum number of items to return in a single page.
-   */
-  limit?: number;
-
-  /**
-   * Number of items to skip before starting to collect the result set.
-   */
-  offset?: number;
+    monthlyLimit?: number;
+  }
 }
 
-export interface CardFreezeParams {}
+export interface CardFreezeParams {
+  frozen: boolean;
+}
+
+export interface CardIssuePhysicalParams {
+  holderName: string;
+
+  shippingAddress: CardIssuePhysicalParams.ShippingAddress;
+}
+
+export namespace CardIssuePhysicalParams {
+  export interface ShippingAddress {
+    city?: string;
+
+    country?: string;
+
+    state?: string;
+
+    street?: string;
+
+    zip?: string;
+  }
+}
 
 export interface CardIssueVirtualParams {
-  /**
-   * Granular spending controls for a corporate card.
-   */
-  controls: unknown;
+  holderName: string;
+
+  monthlyLimit: number;
+
+  purpose: string;
+
+  metadata?: unknown;
 }
 
-export interface CardListTransactionsParams {
-  /**
-   * End date for filtering results (inclusive, YYYY-MM-DD).
-   */
-  endDate?: string;
-
-  /**
-   * Maximum number of items to return in a single page.
-   */
-  limit?: number;
-
-  /**
-   * Number of items to skip before starting to collect the result set.
-   */
-  offset?: number;
-
-  /**
-   * Start date for filtering results (inclusive, YYYY-MM-DD).
-   */
-  startDate?: string;
-}
-
-Cards.Controls = Controls;
+Cards.Controls = ControlsAPIControls;
 
 export declare namespace Cards {
   export {
-    type CardListResponse as CardListResponse,
-    type CardFreezeResponse as CardFreezeResponse,
+    type CardIssuePhysicalResponse as CardIssuePhysicalResponse,
     type CardIssueVirtualResponse as CardIssueVirtualResponse,
-    type CardListTransactionsResponse as CardListTransactionsResponse,
-    type CardListParams as CardListParams,
     type CardFreezeParams as CardFreezeParams,
+    type CardIssuePhysicalParams as CardIssuePhysicalParams,
     type CardIssueVirtualParams as CardIssueVirtualParams,
-    type CardListTransactionsParams as CardListTransactionsParams,
   };
 
-  export {
-    Controls as Controls,
-    type ControlUpdateResponse as ControlUpdateResponse,
-    type ControlUpdateParams as ControlUpdateParams,
-  };
+  export { ControlsAPIControls as Controls, type ControlUpdateParams as ControlUpdateParams };
 }

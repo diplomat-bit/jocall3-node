@@ -2,6 +2,13 @@
 
 export { Me, type MeRetrieveResponse, type MeUpdateResponse, type MeUpdateParams } from './me/index';
 export {
+  PasswordReset,
+  type PasswordResetConfirmResponse,
+  type PasswordResetInitiateResponse,
+  type PasswordResetConfirmParams,
+  type PasswordResetInitiateParams,
+} from './password-reset';
+export {
   Users,
   type UserLoginResponse,
   type UserRegisterResponse,

@@ -23,6 +23,7 @@ describe('instantiate client', () => {
     const client = new Jocall3({
       baseURL: 'http://localhost:5000/',
       defaultHeaders: { 'X-My-Default-Header': '2' },
+      apiKey: 'My API Key',
     });
 
     test('they are used in the request', async () => {
@@ -54,6 +55,7 @@ describe('instantiate client', () => {
       const client = new Jocall3({
         baseURL: 'http://localhost:5000/',
         defaultQuery: { apiVersion: 'foo' },
+        apiKey: 'My API Key',
       });
       expect(client.buildURL('/foo', null)).toEqual('http://localhost:5000/foo?apiVersion=foo');
     });
@@ -62,6 +64,7 @@ describe('instantiate client', () => {
       const client = new Jocall3({
         baseURL: 'http://localhost:5000/',
         defaultQuery: { apiVersion: 'foo', hello: 'world' },
+        apiKey: 'My API Key',
       });
       expect(client.buildURL('/foo', null)).toEqual('http://localhost:5000/foo?apiVersion=foo&hello=world');
     });
@@ -70,6 +73,7 @@ describe('instantiate client', () => {
       const client = new Jocall3({
         baseURL: 'http://localhost:5000/',
         defaultQuery: { hello: 'world' },
+        apiKey: 'My API Key',
       });
       expect(client.buildURL('/foo', { hello: undefined })).toEqual('http://localhost:5000/foo');
     });
@@ -78,6 +82,7 @@ describe('instantiate client', () => {
   test('custom fetch', async () => {
     const client = new Jocall3({
       baseURL: 'http://localhost:5000/',
+      apiKey: 'My API Key',
       fetch: (url) => {
         return Promise.resolve(
           new Response(JSON.stringify({ url, custom: true }), {
@@ -93,12 +98,17 @@ describe('instantiate client', () => {
 
   test('explicit global fetch', async () => {
     // make sure the global fetch type is assignable to our Fetch type
-    const client = new Jocall3({ baseURL: 'http://localhost:5000/', fetch: defaultFetch });
+    const client = new Jocall3({
+      baseURL: 'http://localhost:5000/',
+      apiKey: 'My API Key',
+      fetch: defaultFetch,
+    });
   });
 
   test('custom signal', async () => {
     const client = new Jocall3({
       baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
+      apiKey: 'My API Key',
       fetch: (...args) => {
         return new Promise((resolve, reject) =>
           setTimeout(
@@ -128,7 +138,11 @@ describe('instantiate client', () => {
       return new Response(JSON.stringify({}), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new Jocall3({ baseURL: 'http://localhost:5000/', fetch: testFetch });
+    const client = new Jocall3({
+      baseURL: 'http://localhost:5000/',
+      apiKey: 'My API Key',
+      fetch: testFetch,
+    });
 
     await client.patch('/foo');
     expect(capturedRequest?.method).toEqual('PATCH');
@@ -136,12 +150,12 @@ describe('instantiate client', () => {
 
   describe('baseUrl', () => {
     test('trailing slash', () => {
-      const client = new Jocall3({ baseURL: 'http://localhost:5000/custom/path/' });
+      const client = new Jocall3({ baseURL: 'http://localhost:5000/custom/path/', apiKey: 'My API Key' });
       expect(client.buildURL('/foo', null)).toEqual('http://localhost:5000/custom/path/foo');
     });
 
     test('no trailing slash', () => {
-      const client = new Jocall3({ baseURL: 'http://localhost:5000/custom/path' });
+      const client = new Jocall3({ baseURL: 'http://localhost:5000/custom/path', apiKey: 'My API Key' });
       expect(client.buildURL('/foo', null)).toEqual('http://localhost:5000/custom/path/foo');
     });
 
@@ -150,48 +164,54 @@ describe('instantiate client', () => {
     });
 
     test('explicit option', () => {
-      const client = new Jocall3({ baseURL: 'https://example.com' });
+      const client = new Jocall3({ baseURL: 'https://example.com', apiKey: 'My API Key' });
       expect(client.baseURL).toEqual('https://example.com');
     });
 
     test('env variable', () => {
       process.env['JOCALL3_BASE_URL'] = 'https://example.com/from_env';
-      const client = new Jocall3({});
+      const client = new Jocall3({ apiKey: 'My API Key' });
       expect(client.baseURL).toEqual('https://example.com/from_env');
     });
 
     test('empty env variable', () => {
       process.env['JOCALL3_BASE_URL'] = ''; // empty
-      const client = new Jocall3({});
-      expect(client.baseURL).toEqual('https://api.quantum-core.finance/v1');
+      const client = new Jocall3({ apiKey: 'My API Key' });
+      expect(client.baseURL).toEqual('https://75975599-8fdc-4274-8701-05fc0b8089cc.mock.pstmn.io');
     });
 
     test('blank env variable', () => {
       process.env['JOCALL3_BASE_URL'] = '  '; // blank
-      const client = new Jocall3({});
-      expect(client.baseURL).toEqual('https://api.quantum-core.finance/v1');
+      const client = new Jocall3({ apiKey: 'My API Key' });
+      expect(client.baseURL).toEqual('https://75975599-8fdc-4274-8701-05fc0b8089cc.mock.pstmn.io');
     });
 
     test('env variable with environment', () => {
       process.env['JOCALL3_BASE_URL'] = 'https://example.com/from_env';
 
-      expect(() => new Jocall3({ environment: 'production' })).toThrowErrorMatchingInlineSnapshot(
+      expect(
+        () => new Jocall3({ apiKey: 'My API Key', environment: 'production' }),
+      ).toThrowErrorMatchingInlineSnapshot(
         `"Ambiguous URL; The \`baseURL\` option (or JOCALL3_BASE_URL env var) and the \`environment\` option are given. If you want to use the environment you must pass baseURL: null"`,
       );
 
-      const client = new Jocall3({ baseURL: null, environment: 'production' });
-      expect(client.baseURL).toEqual('https://api.quantum-core.finance/v1');
+      const client = new Jocall3({
+        apiKey: 'My API Key',
+        baseURL: null,
+        environment: 'production',
+      });
+      expect(client.baseURL).toEqual('https://75975599-8fdc-4274-8701-05fc0b8089cc.mock.pstmn.io');
     });
 
     test('in request options', () => {
-      const client = new Jocall3({});
+      const client = new Jocall3({ apiKey: 'My API Key' });
       expect(client.buildURL('/foo', null, 'http://localhost:5000/option')).toEqual(
         'http://localhost:5000/option/foo',
       );
     });
 
     test('in request options overridden by client options', () => {
-      const client = new Jocall3({ baseURL: 'http://localhost:5000/client' });
+      const client = new Jocall3({ apiKey: 'My API Key', baseURL: 'http://localhost:5000/client' });
       expect(client.buildURL('/foo', null, 'http://localhost:5000/option')).toEqual(
         'http://localhost:5000/client/foo',
       );
@@ -199,7 +219,7 @@ describe('instantiate client', () => {
 
     test('in request options overridden by env variable', () => {
       process.env['JOCALL3_BASE_URL'] = 'http://localhost:5000/env';
-      const client = new Jocall3({});
+      const client = new Jocall3({ apiKey: 'My API Key' });
       expect(client.buildURL('/foo', null, 'http://localhost:5000/option')).toEqual(
         'http://localhost:5000/env/foo',
       );
@@ -207,17 +227,31 @@ describe('instantiate client', () => {
   });
 
   test('maxRetries option is correctly set', () => {
-    const client = new Jocall3({ maxRetries: 4 });
+    const client = new Jocall3({ maxRetries: 4, apiKey: 'My API Key' });
     expect(client.maxRetries).toEqual(4);
 
     // default
-    const client2 = new Jocall3({});
+    const client2 = new Jocall3({ apiKey: 'My API Key' });
     expect(client2.maxRetries).toEqual(2);
+  });
+
+  test('with environment variable arguments', () => {
+    // set options via env var
+    process.env['JOCALL3_API_KEY'] = 'My API Key';
+    const client = new Jocall3();
+    expect(client.apiKey).toBe('My API Key');
+  });
+
+  test('with overridden environment variable arguments', () => {
+    // set options via env var
+    process.env['JOCALL3_API_KEY'] = 'another My API Key';
+    const client = new Jocall3({ apiKey: 'My API Key' });
+    expect(client.apiKey).toBe('My API Key');
   });
 });
 
 describe('request building', () => {
-  const client = new Jocall3({});
+  const client = new Jocall3({ apiKey: 'My API Key' });
 
   describe('Content-Length', () => {
     test('handles multi-byte characters', async () => {
@@ -259,7 +293,11 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new Jocall3({ timeout: 10, fetch: testFetch });
+    const client = new Jocall3({
+      apiKey: 'My API Key',
+      timeout: 10,
+      fetch: testFetch,
+    });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
     expect(count).toEqual(2);
@@ -289,7 +327,11 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new Jocall3({ fetch: testFetch, maxRetries: 4 });
+    const client = new Jocall3({
+      apiKey: 'My API Key',
+      fetch: testFetch,
+      maxRetries: 4,
+    });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
 
@@ -313,7 +355,11 @@ describe('retries', () => {
       capturedRequest = init;
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
-    const client = new Jocall3({ fetch: testFetch, maxRetries: 4 });
+    const client = new Jocall3({
+      apiKey: 'My API Key',
+      fetch: testFetch,
+      maxRetries: 4,
+    });
 
     expect(
       await client.request({
@@ -343,6 +389,7 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
     const client = new Jocall3({
+      apiKey: 'My API Key',
       fetch: testFetch,
       maxRetries: 4,
       defaultHeaders: { 'X-Stainless-Retry-Count': null },
@@ -374,7 +421,11 @@ describe('retries', () => {
       capturedRequest = init;
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
-    const client = new Jocall3({ fetch: testFetch, maxRetries: 4 });
+    const client = new Jocall3({
+      apiKey: 'My API Key',
+      fetch: testFetch,
+      maxRetries: 4,
+    });
 
     expect(
       await client.request({
@@ -401,7 +452,7 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new Jocall3({ fetch: testFetch });
+    const client = new Jocall3({ apiKey: 'My API Key', fetch: testFetch });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
     expect(count).toEqual(2);
@@ -428,7 +479,7 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new Jocall3({ fetch: testFetch });
+    const client = new Jocall3({ apiKey: 'My API Key', fetch: testFetch });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
     expect(count).toEqual(2);

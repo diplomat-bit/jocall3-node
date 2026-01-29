@@ -3,11 +3,15 @@
 export { Assets, type AssetSearchResponse, type AssetSearchParams } from './assets';
 export { Investments } from './investments';
 export {
+  Performance,
+  type PerformanceGetHistoricalResponse,
+  type PerformanceGetHistoricalParams,
+} from './performance';
+export {
   Portfolios,
-  type PortfolioRetrieveResponse,
-  type PortfolioUpdateResponse,
   type PortfolioListResponse,
   type PortfolioRebalanceResponse,
+  type PortfolioCreateParams,
   type PortfolioUpdateParams,
   type PortfolioListParams,
   type PortfolioRebalanceParams,

@@ -5,13 +5,14 @@ import { isRequestOptions } from '../../../core';
 import * as Core from '../../../core';
 import * as BiometricsAPI from './biometrics';
 import {
+  BiometricEnrollParams,
   BiometricRetrieveStatusResponse,
   BiometricVerifyParams,
   BiometricVerifyResponse,
   Biometrics,
 } from './biometrics';
 import * as DevicesAPI from './devices';
-import { DeviceListParams, DeviceListResponse, Devices } from './devices';
+import { DeviceListResponse, DeviceRegisterParams, Devices } from './devices';
 import * as PreferencesAPI from './preferences';
 import {
   PreferenceRetrieveResponse,
@@ -19,34 +20,29 @@ import {
   PreferenceUpdateResponse,
   Preferences as PreferencesAPIPreferences,
 } from './preferences';
+import * as SecurityAPI from './security';
+import {
+  Security,
+  SecurityRetrieveLogParams,
+  SecurityRetrieveLogResponse,
+  SecurityRotateKeysResponse,
+} from './security';
 
 export class Me extends APIResource {
   preferences: PreferencesAPI.Preferences = new PreferencesAPI.Preferences(this._client);
+  security: SecurityAPI.Security = new SecurityAPI.Security(this._client);
   devices: DevicesAPI.Devices = new DevicesAPI.Devices(this._client);
   biometrics: BiometricsAPI.Biometrics = new BiometricsAPI.Biometrics(this._client);
 
   /**
-   * Fetches the complete and dynamically updated profile information for the
-   * currently authenticated user, encompassing personal details, security status,
-   * gamification level, loyalty points, and linked identity attributes.
-   *
-   * @example
-   * ```ts
-   * const me = await client.users.me.retrieve();
-   * ```
+   * Retrieve Comprehensive Current User Profile
    */
   retrieve(options?: Core.RequestOptions): Core.APIPromise<MeRetrieveResponse> {
     return this._client.get('/users/me', options);
   }
 
   /**
-   * Updates selected fields of the currently authenticated user's profile
-   * information.
-   *
-   * @example
-   * ```ts
-   * const me = await client.users.me.update();
-   * ```
+   * Update Current User Profile
    */
   update(body?: MeUpdateParams, options?: Core.RequestOptions): Core.APIPromise<MeUpdateResponse>;
   update(options?: Core.RequestOptions): Core.APIPromise<MeUpdateResponse>;
@@ -59,82 +55,127 @@ export class Me extends APIResource {
     }
     return this._client.put('/users/me', { body, ...options });
   }
+
+  /**
+   * Delete User Account
+   */
+  delete(options?: Core.RequestOptions): Core.APIPromise<void> {
+    return this._client.delete('/users/me', { ...options, headers: { Accept: '*/*', ...options?.headers } });
+  }
 }
 
 export interface MeRetrieveResponse {
-  address?: unknown;
+  id: string;
 
-  /**
-   * User's personalized preferences for the platform.
-   */
+  email: string;
+
+  identityVerified: boolean;
+
+  name: string;
+
+  address?: MeRetrieveResponse.Address;
+
+  phone?: string;
+
   preferences?: MeRetrieveResponse.Preferences;
 
-  /**
-   * Security-related status for the user account.
-   */
-  securityStatus?: unknown;
+  securityStatus?: MeRetrieveResponse.SecurityStatus;
 }
 
 export namespace MeRetrieveResponse {
-  /**
-   * User's personalized preferences for the platform.
-   */
+  export interface Address {
+    city?: string;
+
+    country?: string;
+
+    state?: string;
+
+    street?: string;
+
+    zip?: string;
+  }
+
   export interface Preferences {
-    /**
-     * Preferred channels for receiving notifications.
-     */
     notificationChannels?: unknown;
+
+    theme?: string;
+  }
+
+  export interface SecurityStatus {
+    lastLogin?: string;
+
+    twoFactorEnabled?: boolean;
   }
 }
 
 export interface MeUpdateResponse {
-  address?: unknown;
+  id: string;
 
-  /**
-   * User's personalized preferences for the platform.
-   */
+  email: string;
+
+  identityVerified: boolean;
+
+  name: string;
+
+  address?: MeUpdateResponse.Address;
+
+  phone?: string;
+
   preferences?: MeUpdateResponse.Preferences;
 
-  /**
-   * Security-related status for the user account.
-   */
-  securityStatus?: unknown;
+  securityStatus?: MeUpdateResponse.SecurityStatus;
 }
 
 export namespace MeUpdateResponse {
-  /**
-   * User's personalized preferences for the platform.
-   */
+  export interface Address {
+    city?: string;
+
+    country?: string;
+
+    state?: string;
+
+    street?: string;
+
+    zip?: string;
+  }
+
   export interface Preferences {
-    /**
-     * Preferred channels for receiving notifications.
-     */
     notificationChannels?: unknown;
+
+    theme?: string;
+  }
+
+  export interface SecurityStatus {
+    lastLogin?: string;
+
+    twoFactorEnabled?: boolean;
   }
 }
 
 export interface MeUpdateParams {
-  address?: unknown;
+  address?: MeUpdateParams.Address;
 
-  /**
-   * User's personalized preferences for the platform.
-   */
-  preferences?: MeUpdateParams.Preferences;
+  name?: string;
+
+  phone?: string;
 }
 
 export namespace MeUpdateParams {
-  /**
-   * User's personalized preferences for the platform.
-   */
-  export interface Preferences {
-    /**
-     * Preferred channels for receiving notifications.
-     */
-    notificationChannels?: unknown;
+  export interface Address {
+    city?: string;
+
+    country?: string;
+
+    state?: string;
+
+    street?: string;
+
+    zip?: string;
   }
 }
 
 Me.Preferences = PreferencesAPIPreferences;
+Me.Security = Security;
 Me.Devices = Devices;
 Me.Biometrics = Biometrics;
 
@@ -153,15 +194,23 @@ export declare namespace Me {
   };
 
   export {
+    Security as Security,
+    type SecurityRetrieveLogResponse as SecurityRetrieveLogResponse,
+    type SecurityRotateKeysResponse as SecurityRotateKeysResponse,
+    type SecurityRetrieveLogParams as SecurityRetrieveLogParams,
+  };
+
+  export {
     Devices as Devices,
     type DeviceListResponse as DeviceListResponse,
-    type DeviceListParams as DeviceListParams,
+    type DeviceRegisterParams as DeviceRegisterParams,
   };
 
   export {
     Biometrics as Biometrics,
     type BiometricRetrieveStatusResponse as BiometricRetrieveStatusResponse,
     type BiometricVerifyResponse as BiometricVerifyResponse,
+    type BiometricEnrollParams as BiometricEnrollParams,
     type BiometricVerifyParams as BiometricVerifyParams,
   };
 }

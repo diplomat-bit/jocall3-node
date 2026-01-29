@@ -4,9 +4,10 @@ export {
   Biometrics,
   type BiometricRetrieveStatusResponse,
   type BiometricVerifyResponse,
+  type BiometricEnrollParams,
   type BiometricVerifyParams,
 } from './biometrics';
-export { Devices, type DeviceListResponse, type DeviceListParams } from './devices';
+export { Devices, type DeviceListResponse, type DeviceRegisterParams } from './devices';
 export { Me, type MeRetrieveResponse, type MeUpdateResponse, type MeUpdateParams } from './me';
 export {
   Preferences,
@@ -14,3 +15,9 @@ export {
   type PreferenceUpdateResponse,
   type PreferenceUpdateParams,
 } from './preferences';
+export {
+  Security,
+  type SecurityRetrieveLogResponse,
+  type SecurityRotateKeysResponse,
+  type SecurityRetrieveLogParams,
+} from './security';

@@ -3,12 +3,18 @@
 import Jocall3 from 'jocall3-node';
 import { Response } from 'node-fetch';
 
-const client = new Jocall3({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
+const client = new Jocall3({
+  apiKey: 'My API Key',
+  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
+});
 
 describe('resource fx', () => {
-  // Prism tests are disabled
-  test.skip('convert', async () => {
-    const responsePromise = client.payments.fx.convert({});
+  test('bookDeal: only required params', async () => {
+    const responsePromise = client.payments.fx.bookDeal({
+      amount: 0,
+      pair: 'pair',
+      valueDate: '2019-12-27',
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -18,9 +24,20 @@ describe('resource fx', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('getRates', async () => {
-    const responsePromise = client.payments.fx.getRates();
+  test('bookDeal: required and optional params', async () => {
+    const response = await client.payments.fx.bookDeal({
+      amount: 0,
+      pair: 'pair',
+      valueDate: '2019-12-27',
+    });
+  });
+
+  test('convert: only required params', async () => {
+    const responsePromise = client.payments.fx.convert({
+      amount: 0,
+      from: 'from',
+      to: 'to',
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -30,26 +47,26 @@ describe('resource fx', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
-  test.skip('getRates: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.payments.fx.getRates({ path: '/_stainless_unknown_path' })).rejects.toThrow(
-      Jocall3.NotFoundError,
-    );
+  test('convert: required and optional params', async () => {
+    const response = await client.payments.fx.convert({
+      amount: 0,
+      from: 'from',
+      to: 'to',
+    });
   });
 
-  // Prism tests are disabled
-  test.skip('getRates: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.payments.fx.getRates(
-        {
-          baseCurrency: 'baseCurrency',
-          forecastDays: 0,
-          targetCurrency: 'targetCurrency',
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Jocall3.NotFoundError);
+  test('getRates: only required params', async () => {
+    const responsePromise = client.payments.fx.getRates({ pair: 'EURUSD' });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('getRates: required and optional params', async () => {
+    const response = await client.payments.fx.getRates({ pair: 'EURUSD' });
   });
 });

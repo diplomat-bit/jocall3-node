@@ -3,40 +3,49 @@
 import { type Agent } from './_shims/index';
 import * as Core from './core';
 import * as Errors from './error';
+import * as Pagination from './pagination';
+import { type PageParams, PageResponse } from './pagination';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
-import {
-  BudgetListParams,
-  BudgetListResponse,
-  BudgetRetrieveResponse,
-  BudgetUpdateParams,
-  BudgetUpdateResponse,
-  Budgets,
-} from './resources/budgets';
 import {
   AccountLinkParams,
   AccountLinkResponse,
   AccountListParams,
   AccountListResponse,
+  AccountOpenParams,
+  AccountOpenResponse,
   AccountRetrieveResponse,
   Accounts,
 } from './resources/accounts/accounts';
 import { AI } from './resources/ai/ai';
-import { Corporate } from './resources/corporate/corporate';
+import {
+  Corporate,
+  CorporateOnboardEntityParams,
+  CorporateOnboardEntityResponse,
+} from './resources/corporate/corporate';
 import { Investments } from './resources/investments/investments';
-import { Payments } from './resources/payments/payments';
+import {
+  Lending,
+  LendingGetStatusResponse,
+  LendingSubmitApplicationParams,
+  LendingSubmitApplicationResponse,
+} from './resources/lending/lending';
+import { Marketplace, MarketplaceListProductsResponse } from './resources/marketplace/marketplace';
+import { PaymentListResponse, Payments } from './resources/payments/payments';
 import {
   Sustainability,
   SustainabilityGetFootprintResponse,
 } from './resources/sustainability/sustainability';
+import { System } from './resources/system/system';
 import {
   TransactionAddNotesParams,
-  TransactionAddNotesResponse,
   TransactionCategorizeParams,
   TransactionCategorizeResponse,
+  TransactionDisputeParams,
   TransactionListParams,
   TransactionListResponse,
   TransactionRetrieveResponse,
+  TransactionSplitParams,
   Transactions,
 } from './resources/transactions/transactions';
 import {
@@ -46,11 +55,11 @@ import {
   UserRegisterResponse,
   Users,
 } from './resources/users/users';
-import { Web3 } from './resources/web3/web3';
+import { Web3, Web3GetNetworkStatusResponse } from './resources/web3/web3';
 
 const environments = {
-  production: 'https://api.quantum-core.finance/v1',
-  sandbox: 'https://sandbox.quantum-core.finance/v1',
+  production: 'https://75975599-8fdc-4274-8701-05fc0b8089cc.mock.pstmn.io',
+  sandbox: 'https://75975599-8fdc-4274-8701-05fc0b8089cc.mock.pstmn.io',
   gemini_direct: 'https://generativelanguage.googleapis.com/v1beta',
 };
 type Environment = keyof typeof environments;
@@ -70,8 +79,8 @@ export interface ClientOptions {
    * Specifies the environment to use for the API.
    *
    * Each environment maps to a different base URL:
-   * - `production` corresponds to `https://api.quantum-core.finance/v1`
-   * - `sandbox` corresponds to `https://sandbox.quantum-core.finance/v1`
+   * - `production` corresponds to `https://75975599-8fdc-4274-8701-05fc0b8089cc.mock.pstmn.io`
+   * - `sandbox` corresponds to `https://75975599-8fdc-4274-8701-05fc0b8089cc.mock.pstmn.io`
    * - `gemini_direct` corresponds to `https://generativelanguage.googleapis.com/v1beta`
    */
   environment?: Environment | undefined;
@@ -150,7 +159,7 @@ export class Jocall3 extends Core.APIClient {
    * @param {string | null | undefined} [opts.apiKey=process.env['JOCALL3_API_KEY'] ?? null]
    * @param {string | null | undefined} [opts.geminiAPIKey=process.env['GEMINI_API_KEY'] ?? null]
    * @param {Environment} [opts.environment=production] - Specifies the environment URL to use for the API.
-   * @param {string} [opts.baseURL=process.env['JOCALL3_BASE_URL'] ?? https://api.quantum-core.finance/v1] - Override the default base URL for the API.
+   * @param {string} [opts.baseURL=process.env['JOCALL3_BASE_URL'] ?? https://75975599-8fdc-4274-8701-05fc0b8089cc.mock.pstmn.io] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {number} [opts.httpAgent] - An HTTP agent used to manage HTTP(s) connections.
    * @param {Core.Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -196,13 +205,15 @@ export class Jocall3 extends Core.APIClient {
   users: API.Users = new API.Users(this);
   accounts: API.Accounts = new API.Accounts(this);
   transactions: API.Transactions = new API.Transactions(this);
-  budgets: API.Budgets = new API.Budgets(this);
-  investments: API.Investments = new API.Investments(this);
   ai: API.AI = new API.AI(this);
   corporate: API.Corporate = new API.Corporate(this);
   web3: API.Web3 = new API.Web3(this);
   payments: API.Payments = new API.Payments(this);
   sustainability: API.Sustainability = new API.Sustainability(this);
+  marketplace: API.Marketplace = new API.Marketplace(this);
+  lending: API.Lending = new API.Lending(this);
+  investments: API.Investments = new API.Investments(this);
+  system: API.System = new API.System(this);
 
   /**
    * Check whether the base URL is set to its default.
@@ -220,6 +231,47 @@ export class Jocall3 extends Core.APIClient {
       ...super.defaultHeaders(opts),
       ...this._options.defaultHeaders,
     };
+  }
+
+  protected override validateHeaders(headers: Core.Headers, customHeaders: Core.Headers) {
+    if (this.apiKey && headers['authorization']) {
+      return;
+    }
+    if (customHeaders['authorization'] === null) {
+      return;
+    }
+
+    if (this.geminiAPIKey && headers['x-goog-api-key']) {
+      return;
+    }
+    if (customHeaders['x-goog-api-key'] === null) {
+      return;
+    }
+
+    throw new Error(
+      'Could not resolve authentication method. Expected either apiKey or geminiAPIKey to be set. Or for one of the "Authorization" or "x-goog-api-key" headers to be explicitly omitted',
+    );
+  }
+
+  protected override authHeaders(opts: Core.FinalRequestOptions): Core.Headers {
+    return {
+      ...this.bearerAuth(opts),
+      ...this.geminiHeaderAuth(opts),
+    };
+  }
+
+  protected bearerAuth(opts: Core.FinalRequestOptions): Core.Headers {
+    if (this.apiKey == null) {
+      return {};
+    }
+    return { Authorization: `Bearer ${this.apiKey}` };
+  }
+
+  protected geminiHeaderAuth(opts: Core.FinalRequestOptions): Core.Headers {
+    if (this.geminiAPIKey == null) {
+      return {};
+    }
+    return { 'x-goog-api-key': this.geminiAPIKey };
   }
 
   static Jocall3 = this;
@@ -246,16 +298,21 @@ export class Jocall3 extends Core.APIClient {
 Jocall3.Users = Users;
 Jocall3.Accounts = Accounts;
 Jocall3.Transactions = Transactions;
-Jocall3.Budgets = Budgets;
-Jocall3.Investments = Investments;
 Jocall3.AI = AI;
 Jocall3.Corporate = Corporate;
 Jocall3.Web3 = Web3;
 Jocall3.Payments = Payments;
 Jocall3.Sustainability = Sustainability;
+Jocall3.Marketplace = Marketplace;
+Jocall3.Lending = Lending;
+Jocall3.Investments = Investments;
+Jocall3.System = System;
 
 export declare namespace Jocall3 {
   export type RequestOptions = Core.RequestOptions;
+
+  export import Page = Pagination.Page;
+  export { type PageParams as PageParams, type PageResponse as PageResponse };
 
   export {
     Users as Users,
@@ -270,44 +327,56 @@ export declare namespace Jocall3 {
     type AccountRetrieveResponse as AccountRetrieveResponse,
     type AccountListResponse as AccountListResponse,
     type AccountLinkResponse as AccountLinkResponse,
+    type AccountOpenResponse as AccountOpenResponse,
     type AccountListParams as AccountListParams,
     type AccountLinkParams as AccountLinkParams,
+    type AccountOpenParams as AccountOpenParams,
   };
 
   export {
     Transactions as Transactions,
     type TransactionRetrieveResponse as TransactionRetrieveResponse,
     type TransactionListResponse as TransactionListResponse,
-    type TransactionAddNotesResponse as TransactionAddNotesResponse,
     type TransactionCategorizeResponse as TransactionCategorizeResponse,
     type TransactionListParams as TransactionListParams,
     type TransactionAddNotesParams as TransactionAddNotesParams,
     type TransactionCategorizeParams as TransactionCategorizeParams,
+    type TransactionDisputeParams as TransactionDisputeParams,
+    type TransactionSplitParams as TransactionSplitParams,
   };
-
-  export {
-    Budgets as Budgets,
-    type BudgetRetrieveResponse as BudgetRetrieveResponse,
-    type BudgetUpdateResponse as BudgetUpdateResponse,
-    type BudgetListResponse as BudgetListResponse,
-    type BudgetUpdateParams as BudgetUpdateParams,
-    type BudgetListParams as BudgetListParams,
-  };
-
-  export { Investments as Investments };
 
   export { AI as AI };
 
-  export { Corporate as Corporate };
+  export {
+    Corporate as Corporate,
+    type CorporateOnboardEntityResponse as CorporateOnboardEntityResponse,
+    type CorporateOnboardEntityParams as CorporateOnboardEntityParams,
+  };
 
-  export { Web3 as Web3 };
+  export { Web3 as Web3, type Web3GetNetworkStatusResponse as Web3GetNetworkStatusResponse };
 
-  export { Payments as Payments };
+  export { Payments as Payments, type PaymentListResponse as PaymentListResponse };
 
   export {
     Sustainability as Sustainability,
     type SustainabilityGetFootprintResponse as SustainabilityGetFootprintResponse,
   };
+
+  export {
+    Marketplace as Marketplace,
+    type MarketplaceListProductsResponse as MarketplaceListProductsResponse,
+  };
+
+  export {
+    Lending as Lending,
+    type LendingGetStatusResponse as LendingGetStatusResponse,
+    type LendingSubmitApplicationResponse as LendingSubmitApplicationResponse,
+    type LendingSubmitApplicationParams as LendingSubmitApplicationParams,
+  };
+
+  export { Investments as Investments };
+
+  export { System as System };
 }
 
 export { toFile, fileFromPath } from './uploads';

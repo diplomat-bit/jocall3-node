@@ -4,23 +4,32 @@ export { AI } from './ai';
 export {
   Ads,
   type AdListResponse,
-  type AdGenerateResponse,
+  type AdGenerateCopyResponse,
+  type AdGenerateVideoResponse,
   type AdGetOperationResponse,
-  type AdListParams,
-  type AdGenerateParams,
+  type AdOptimizeCampaignResponse,
+  type AdGenerateCopyParams,
+  type AdGenerateVideoParams,
+  type AdOptimizeCampaignParams,
 } from './ads';
 export {
   Advisor,
   type AdvisorChatResponse,
   type AdvisorHistoryResponse,
   type AdvisorChatParams,
-  type AdvisorHistoryParams,
 } from './advisor/index';
+export {
+  Agent,
+  type AgentGetCapabilitiesResponse,
+  type AgentGetPromptsResponse,
+  type AgentUpdatePromptsParams,
+} from './agent';
 export {
   Incubator,
   type IncubatorGeneratePitchResponse,
-  type IncubatorListPitchesResponse,
+  type IncubatorValidateIdeaResponse,
   type IncubatorGeneratePitchParams,
-  type IncubatorListPitchesParams,
+  type IncubatorValidateIdeaParams,
 } from './incubator/index';
+export { Models } from './models';
 export { Oracle } from './oracle/index';

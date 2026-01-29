@@ -3,12 +3,16 @@
 import Jocall3 from 'jocall3-node';
 import { Response } from 'node-fetch';
 
-const client = new Jocall3({ baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010' });
+const client = new Jocall3({
+  apiKey: 'My API Key',
+  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
+});
 
-describe('resource sanctionScreening', () => {
-  // Prism tests are disabled
-  test.skip('screen', async () => {
-    const responsePromise = client.corporate.sanctionScreening.screen({});
+describe('resource fraud', () => {
+  test('analyzeTransaction: only required params', async () => {
+    const responsePromise = client.corporate.risk.fraud.analyzeTransaction({
+      transactionId: 'transactionId',
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -16,5 +20,9 @@ describe('resource sanctionScreening', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('analyzeTransaction: required and optional params', async () => {
+    const response = await client.corporate.risk.fraud.analyzeTransaction({ transactionId: 'transactionId' });
   });
 });

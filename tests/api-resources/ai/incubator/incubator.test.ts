@@ -11,10 +11,13 @@ const client = new Jocall3({
 describe('resource incubator', () => {
   test('generatePitch: only required params', async () => {
     const responsePromise = client.ai.incubator.generatePitch({
-      businessPlan: 'businessPlan',
-      financialProjections: {},
-      foundingTeam: [{}],
-      marketOpportunity: 'marketOpportunity',
+      financialProjections: {
+        seedRoundAmount: 2500000,
+        valuationPreMoney: 10000000,
+        projectionYears: 3,
+        revenueForecast: [500000, 2000000, 6000000],
+        profitabilityEstimate: 'Achieve profitability within 18 months.',
+      },
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -27,25 +30,13 @@ describe('resource incubator', () => {
 
   test('generatePitch: required and optional params', async () => {
     const response = await client.ai.incubator.generatePitch({
-      businessPlan: 'businessPlan',
-      financialProjections: {},
-      foundingTeam: [{}],
-      marketOpportunity: 'marketOpportunity',
+      financialProjections: {
+        seedRoundAmount: 2500000,
+        valuationPreMoney: 10000000,
+        projectionYears: 3,
+        revenueForecast: [500000, 2000000, 6000000],
+        profitabilityEstimate: 'Achieve profitability within 18 months.',
+      },
     });
-  });
-
-  test('validateIdea: only required params', async () => {
-    const responsePromise = client.ai.incubator.validateIdea({ concept: 'concept' });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('validateIdea: required and optional params', async () => {
-    const response = await client.ai.incubator.validateIdea({ concept: 'concept' });
   });
 });

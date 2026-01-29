@@ -5,13 +5,15 @@ import * as Core from '../../../core';
 
 export class Pitch extends APIResource {
   /**
-   * Get Full Pitch AI Deep Dive
+   * Retrieves the granular AI-driven analysis, strategic feedback, market validation
+   * results, and any outstanding questions from Quantum Weaver for a specific
+   * business pitch.
    *
    * @example
    * ```ts
    * const response =
    *   await client.ai.incubator.pitch.retrieveDetails(
-   *     'pitchId',
+   *     'pitch_qw_synergychain-xyz',
    *   );
    * ```
    */
@@ -23,41 +25,68 @@ export class Pitch extends APIResource {
   }
 
   /**
-   * Submit Answers to AI Follow-up Questions
+   * Allows the entrepreneur to respond to specific questions or provide additional
+   * details requested by Quantum Weaver, moving the pitch forward in the incubation
+   * process.
    *
    * @example
    * ```ts
-   * await client.ai.incubator.pitch.submitFeedback('pitchId', {
-   *   answers: [{}],
-   * });
+   * const response =
+   *   await client.ai.incubator.pitch.submitFeedback(
+   *     'pitch_qw_synergychain-xyz',
+   *   );
    * ```
    */
   submitFeedback(
     pitchId: string,
-    body: PitchSubmitFeedbackParams,
+    body?: PitchSubmitFeedbackParams | null | undefined,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<void> {
-    return this._client.put(`/ai/incubator/pitch/${pitchId}/feedback`, {
-      body,
-      ...options,
-      headers: { Accept: '*/*', ...options?.headers },
-    });
+  ): Core.APIPromise<unknown> {
+    return this._client.put(`/ai/incubator/pitch/${pitchId}/feedback`, { body, ...options });
   }
 }
 
 export interface PitchRetrieveDetailsResponse {
-  aiFeedback?: string;
+  /**
+   * AI-generated coaching plan for the entrepreneur.
+   */
+  aiCoachingPlan?: unknown;
 
-  fundingEligibility?: boolean;
+  /**
+   * AI's detailed financial model analysis.
+   */
+  aiFinancialModel?: PitchRetrieveDetailsResponse.AIFinancialModel;
+
+  /**
+   * AI's detailed market analysis.
+   */
+  aiMarketAnalysis?: unknown;
+
+  /**
+   * AI's assessment of risks associated with the venture.
+   */
+  aiRiskAssessment?: unknown;
 }
 
-export interface PitchSubmitFeedbackParams {
-  answers: Array<unknown>;
+export namespace PitchRetrieveDetailsResponse {
+  /**
+   * AI's detailed financial model analysis.
+   */
+  export interface AIFinancialModel {
+    costStructureAnalysis?: unknown;
+
+    revenueBreakdown?: unknown;
+  }
 }
+
+export type PitchSubmitFeedbackResponse = unknown;
+
+export interface PitchSubmitFeedbackParams {}
 
 export declare namespace Pitch {
   export {
     type PitchRetrieveDetailsResponse as PitchRetrieveDetailsResponse,
+    type PitchSubmitFeedbackResponse as PitchSubmitFeedbackResponse,
     type PitchSubmitFeedbackParams as PitchSubmitFeedbackParams,
   };
 }

@@ -18,124 +18,64 @@ export class Users extends APIResource {
   me: MeAPI.Me = new MeAPI.Me(this._client);
 
   /**
-   * User Login and Session Creation
+   * Authenticates a user and creates a secure session, returning access tokens. May
+   * require MFA depending on user settings.
+   *
+   * @example
+   * ```ts
+   * const response = await client.users.login();
+   * ```
    */
-  login(body: UserLoginParams, options?: Core.RequestOptions): Core.APIPromise<UserLoginResponse> {
+  login(body: UserLoginParams, options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.post('/users/login', { body, ...options });
   }
 
   /**
-   * Terminate User Session
-   */
-  logout(options?: Core.RequestOptions): Core.APIPromise<void> {
-    return this._client.post('/users/logout', {
-      ...options,
-      headers: { Accept: '*/*', ...options?.headers },
-    });
-  }
-
-  /**
-   * Initiates the onboarding process. Requires unique email and name.
+   * Registers a new user account with , initiating the onboarding process. Requires
+   * basic user details.
+   *
+   * @example
+   * ```ts
+   * const response = await client.users.register();
+   * ```
    */
   register(body: UserRegisterParams, options?: Core.RequestOptions): Core.APIPromise<UserRegisterResponse> {
     return this._client.post('/users/register', { body, ...options });
   }
 }
 
-export interface UserLoginResponse {
-  /**
-   * JWT for bearerAuth
-   */
-  accessToken: string;
-
-  /**
-   * Seconds until expiry
-   */
-  expiresIn: number;
-
-  refreshToken: string;
-
-  tokenType: string;
-}
+export type UserLoginResponse = unknown;
 
 export interface UserRegisterResponse {
-  id: string;
+  address?: unknown;
 
-  email: string;
+  /**
+   * User's personalized preferences for the platform.
+   */
+  preferences?: UserRegisterResponse.Preferences;
 
-  identityVerified: boolean;
-
-  name: string;
-
-  address?: UserRegisterResponse.Address;
-
-  preferences?: { [key: string]: unknown };
-
-  securityStatus?: UserRegisterResponse.SecurityStatus;
+  /**
+   * Security-related status for the user account.
+   */
+  securityStatus?: unknown;
 }
 
 export namespace UserRegisterResponse {
-  export interface Address {
-    city: string;
-
-    country: string;
-
-    street: string;
-
-    state?: string;
-
-    zip?: string;
-  }
-
-  export interface SecurityStatus {
-    lastLogin?: string;
-
-    twoFactorEnabled?: boolean;
+  /**
+   * User's personalized preferences for the platform.
+   */
+  export interface Preferences {
+    /**
+     * Preferred channels for receiving notifications.
+     */
+    notificationChannels?: unknown;
   }
 }
 
-export interface UserLoginParams {
-  email: string;
-
-  password: string;
-}
+export interface UserLoginParams {}
 
 export interface UserRegisterParams {
-  /**
-   * Primary login email
-   */
-  email: string;
-
-  /**
-   * Full legal name
-   */
-  name: string;
-
-  /**
-   * Secure hashable string
-   */
-  password: string;
-
-  address?: UserRegisterParams.Address;
-
-  /**
-   * International format phone number
-   */
-  phone?: string;
-}
-
-export namespace UserRegisterParams {
-  export interface Address {
-    city: string;
-
-    country: string;
-
-    street: string;
-
-    state?: string;
-
-    zip?: string;
-  }
+  address?: unknown;
 }
 
 Users.PasswordReset = PasswordReset;

@@ -1,19 +1,17 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export { Oracle } from './oracle';
-export {
-  Predictions,
-  type PredictionInflationResponse,
-  type PredictionMarketCrashResponse,
-  type PredictionInflationParams,
-} from './predictions';
+export { Predictions } from './predictions';
 export {
   Simulate,
   type SimulateRunAdvancedResponse,
-  type SimulateRunMonteCarloResponse,
   type SimulateRunStandardResponse,
   type SimulateRunAdvancedParams,
-  type SimulateRunMonteCarloParams,
   type SimulateRunStandardParams,
 } from './simulate';
-export { Simulations, type SimulationRetrieveResponse, type SimulationListResponse } from './simulations';
+export {
+  Simulations,
+  type SimulationRetrieveResponse,
+  type SimulationListResponse,
+  type SimulationListParams,
+} from './simulations';

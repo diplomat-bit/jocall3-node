@@ -1,24 +1,21 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../resource';
+import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 import * as BalanceHistoryAPI from './balance-history';
-import {
-  BalanceHistory,
-  BalanceHistoryRetrieveParams,
-  BalanceHistoryRetrieveResponse,
-} from './balance-history';
+import { BalanceHistory as BalanceHistoryAPIBalanceHistory } from './balance-history';
 import * as OverdraftAPI from './overdraft';
-import { Overdraft, OverdraftRetrieveSettingsResponse, OverdraftUpdateSettingsParams } from './overdraft';
-import * as StatementsAPI from './statements';
-import { StatementListResponse, Statements } from './statements';
-import * as TransactionsAPI from './transactions';
 import {
-  TransactionListArchivedParams,
-  TransactionListArchivedResponse,
-  TransactionListPendingResponse,
-  Transactions,
-} from './transactions';
+  Overdraft,
+  OverdraftRetrieveSettingsResponse,
+  OverdraftUpdateSettingsParams,
+  OverdraftUpdateSettingsResponse,
+} from './overdraft';
+import * as StatementsAPI from './statements';
+import { StatementListParams, StatementListResponse, Statements } from './statements';
+import * as TransactionsAPI from './transactions';
+import { TransactionListPendingParams, TransactionListPendingResponse, Transactions } from './transactions';
 
 export class Accounts extends APIResource {
   transactions: TransactionsAPI.Transactions = new TransactionsAPI.Transactions(this._client);
@@ -27,38 +24,37 @@ export class Accounts extends APIResource {
   overdraft: OverdraftAPI.Overdraft = new OverdraftAPI.Overdraft(this._client);
 
   /**
+   * Fetches a comprehensive, real-time list of all external financial accounts
+   * linked to the user's profile, including consolidated balances and institutional
+   * details.
+   *
    * @example
    * ```ts
    * const accounts = await client.accounts.list();
    * ```
    */
-  list(options?: Core.RequestOptions): Core.APIPromise<AccountListResponse> {
-    return this._client.get('/accounts/me', options);
+  list(query?: AccountListParams, options?: Core.RequestOptions): Core.APIPromise<AccountListResponse>;
+  list(options?: Core.RequestOptions): Core.APIPromise<AccountListResponse>;
+  list(
+    query: AccountListParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<AccountListResponse> {
+    if (isRequestOptions(query)) {
+      return this.list({}, query);
+    }
+    return this._client.get('/accounts/me', { query, ...options });
   }
 
   /**
-   * Close Financial Account
-   *
-   * @example
-   * ```ts
-   * await client.accounts.close('accountId');
-   * ```
-   */
-  close(accountId: string, options?: Core.RequestOptions): Core.APIPromise<void> {
-    return this._client.delete(`/accounts/${accountId}`, {
-      ...options,
-      headers: { Accept: '*/*', ...options?.headers },
-    });
-  }
-
-  /**
-   * Link an External Financial Institution
+   * Begins the secure process of linking a new external financial institution (e.g.,
+   * another bank, investment platform) to the user's profile, typically involving a
+   * third-party tokenized flow.
    *
    * @example
    * ```ts
    * const response = await client.accounts.link({
-   *   institutionId: 'institutionId',
-   *   publicToken: 'publicToken',
+   *   countryCode: 'US',
+   *   institutionName: 'Bank of America',
    * });
    * ```
    */
@@ -67,26 +63,14 @@ export class Accounts extends APIResource {
   }
 
   /**
-   * Open a New Quantum Internal Account
+   * Retrieves comprehensive analytics for a specific financial account, including
+   * historical balance trends, projected cash flow, and AI-driven insights into
+   * spending patterns.
    *
    * @example
    * ```ts
-   * const response = await client.accounts.open({
-   *   currency: 'USD',
-   *   initialDeposit: 0,
-   *   productType: 'quantum_checking',
-   * });
-   * ```
-   */
-  open(body: AccountOpenParams, options?: Core.RequestOptions): Core.APIPromise<AccountOpenResponse> {
-    return this._client.post('/accounts/open', { body, ...options });
-  }
-
-  /**
-   * @example
-   * ```ts
    * const response = await client.accounts.retrieveDetails(
-   *   'accountId',
+   *   'acc_chase_checking_4567',
    * );
    * ```
    */
@@ -101,6 +85,10 @@ export class Accounts extends APIResource {
 export interface AccountListResponse {
   data: Array<AccountListResponse.Data>;
 
+  limit: number;
+
+  offset: number;
+
   total: number;
 
   nextOffset?: number;
@@ -108,38 +96,38 @@ export interface AccountListResponse {
 
 export namespace AccountListResponse {
   export interface Data {
-    id: string;
+    id?: string;
 
-    currency: string;
+    availableBalance?: number;
 
-    currentBalance: number;
+    currency?: string;
 
-    institutionName: string;
+    currentBalance?: number;
 
-    type: string;
+    externalId?: string;
+
+    institutionName?: string;
+
+    lastUpdated?: string;
+
+    mask?: string;
 
     name?: string;
+
+    subtype?: string;
+
+    type?: string;
   }
 }
 
 export interface AccountLinkResponse {
-  linkSessionId?: string;
+  authUri: string;
 
-  status?: string;
-}
+  linkSessionId: string;
 
-export interface AccountOpenResponse {
-  id: string;
+  status: string;
 
-  currency: string;
-
-  currentBalance: number;
-
-  institutionName: string;
-
-  type: string;
-
-  name?: string;
+  message?: string;
 }
 
 export interface AccountRetrieveDetailsResponse {
@@ -151,32 +139,69 @@ export interface AccountRetrieveDetailsResponse {
 
   institutionName: string;
 
+  lastUpdated: string;
+
+  name: string;
+
   type: string;
 
-  name?: string;
+  accountHolder?: string;
+
+  availableBalance?: number;
+
+  balanceHistory?: Array<AccountRetrieveDetailsResponse.BalanceHistory>;
+
+  externalId?: string;
+
+  interestRate?: number;
+
+  mask?: string;
+
+  openedDate?: string;
+
+  projectedCashFlow?: AccountRetrieveDetailsResponse.ProjectedCashFlow;
+
+  subtype?: string;
+
+  transactionsCount?: number;
+}
+
+export namespace AccountRetrieveDetailsResponse {
+  export interface BalanceHistory {
+    balance?: number;
+
+    date?: string;
+  }
+
+  export interface ProjectedCashFlow {
+    confidenceScore?: number;
+
+    days30?: number;
+
+    days90?: number;
+  }
+}
+
+export interface AccountListParams {
+  /**
+   * Maximum number of items to return in a single page.
+   */
+  limit?: number;
+
+  /**
+   * Number of items to skip before starting to collect the result set.
+   */
+  offset?: number;
 }
 
 export interface AccountLinkParams {
-  institutionId: string;
+  countryCode: string;
 
-  publicToken: string;
-}
-
-export interface AccountOpenParams {
-  currency: string;
-
-  initialDeposit: number;
-
-  productType: 'quantum_checking' | 'elite_savings' | 'high_yield_vault';
-
-  /**
-   * User IDs for joint accounts
-   */
-  owners?: Array<string>;
+  institutionName: string;
 }
 
 Accounts.Transactions = Transactions;
-Accounts.BalanceHistory = BalanceHistory;
+Accounts.BalanceHistory = BalanceHistoryAPIBalanceHistory;
 Accounts.Statements = Statements;
 Accounts.Overdraft = Overdraft;
 
@@ -184,30 +209,29 @@ export declare namespace Accounts {
   export {
     type AccountListResponse as AccountListResponse,
     type AccountLinkResponse as AccountLinkResponse,
-    type AccountOpenResponse as AccountOpenResponse,
     type AccountRetrieveDetailsResponse as AccountRetrieveDetailsResponse,
+    type AccountListParams as AccountListParams,
     type AccountLinkParams as AccountLinkParams,
-    type AccountOpenParams as AccountOpenParams,
   };
 
   export {
     Transactions as Transactions,
-    type TransactionListArchivedResponse as TransactionListArchivedResponse,
     type TransactionListPendingResponse as TransactionListPendingResponse,
-    type TransactionListArchivedParams as TransactionListArchivedParams,
+    type TransactionListPendingParams as TransactionListPendingParams,
   };
+
+  export { BalanceHistoryAPIBalanceHistory as BalanceHistory };
 
   export {
-    BalanceHistory as BalanceHistory,
-    type BalanceHistoryRetrieveResponse as BalanceHistoryRetrieveResponse,
-    type BalanceHistoryRetrieveParams as BalanceHistoryRetrieveParams,
+    Statements as Statements,
+    type StatementListResponse as StatementListResponse,
+    type StatementListParams as StatementListParams,
   };
-
-  export { Statements as Statements, type StatementListResponse as StatementListResponse };
 
   export {
     Overdraft as Overdraft,
     type OverdraftRetrieveSettingsResponse as OverdraftRetrieveSettingsResponse,
+    type OverdraftUpdateSettingsResponse as OverdraftUpdateSettingsResponse,
     type OverdraftUpdateSettingsParams as OverdraftUpdateSettingsParams,
   };
 }

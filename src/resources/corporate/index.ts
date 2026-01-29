@@ -1,44 +1,30 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { Anomalies, type AnomalyListResponse, type AnomalyUpdateStatusParams } from './anomalies';
+export {
+  Anomalies,
+  type AnomalyListResponse,
+  type AnomalyUpdateStatusResponse,
+  type AnomalyListParams,
+  type AnomalyUpdateStatusParams,
+} from './anomalies';
 export {
   Cards,
   type CardListResponse,
-  type CardIssuePhysicalResponse,
+  type CardFreezeResponse,
   type CardIssueVirtualResponse,
   type CardListTransactionsResponse,
   type CardListParams,
   type CardFreezeParams,
-  type CardIssuePhysicalParams,
   type CardIssueVirtualParams,
+  type CardListTransactionsParams,
 } from './cards/index';
-export {
-  Compliance,
-  type ComplianceScreenAdverseMediaResponse,
-  type ComplianceScreenPepResponse,
-  type ComplianceScreenSanctionsResponse,
-  type ComplianceScreenAdverseMediaParams,
-  type ComplianceScreenPepParams,
-  type ComplianceScreenSanctionsParams,
-} from './compliance/index';
-export {
-  Corporate,
-  type CorporateOnboardEntityResponse,
-  type CorporateOnboardEntityParams,
-} from './corporate';
+export { Compliance } from './compliance/index';
+export { Corporate } from './corporate';
 export { Governance } from './governance/index';
-export {
-  Risk,
-  type RiskRetrieveExposureResponse,
-  type RiskRunStressTestResponse,
-  type RiskRunStressTestParams,
-} from './risk/index';
+export { Risk } from './risk/index';
 export {
   Treasury,
-  type TreasuryOptimizeLiquidityResponse,
   type TreasuryRetrieveCashFlowForecastResponse,
   type TreasuryRetrieveLiquidityPositionsResponse,
-  type TreasuryExecuteBulkPayoutsParams,
-  type TreasuryOptimizeLiquidityParams,
   type TreasuryRetrieveCashFlowForecastParams,
 } from './treasury/index';

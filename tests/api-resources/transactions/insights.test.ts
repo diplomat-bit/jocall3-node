@@ -9,24 +9,6 @@ const client = new Jocall3({
 });
 
 describe('resource insights', () => {
-  test('retrieveFutureFlow', async () => {
-    const responsePromise = client.transactions.insights.retrieveFutureFlow();
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('retrieveFutureFlow: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.transactions.insights.retrieveFutureFlow({ path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(Jocall3.NotFoundError);
-  });
-
   test('retrieveSpendingTrends', async () => {
     const responsePromise = client.transactions.insights.retrieveSpendingTrends();
     const rawResponse = await responsePromise.asResponse();

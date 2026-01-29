@@ -1,62 +1,77 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../../resource';
+import { isRequestOptions } from '../../../core';
 import * as Core from '../../../core';
 
 export class Devices extends APIResource {
   /**
-   * List Connected Devices
+   * Retrieves a list of all devices linked to the user's account, including mobile
+   * phones, tablets, and desktops, indicating their last active status and security
+   * posture.
+   *
+   * @example
+   * ```ts
+   * const devices = await client.users.me.devices.list();
+   * ```
    */
-  list(options?: Core.RequestOptions): Core.APIPromise<DeviceListResponse> {
-    return this._client.get('/users/me/devices', options);
-  }
-
-  /**
-   * De-register a Device
-   */
-  deregister(deviceId: string, options?: Core.RequestOptions): Core.APIPromise<void> {
-    return this._client.delete(`/users/me/devices/${deviceId}`, {
-      ...options,
-      headers: { Accept: '*/*', ...options?.headers },
-    });
-  }
-
-  /**
-   * Register New Trusted Device
-   */
-  register(body: DeviceRegisterParams, options?: Core.RequestOptions): Core.APIPromise<void> {
-    return this._client.post('/users/me/devices', {
-      body,
-      ...options,
-      headers: { Accept: '*/*', ...options?.headers },
-    });
+  list(query?: DeviceListParams, options?: Core.RequestOptions): Core.APIPromise<DeviceListResponse>;
+  list(options?: Core.RequestOptions): Core.APIPromise<DeviceListResponse>;
+  list(
+    query: DeviceListParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<DeviceListResponse> {
+    if (isRequestOptions(query)) {
+      return this.list({}, query);
+    }
+    return this._client.get('/users/me/devices', { query, ...options });
   }
 }
 
 export interface DeviceListResponse {
-  data?: Array<DeviceListResponse.Data>;
+  data: Array<DeviceListResponse.Data>;
+
+  limit: number;
+
+  offset: number;
+
+  total: number;
+
+  nextOffset?: number;
 }
 
 export namespace DeviceListResponse {
   export interface Data {
     id?: string;
 
+    ipAddress?: string;
+
+    lastActive?: string;
+
+    model?: string;
+
     os?: string;
 
-    trustLevel?: 'trusted' | 'untrusted';
+    pushToken?: string;
+
+    trustLevel?: string;
 
     type?: string;
   }
 }
 
-export interface DeviceRegisterParams {
-  deviceId: string;
+export interface DeviceListParams {
+  /**
+   * Maximum number of items to return in a single page.
+   */
+  limit?: number;
 
-  type: string;
-
-  pushToken?: string;
+  /**
+   * Number of items to skip before starting to collect the result set.
+   */
+  offset?: number;
 }
 
 export declare namespace Devices {
-  export { type DeviceListResponse as DeviceListResponse, type DeviceRegisterParams as DeviceRegisterParams };
+  export { type DeviceListResponse as DeviceListResponse, type DeviceListParams as DeviceListParams };
 }

@@ -1,81 +1,94 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../../resource';
+import { isRequestOptions } from '../../../core';
 import * as Core from '../../../core';
 import * as AnalysisAPI from './analysis';
-import {
-  Analysis,
-  AnalysisGenerateSwotParams,
-  AnalysisGenerateSwotResponse,
-  AnalysisScanCompetitorsParams,
-  AnalysisScanCompetitorsResponse,
-} from './analysis';
+import { Analysis } from './analysis';
 import * as PitchAPI from './pitch';
-import { Pitch, PitchRetrieveDetailsResponse, PitchSubmitFeedbackParams } from './pitch';
+import {
+  Pitch,
+  PitchRetrieveDetailsResponse,
+  PitchSubmitFeedbackParams,
+  PitchSubmitFeedbackResponse,
+} from './pitch';
 
 export class Incubator extends APIResource {
   analysis: AnalysisAPI.Analysis = new AnalysisAPI.Analysis(this._client);
   pitch: PitchAPI.Pitch = new PitchAPI.Pitch(this._client);
 
   /**
-   * List All User Business Pitches
+   * Retrieves a summary list of all business pitches submitted by the authenticated
+   * user to Quantum Weaver.
+   *
+   * @example
+   * ```ts
+   * const response = await client.ai.incubator.listPitches();
+   * ```
    */
-  listPitches(options?: Core.RequestOptions): Core.APIPromise<IncubatorListPitchesResponse> {
-    return this._client.get('/ai/incubator/pitches', options);
+  listPitches(query?: IncubatorListPitchesParams, options?: Core.RequestOptions): Core.APIPromise<unknown>;
+  listPitches(options?: Core.RequestOptions): Core.APIPromise<unknown>;
+  listPitches(
+    query: IncubatorListPitchesParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<unknown> {
+    if (isRequestOptions(query)) {
+      return this.listPitches({}, query);
+    }
+    return this._client.get('/ai/incubator/pitches', { query, ...options });
   }
 
   /**
-   * Submit a High-Potential Business Plan
+   * Submits a detailed business plan to the Quantum Weaver AI for rigorous analysis,
+   * market validation, and seed funding consideration. This initiates the AI-driven
+   * incubation journey, aiming to transform innovative ideas into commercially
+   * successful ventures.
+   *
+   * @example
+   * ```ts
+   * const response = await client.ai.incubator.submitPitch({
+   *   financialProjections: {
+   *     seedRoundAmount: 2500000,
+   *     valuationPreMoney: 10000000,
+   *     projectionYears: 3,
+   *     revenueForecast: [500000, 2000000, 6000000],
+   *     profitabilityEstimate:
+   *       'Achieve profitability within 18 months.',
+   *   },
+   * });
+   * ```
    */
-  submitPitch(
-    body: IncubatorSubmitPitchParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<IncubatorSubmitPitchResponse> {
+  submitPitch(body: IncubatorSubmitPitchParams, options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.post('/ai/incubator/pitch', { body, ...options });
   }
+}
+
+export type IncubatorListPitchesResponse = unknown;
+
+export type IncubatorSubmitPitchResponse = unknown;
+
+export interface IncubatorListPitchesParams {
+  /**
+   * Maximum number of items to return in a single page.
+   */
+  limit?: number;
 
   /**
-   * Rapid Idea Validation Engine
+   * Number of items to skip before starting to collect the result set.
    */
-  validateIdea(
-    body: IncubatorValidateIdeaParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<IncubatorValidateIdeaResponse> {
-    return this._client.post('/ai/incubator/validate', { body, ...options });
-  }
-}
+  offset?: number;
 
-export interface IncubatorListPitchesResponse {
-  data?: Array<unknown>;
-}
-
-export interface IncubatorSubmitPitchResponse {
-  pitchId?: string;
-
+  /**
+   * Filter pitches by their current stage.
+   */
   status?: string;
-}
-
-export interface IncubatorValidateIdeaResponse {
-  criticalFlaws?: Array<string>;
-
-  feasibilityScore?: number;
 }
 
 export interface IncubatorSubmitPitchParams {
   /**
-   * Full text of the concept
+   * Key financial metrics and projections for the next 3-5 years.
    */
-  businessPlan: string;
-
   financialProjections: unknown;
-
-  foundingTeam: Array<unknown>;
-
-  marketOpportunity: string;
-}
-
-export interface IncubatorValidateIdeaParams {
-  concept: string;
 }
 
 Incubator.Analysis = Analysis;
@@ -85,22 +98,16 @@ export declare namespace Incubator {
   export {
     type IncubatorListPitchesResponse as IncubatorListPitchesResponse,
     type IncubatorSubmitPitchResponse as IncubatorSubmitPitchResponse,
-    type IncubatorValidateIdeaResponse as IncubatorValidateIdeaResponse,
+    type IncubatorListPitchesParams as IncubatorListPitchesParams,
     type IncubatorSubmitPitchParams as IncubatorSubmitPitchParams,
-    type IncubatorValidateIdeaParams as IncubatorValidateIdeaParams,
   };
 
-  export {
-    Analysis as Analysis,
-    type AnalysisGenerateSwotResponse as AnalysisGenerateSwotResponse,
-    type AnalysisScanCompetitorsResponse as AnalysisScanCompetitorsResponse,
-    type AnalysisGenerateSwotParams as AnalysisGenerateSwotParams,
-    type AnalysisScanCompetitorsParams as AnalysisScanCompetitorsParams,
-  };
+  export { Analysis as Analysis };
 
   export {
     Pitch as Pitch,
     type PitchRetrieveDetailsResponse as PitchRetrieveDetailsResponse,
+    type PitchSubmitFeedbackResponse as PitchSubmitFeedbackResponse,
     type PitchSubmitFeedbackParams as PitchSubmitFeedbackParams,
   };
 }

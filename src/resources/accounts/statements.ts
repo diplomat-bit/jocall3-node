@@ -1,66 +1,78 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../resource';
+import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
-import { type Response } from '../../_shims/index';
 
 export class Statements extends APIResource {
   /**
-   * List Available Statements
+   * Fetches digital statements for a specific account, allowing filtering by date
+   * range and format.
    *
    * @example
    * ```ts
    * const statements = await client.accounts.statements.list(
-   *   'accountId',
+   *   'acc_chase_checking_4567',
    * );
    * ```
    */
-  list(accountId: string, options?: Core.RequestOptions): Core.APIPromise<StatementListResponse> {
-    return this._client.get(`/accounts/${accountId}/statements`, options);
-  }
-
-  /**
-   * Download Statement PDF
-   *
-   * @example
-   * ```ts
-   * const response =
-   *   await client.accounts.statements.downloadPdf(
-   *     'accountId',
-   *     'statementId',
-   *   );
-   *
-   * const content = await response.blob();
-   * console.log(content);
-   * ```
-   */
-  downloadPdf(
+  list(
     accountId: string,
-    statementId: string,
+    query?: StatementListParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Response> {
-    return this._client.get(`/accounts/${accountId}/statements/${statementId}/pdf`, {
-      ...options,
-      headers: { Accept: 'application/pdf', ...options?.headers },
-      __binaryResponse: true,
-    });
+  ): Core.APIPromise<StatementListResponse>;
+  list(accountId: string, options?: Core.RequestOptions): Core.APIPromise<StatementListResponse>;
+  list(
+    accountId: string,
+    query: StatementListParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<StatementListResponse> {
+    if (isRequestOptions(query)) {
+      return this.list(accountId, {}, query);
+    }
+    return this._client.get(`/accounts/${accountId}/statements`, { query, ...options });
   }
 }
 
 export interface StatementListResponse {
-  data?: Array<StatementListResponse.Data>;
+  accountId: string;
+
+  downloadUrls: StatementListResponse.DownloadURLs;
+
+  period: string;
+
+  statementId: string;
 }
 
 export namespace StatementListResponse {
-  export interface Data {
-    id?: string;
+  export interface DownloadURLs {
+    csv?: string;
 
-    issueDate?: string;
-
-    period?: string;
+    pdf?: string;
   }
 }
 
+export interface StatementListParams {
+  /**
+   * Desired format for the statement. Use 'application/json' Accept header for
+   * download links.
+   */
+  format?: string;
+
+  /**
+   * Month for the statement (1-12).
+   */
+  month?: number;
+
+  /**
+   * Year for the statement.
+   */
+  year?: number;
+}
+
 export declare namespace Statements {
-  export { type StatementListResponse as StatementListResponse };
+  export {
+    type StatementListResponse as StatementListResponse,
+    type StatementListParams as StatementListParams,
+  };
 }

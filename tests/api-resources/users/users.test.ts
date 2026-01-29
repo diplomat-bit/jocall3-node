@@ -10,7 +10,10 @@ const client = new Jocall3({
 
 describe('resource users', () => {
   test('login: only required params', async () => {
-    const responsePromise = client.users.login({ email: 'email', password: 'password' });
+    const responsePromise = client.users.login({
+      email: 'quantum.visionary@demobank.com',
+      password: 'YourSecurePassword123',
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -21,32 +24,17 @@ describe('resource users', () => {
   });
 
   test('login: required and optional params', async () => {
-    const response = await client.users.login({ email: 'email', password: 'password' });
-  });
-
-  test('logout', async () => {
-    const responsePromise = client.users.logout();
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('logout: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.users.logout({ path: '/_stainless_unknown_path' })).rejects.toThrow(
-      Jocall3.NotFoundError,
-    );
+    const response = await client.users.login({
+      email: 'quantum.visionary@demobank.com',
+      password: 'YourSecurePassword123',
+    });
   });
 
   test('register: only required params', async () => {
     const responsePromise = client.users.register({
-      email: 'email',
-      name: 'name',
-      password: 'password',
+      email: 'alice.w@example.com',
+      name: 'Alice Wonderland',
+      password: 'SecureP@ssw0rd2024!',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -59,9 +47,17 @@ describe('resource users', () => {
 
   test('register: required and optional params', async () => {
     const response = await client.users.register({
-      email: 'email',
-      name: 'name',
-      password: 'password',
+      email: 'alice.w@example.com',
+      name: 'Alice Wonderland',
+      password: 'SecureP@ssw0rd2024!',
+      address: {
+        city: 'city',
+        country: 'country',
+        state: 'state',
+        street: 'street',
+        zip: 'zip',
+      },
+      phone: '+1-555-987-6543',
     });
   });
 });

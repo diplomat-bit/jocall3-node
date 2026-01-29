@@ -10,7 +10,7 @@ const client = new Jocall3({
 
 describe('resource controls', () => {
   test('update', async () => {
-    const responsePromise = client.corporate.cards.controls.update('cardId');
+    const responsePromise = client.corporate.cards.controls.update('corp_card_xyz987654');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -20,25 +20,10 @@ describe('resource controls', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('update: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.corporate.cards.controls.update('cardId', { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(Jocall3.NotFoundError);
-  });
-
   test('update: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.corporate.cards.controls.update(
-        'cardId',
-        {
-          allowedCategories: ['string'],
-          geoRestriction: ['string'],
-          monthlyLimit: 0,
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
+      client.corporate.cards.controls.update('corp_card_xyz987654', {}, { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Jocall3.NotFoundError);
   });
 });

@@ -10,7 +10,7 @@ const client = new Jocall3({
 
 describe('resource accounts', () => {
   test('retrieve', async () => {
-    const responsePromise = client.accounts.retrieve('accountId');
+    const responsePromise = client.accounts.retrieve('acc_chase_checking_4567');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -22,9 +22,9 @@ describe('resource accounts', () => {
 
   test('retrieve: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.accounts.retrieve('accountId', { path: '/_stainless_unknown_path' })).rejects.toThrow(
-      Jocall3.NotFoundError,
-    );
+    await expect(
+      client.accounts.retrieve('acc_chase_checking_4567', { path: '/_stainless_unknown_path' }),
+    ).rejects.toThrow(Jocall3.NotFoundError);
   });
 
   test('list', async () => {
@@ -45,29 +45,15 @@ describe('resource accounts', () => {
     );
   });
 
-  test('close', async () => {
-    const responsePromise = client.accounts.close('accountId');
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('close: request options instead of params are passed correctly', async () => {
+  test('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.accounts.close('accountId', { path: '/_stainless_unknown_path' })).rejects.toThrow(
-      Jocall3.NotFoundError,
-    );
+    await expect(
+      client.accounts.list({ limit: 0, offset: 0 }, { path: '/_stainless_unknown_path' }),
+    ).rejects.toThrow(Jocall3.NotFoundError);
   });
 
-  test('link: only required params', async () => {
-    const responsePromise = client.accounts.link({
-      institutionId: 'institutionId',
-      publicToken: 'publicToken',
-    });
+  test('link', async () => {
+    const responsePromise = client.accounts.link({});
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -75,36 +61,5 @@ describe('resource accounts', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('link: required and optional params', async () => {
-    const response = await client.accounts.link({
-      institutionId: 'institutionId',
-      publicToken: 'publicToken',
-    });
-  });
-
-  test('open: only required params', async () => {
-    const responsePromise = client.accounts.open({
-      currency: 'USD',
-      initialDeposit: 0,
-      productType: 'quantum_checking',
-    });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('open: required and optional params', async () => {
-    const response = await client.accounts.open({
-      currency: 'USD',
-      initialDeposit: 0,
-      productType: 'quantum_checking',
-      owners: ['string'],
-    });
   });
 });

@@ -6,59 +6,56 @@ import * as Core from '../../core';
 
 export class Portfolios extends APIResource {
   /**
-   * Create Strategic Portfolio
+   * Retrieves detailed information for a specific investment portfolio, including
+   * holdings, performance, and AI insights.
+   *
+   * @example
+   * ```ts
+   * const portfolio =
+   *   await client.investments.portfolios.retrieve(
+   *     'portfolio_equity_growth',
+   *   );
+   * ```
    */
-  create(body: PortfolioCreateParams, options?: Core.RequestOptions): Core.APIPromise<void> {
-    return this._client.post('/investments/portfolios', {
-      body,
-      ...options,
-      headers: { Accept: '*/*', ...options?.headers },
-    });
+  retrieve(portfolioId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
+    return this._client.get(`/investments/portfolios/${portfolioId}`, options);
   }
 
   /**
-   * Get Full Portfolio Performance
-   */
-  retrieve(portfolioId: string, options?: Core.RequestOptions): Core.APIPromise<void> {
-    return this._client.get(`/investments/portfolios/${portfolioId}`, {
-      ...options,
-      headers: { Accept: '*/*', ...options?.headers },
-    });
-  }
-
-  /**
-   * Update Portfolio Strategy
+   * Updates high-level details of an investment portfolio, such as name or risk
+   * tolerance.
+   *
+   * @example
+   * ```ts
+   * const portfolio =
+   *   await client.investments.portfolios.update(
+   *     'portfolio_equity_growth',
+   *   );
+   * ```
    */
   update(
     portfolioId: string,
-    body?: PortfolioUpdateParams,
+    body?: PortfolioUpdateParams | null | undefined,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<void>;
-  update(portfolioId: string, options?: Core.RequestOptions): Core.APIPromise<void>;
-  update(
-    portfolioId: string,
-    body: PortfolioUpdateParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<void> {
-    if (isRequestOptions(body)) {
-      return this.update(portfolioId, {}, body);
-    }
-    return this._client.put(`/investments/portfolios/${portfolioId}`, {
-      body,
-      ...options,
-      headers: { Accept: '*/*', ...options?.headers },
-    });
+  ): Core.APIPromise<unknown> {
+    return this._client.put(`/investments/portfolios/${portfolioId}`, { body, ...options });
   }
 
   /**
-   * List All Investment Portfolios
+   * Retrieves a summary of all investment portfolios linked to the user's account.
+   *
+   * @example
+   * ```ts
+   * const portfolios =
+   *   await client.investments.portfolios.list();
+   * ```
    */
-  list(query?: PortfolioListParams, options?: Core.RequestOptions): Core.APIPromise<PortfolioListResponse>;
-  list(options?: Core.RequestOptions): Core.APIPromise<PortfolioListResponse>;
+  list(query?: PortfolioListParams, options?: Core.RequestOptions): Core.APIPromise<unknown>;
+  list(options?: Core.RequestOptions): Core.APIPromise<unknown>;
   list(
     query: PortfolioListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<PortfolioListResponse> {
+  ): Core.APIPromise<unknown> {
     if (isRequestOptions(query)) {
       return this.list({}, query);
     }
@@ -66,75 +63,56 @@ export class Portfolios extends APIResource {
   }
 
   /**
-   * Trigger Gemini AI Rebalancing
+   * Triggers an AI-driven rebalancing process for a specific investment portfolio
+   * based on a target risk tolerance or strategy.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.investments.portfolios.rebalance(
+   *     'portfolio_equity_growth',
+   *   );
+   * ```
    */
   rebalance(
     portfolioId: string,
-    body?: PortfolioRebalanceParams,
+    body: PortfolioRebalanceParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<PortfolioRebalanceResponse>;
-  rebalance(portfolioId: string, options?: Core.RequestOptions): Core.APIPromise<PortfolioRebalanceResponse>;
-  rebalance(
-    portfolioId: string,
-    body: PortfolioRebalanceParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<PortfolioRebalanceResponse> {
-    if (isRequestOptions(body)) {
-      return this.rebalance(portfolioId, {}, body);
-    }
+  ): Core.APIPromise<unknown> {
     return this._client.post(`/investments/portfolios/${portfolioId}/rebalance`, { body, ...options });
   }
 }
 
-export interface PortfolioListResponse {
-  data?: Array<PortfolioListResponse.Data>;
-}
+export type PortfolioRetrieveResponse = unknown;
 
-export namespace PortfolioListResponse {
-  export interface Data {
-    id?: string;
+export type PortfolioUpdateResponse = unknown;
 
-    name?: string;
+export type PortfolioListResponse = unknown;
 
-    totalValue?: number;
-  }
-}
+export type PortfolioRebalanceResponse = unknown;
 
-export interface PortfolioRebalanceResponse {
-  impactSummary?: string;
-
-  rebalanceId?: string;
-}
-
-export interface PortfolioCreateParams {
-  name: string;
-
-  strategy: 'GROWTH' | 'BALANCED' | 'INCOME' | 'ESG_FOCUSED';
-
-  initialAllocation?: unknown;
-}
-
-export interface PortfolioUpdateParams {
-  riskTolerance?: number;
-
-  strategy?: string;
-}
+export interface PortfolioUpdateParams {}
 
 export interface PortfolioListParams {
+  /**
+   * Maximum number of items to return in a single page.
+   */
   limit?: number;
 
+  /**
+   * Number of items to skip before starting to collect the result set.
+   */
   offset?: number;
 }
 
-export interface PortfolioRebalanceParams {
-  executionMode?: 'AUTO' | 'CONFIRM_ONLY';
-}
+export interface PortfolioRebalanceParams {}
 
 export declare namespace Portfolios {
   export {
+    type PortfolioRetrieveResponse as PortfolioRetrieveResponse,
+    type PortfolioUpdateResponse as PortfolioUpdateResponse,
     type PortfolioListResponse as PortfolioListResponse,
     type PortfolioRebalanceResponse as PortfolioRebalanceResponse,
-    type PortfolioCreateParams as PortfolioCreateParams,
     type PortfolioUpdateParams as PortfolioUpdateParams,
     type PortfolioListParams as PortfolioListParams,
     type PortfolioRebalanceParams as PortfolioRebalanceParams,

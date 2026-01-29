@@ -6,14 +6,30 @@ import * as Core from '../../../core';
 
 export class Preferences extends APIResource {
   /**
-   * Get User Personalization Preferences
+   * Retrieves the user's deep personalization preferences, including AI
+   * customization settings, notification channel priorities, thematic choices, and
+   * data sharing consents.
+   *
+   * @example
+   * ```ts
+   * const preference =
+   *   await client.users.me.preferences.retrieve();
+   * ```
    */
   retrieve(options?: Core.RequestOptions): Core.APIPromise<PreferenceRetrieveResponse> {
     return this._client.get('/users/me/preferences', options);
   }
 
   /**
-   * Update User Personalization Preferences
+   * Updates the user's deep personalization preferences, allowing dynamic control
+   * over AI behavior, notification delivery, thematic choices, and data privacy
+   * settings.
+   *
+   * @example
+   * ```ts
+   * const preference =
+   *   await client.users.me.preferences.update();
+   * ```
    */
   update(
     body?: PreferenceUpdateParams,
@@ -31,26 +47,31 @@ export class Preferences extends APIResource {
   }
 }
 
+/**
+ * User's personalized preferences for the platform.
+ */
 export interface PreferenceRetrieveResponse {
-  aiInteractionMode?: 'proactive' | 'reactive' | 'silent';
-
-  dataSharingConsent?: boolean;
-
-  preferredLanguage?: string;
-
-  theme?: string;
+  /**
+   * Preferred channels for receiving notifications.
+   */
+  notificationChannels?: unknown;
 }
 
+/**
+ * User's personalized preferences for the platform.
+ */
 export interface PreferenceUpdateResponse {
-  aiInteractionMode?: string;
-
-  theme?: string;
+  /**
+   * Preferred channels for receiving notifications.
+   */
+  notificationChannels?: unknown;
 }
 
 export interface PreferenceUpdateParams {
-  aiInteractionMode?: string;
-
-  theme?: string;
+  /**
+   * Preferred channels for receiving notifications.
+   */
+  notificationChannels?: unknown;
 }
 
 export declare namespace Preferences {

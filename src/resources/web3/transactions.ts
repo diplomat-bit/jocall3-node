@@ -5,130 +5,27 @@ import * as Core from '../../core';
 
 export class Transactions extends APIResource {
   /**
-   * Cross-chain Asset Bridge
+   * Prepares and initiates a cryptocurrency transfer from a connected wallet to a
+   * specified recipient address. Requires user confirmation (e.g., via wallet
+   * signature).
    *
    * @example
    * ```ts
-   * await client.web3.transactions.bridgeChain({
-   *   token: 'token',
-   *   amount: 'amount',
-   *   destChain: 'destChain',
-   *   sourceChain: 'sourceChain',
-   * });
+   * const response = await client.web3.transactions.initiate();
    * ```
    */
-  bridgeChain(body: TransactionBridgeChainParams, options?: Core.RequestOptions): Core.APIPromise<void> {
-    return this._client.post('/web3/transactions/bridge', {
-      body,
-      ...options,
-      headers: { Accept: '*/*', ...options?.headers },
-    });
-  }
-
-  /**
-   * Initiate a Web3 transaction
-   *
-   * @example
-   * ```ts
-   * await client.web3.transactions.initiate({
-   *   amount: 0,
-   *   asset: 'asset',
-   *   wallet_id: 'wallet_id',
-   * });
-   * ```
-   */
-  initiate(body: TransactionInitiateParams, options?: Core.RequestOptions): Core.APIPromise<void> {
-    return this._client.post('/web3/transactions/initiate', {
-      body,
-      ...options,
-      headers: { Accept: '*/*', ...options?.headers },
-    });
-  }
-
-  /**
-   * Initiate On-chain Transfer
-   *
-   * @example
-   * ```ts
-   * const response = await client.web3.transactions.sendCrypto({
-   *   token: 'token',
-   *   amount: 'amount',
-   *   to: 'to',
-   * });
-   * ```
-   */
-  sendCrypto(
-    body: TransactionSendCryptoParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<TransactionSendCryptoResponse> {
-    return this._client.post('/web3/transactions/send', { body, ...options });
-  }
-
-  /**
-   * Execute Multi-chain Token Swap
-   *
-   * @example
-   * ```ts
-   * await client.web3.transactions.swapTokens({
-   *   amount: 'amount',
-   *   fromToken: 'fromToken',
-   *   toToken: 'toToken',
-   * });
-   * ```
-   */
-  swapTokens(body: TransactionSwapTokensParams, options?: Core.RequestOptions): Core.APIPromise<void> {
-    return this._client.post('/web3/transactions/swap', {
-      body,
-      ...options,
-      headers: { Accept: '*/*', ...options?.headers },
-    });
+  initiate(body: TransactionInitiateParams, options?: Core.RequestOptions): Core.APIPromise<unknown> {
+    return this._client.post('/web3/transactions/initiate', { body, ...options });
   }
 }
 
-export interface TransactionSendCryptoResponse {
-  txHash?: string;
-}
+export type TransactionInitiateResponse = unknown;
 
-export interface TransactionBridgeChainParams {
-  token: string;
-
-  amount: string;
-
-  destChain: string;
-
-  sourceChain: string;
-}
-
-export interface TransactionInitiateParams {
-  amount: number;
-
-  asset: string;
-
-  wallet_id: string;
-}
-
-export interface TransactionSendCryptoParams {
-  token: string;
-
-  amount: string;
-
-  to: string;
-}
-
-export interface TransactionSwapTokensParams {
-  amount: string;
-
-  fromToken: string;
-
-  toToken: string;
-}
+export interface TransactionInitiateParams {}
 
 export declare namespace Transactions {
   export {
-    type TransactionSendCryptoResponse as TransactionSendCryptoResponse,
-    type TransactionBridgeChainParams as TransactionBridgeChainParams,
+    type TransactionInitiateResponse as TransactionInitiateResponse,
     type TransactionInitiateParams as TransactionInitiateParams,
-    type TransactionSendCryptoParams as TransactionSendCryptoParams,
-    type TransactionSwapTokensParams as TransactionSwapTokensParams,
   };
 }

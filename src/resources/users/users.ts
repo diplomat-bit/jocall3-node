@@ -2,7 +2,6 @@
 
 import { APIResource } from '../../resource';
 import * as Core from '../../core';
-import * as Shared from '../shared';
 import * as PasswordResetAPI from './password-reset';
 import {
   PasswordReset,
@@ -12,74 +11,71 @@ import {
   PasswordResetInitiateResponse,
 } from './password-reset';
 import * as MeAPI from './me/me';
-import { Me, MeRetrieveResponse } from './me/me';
+import { Me, MeRetrieveResponse, MeUpdateParams, MeUpdateResponse } from './me/me';
 
 export class Users extends APIResource {
   passwordReset: PasswordResetAPI.PasswordReset = new PasswordResetAPI.PasswordReset(this._client);
   me: MeAPI.Me = new MeAPI.Me(this._client);
 
-  login(body: UserLoginParams, options?: Core.RequestOptions): Core.APIPromise<UserLoginResponse> {
+  /**
+   * Authenticates a user and creates a secure session, returning access tokens. May
+   * require MFA depending on user settings.
+   *
+   * @example
+   * ```ts
+   * const response = await client.users.login();
+   * ```
+   */
+  login(body: UserLoginParams, options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.post('/users/login', { body, ...options });
   }
 
-  logout(options?: Core.RequestOptions): Core.APIPromise<void> {
-    return this._client.post('/users/logout', {
-      ...options,
-      headers: { Accept: '*/*', ...options?.headers },
-    });
-  }
-
+  /**
+   * Registers a new user account with , initiating the onboarding process. Requires
+   * basic user details.
+   *
+   * @example
+   * ```ts
+   * const response = await client.users.register();
+   * ```
+   */
   register(body: UserRegisterParams, options?: Core.RequestOptions): Core.APIPromise<UserRegisterResponse> {
     return this._client.post('/users/register', { body, ...options });
   }
 }
 
-export interface UserLoginResponse {
-  accessToken: string;
-
-  expiresIn?: number;
-
-  refreshToken?: string;
-
-  tokenType?: string;
-}
+export type UserLoginResponse = unknown;
 
 export interface UserRegisterResponse {
-  id: string;
+  address?: unknown;
 
-  email: string;
+  /**
+   * User's personalized preferences for the platform.
+   */
+  preferences?: UserRegisterResponse.Preferences;
 
-  identityVerified: boolean;
-
-  name: string;
-
-  address?: Shared.Address;
-
-  preferences?: { [key: string]: unknown };
-
-  securityStatus?: UserRegisterResponse.SecurityStatus;
+  /**
+   * Security-related status for the user account.
+   */
+  securityStatus?: unknown;
 }
 
 export namespace UserRegisterResponse {
-  export interface SecurityStatus {
-    lastLogin?: string;
-
-    twoFactorEnabled?: boolean;
+  /**
+   * User's personalized preferences for the platform.
+   */
+  export interface Preferences {
+    /**
+     * Preferred channels for receiving notifications.
+     */
+    notificationChannels?: unknown;
   }
 }
 
-export interface UserLoginParams {
-  email: string;
-
-  password: string;
-}
+export interface UserLoginParams {}
 
 export interface UserRegisterParams {
-  email: string;
-
-  name: string;
-
-  password: string;
+  address?: unknown;
 }
 
 Users.PasswordReset = PasswordReset;
@@ -101,5 +97,10 @@ export declare namespace Users {
     type PasswordResetInitiateParams as PasswordResetInitiateParams,
   };
 
-  export { Me as Me, type MeRetrieveResponse as MeRetrieveResponse };
+  export {
+    Me as Me,
+    type MeRetrieveResponse as MeRetrieveResponse,
+    type MeUpdateResponse as MeUpdateResponse,
+    type MeUpdateParams as MeUpdateParams,
+  };
 }
